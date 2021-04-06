@@ -13,6 +13,7 @@ import org.bukkit.event.Listener;
 import com.google.common.collect.Maps;
 
 import net.md_5.bungee.api.ChatColor;
+import static plugin.spigot.defaulpackage.CMD.*;
 
 public class PlayerposCommand implements CommandExecutor, Listener{
 
@@ -23,7 +24,7 @@ public class PlayerposCommand implements CommandExecutor, Listener{
 		if(sender instanceof Player)
 		{
 			String l_Command = label.toLowerCase();
-			if(l_Command.equalsIgnoreCase("playerpos"))
+			if(PLAYERPOS.isEqual(l_Command))
 			{
 				Player l_Player = (Player) sender;
 				switch (args.length)
