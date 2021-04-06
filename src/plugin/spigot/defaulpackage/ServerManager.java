@@ -33,6 +33,10 @@ public class ServerManager {
 		Objective objective = vScoreboard.registerNewObjective("CustomScoreboard", "cs", ChatColor.BLUE + "Giocatori online");
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		
+		if (Bukkit.getPort() == 25672) {
+			objective.getScore("Server di TEST").setScore(0);; 			
+		}
+		
 		Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
 			public void run() {
 				for (Player p : Main.MyServer.getOnlinePlayers()) {
@@ -40,9 +44,11 @@ public class ServerManager {
 					objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GREEN + (p.isSleeping() ? " zZz" : ""))
 						.setScore((int) p.getHealth()); 										
 					p.setScoreboard(vScoreboard);
-					}
 				}
-			}, 10, 10);
+				
+				
+			}
+		}, 10, 10);
 	}
 	
 	// Reset Scoreboard

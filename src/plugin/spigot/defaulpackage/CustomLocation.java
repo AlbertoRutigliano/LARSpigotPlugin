@@ -9,18 +9,24 @@ public class CustomLocation implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private double x, y, z;
 	private String name;
+	private boolean hidden = false;
 	
 	public CustomLocation(String name, double x, double y, double z) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
 		this.z = z;
+		this.hidden = false;
 	}
 	
-	public CustomLocation() {
-		// TODO Auto-generated constructor stub
+	public CustomLocation(String name, double x, double y, double z, boolean hidden) {
+		this.name = name;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.hidden = hidden;
 	}
-
+	
 	public double getX() {
 		return x;
 	}
@@ -51,6 +57,15 @@ public class CustomLocation implements Serializable {
 		return name + " " + x + " " + y + " " + z;
 	} 
 	
+	
+	public boolean isHidden() {
+		return hidden;
+	}
+
+	public void setHidden(boolean hidden) {
+		this.hidden = hidden;
+	}
+
 	public double calculateDistance(CustomLocation xz2) {
         
 	    double ac = Math.abs(xz2.getZ() - this.getZ());

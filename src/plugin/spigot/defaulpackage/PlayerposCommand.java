@@ -85,7 +85,7 @@ public class PlayerposCommand implements CommandExecutor, Listener{
 		savedLocations = FileManager.readCoordsFromFile();
 		
 		double distance = 999999999;
-		CustomLocation nearestLocation = new CustomLocation();
+		CustomLocation nearestLocation = null;
 		for (CustomLocation cl : savedLocations) {			
 			if (playerCurrentLocation.calculateDistance(cl) < distance) {
 				distance = playerCurrentLocation.calculateDistance(cl);

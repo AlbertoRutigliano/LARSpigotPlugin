@@ -27,7 +27,10 @@ public class Main extends JavaPlugin implements Listener{
 		MyServer.getPluginManager().registerEvents(vPlayerManager, this);
 
 		this.getCommand("coords").setExecutor(new CoordsCommand(this.vCoordinatesFilePath));
+		this.getCommand("coords").setTabCompleter(new CoordsCommand(this.vCoordinatesFilePath));
+		
 		this.getCommand("playerpos").setExecutor(new PlayerposCommand());
+		
 		
 		ServerManager.InitScoreboard();
 	}

@@ -5,15 +5,23 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
+import org.bukkit.util.StringUtil;
 
-public class CoordsCommand implements CommandExecutor{
+public class CoordsCommand implements CommandExecutor, TabCompleter{
+	
+	String[] COMMANDS = { "add", "remove" };
 
 	private String vCoordinatesFilePath;
 	
@@ -41,7 +49,9 @@ public class CoordsCommand implements CommandExecutor{
 				{
 					case 0:	// No arguments specified, show saved coordinates
 						for (CustomLocation cl : FileManager.readCoordsFromFile()) {
-							sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
+							if (!cl.isHidden()) {
+								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
+							}
 						}
 						break;
 					case 2:	// 2 arguments specified, used only to remove the specified coordinate name. Syntax: remove CoordinateName
@@ -53,18 +63,30 @@ public class CoordsCommand implements CommandExecutor{
 								l_Player.sendMessage("Coordinate " + args[1] + " non trovate.");
 							}
 						}
+						
+						if(args[0].equalsIgnoreCase("add"))
+						{
+							if (FileManager.writeCoordOnFile(new CustomLocation(args[1], l_Player.getLocation().getX(), l_Player.getLocation().getY(), l_Player.getLocation().getZ()))) {
+								l_Player.sendMessage("Coordinate salvate!");
+							}
+						}
 						else
 						{
 							l_Result = false;
 						}
 						
 						break;
+					case 3: if(args[0].equalsIgnoreCase("add") && args[2].equalsIgnoreCase("hidden"))
+						{
+							if (FileManager.writeCoordOnFile(new CustomLocation(args[1], l_Player.getLocation().getX(), l_Player.getLocation().getY(), l_Player.getLocation().getZ(), true))) {
+								l_Player.sendMessage("Coordinate salvate!");
+							}
+						}
 					case 5:	// 5 arguments specified, used only to add new coordinate. Syntax: add CoordinateName XPosition YPosition ZPosition
 						if(args[0].equalsIgnoreCase("add"))
 						{
 							//String l_NewCoordinates = String.format("%s %s %s %s", args[1], args[2], args[3], args[4]);
 					        //FileManager.AppendStringOnFile(this.vCoordinatesFilePath, l_NewCoordinates);
-							
 							CustomLocation customLocationToWrite = new CustomLocation(args[1], Double.valueOf(args[2]), Double.valueOf(args[3]), Double.valueOf(args[4]));
 							if (FileManager.writeCoordOnFile(customLocationToWrite)) {
 								l_Player.sendMessage("Coordinate salvate!");
@@ -116,6 +138,16 @@ public class CoordsCommand implements CommandExecutor{
 		}
 		
 		return false;
+	}
+
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		
+		final List<String> completions = new ArrayList<>();
+        StringUtil.copyPartialMatches(args[0],  Arrays.asList(COMMANDS), completions);
+        Collections.sort(completions);
+
+        return (args.length <= 1 ? completions : null);
 	}
 	
 
