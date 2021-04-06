@@ -1,15 +1,10 @@
 package plugin.spigot.defaulpackage;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.ChatColor;
@@ -71,7 +66,7 @@ public class CoordsCommand implements CommandExecutor{
 					        //FileManager.AppendStringOnFile(this.vCoordinatesFilePath, l_NewCoordinates);
 							
 							CustomLocation customLocationToWrite = new CustomLocation(args[1], Double.valueOf(args[2]), Double.valueOf(args[3]), Double.valueOf(args[4]));
-							if (writeCoordOnFile(customLocationToWrite)) {
+							if (FileManager.writeCoordOnFile(customLocationToWrite)) {
 								l_Player.sendMessage("Coordinate salvate!");
 							}
 					        
@@ -123,27 +118,6 @@ public class CoordsCommand implements CommandExecutor{
 		return false;
 	}
 	
-	private boolean writeCoordOnFile(CustomLocation cl) {
-        File f = new File("coordinateTEST.txt");
-        ArrayList<CustomLocation> cls = new ArrayList<>();
-        cls = FileManager.readCoordsFromFile();
-        cls.add(cl);
-        try {
-            FileOutputStream fos = new FileOutputStream(f);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(cls);
-            oos.close();
-            fos.close();
-            return true;
-            
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            return false;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-	}
 
 	
 }
