@@ -1,0 +1,129 @@
+package plugin.spigot.defaulpackage;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Map.Entry;
+
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
+
+import com.google.common.collect.Maps;
+
+import net.md_5.bungee.api.ChatColor;
+
+public class PlayerposCommand implements CommandExecutor, Listener{
+
+	@Override
+	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+		boolean l_Result = true;
+		
+		if(sender instanceof Player)
+		{
+			String l_Command = label.toLowerCase();
+			if(l_Command.equalsIgnoreCase("playerpos"))
+			{
+				Player l_Player = (Player) sender;
+				switch (args.length)
+				{
+					case 0:	// No arguments specified, show all players coordinates
+						ArrayList<Player> l_OnlinePlayers = new ArrayList<>(Main.MyServer.getOnlinePlayers());
+						for(Player p:l_OnlinePlayers)
+						{
+							l_Result = this.ShowPlayerPosition(l_Player, p);
+						}
+						
+						break;
+					case 1:	// 1 argument specified, show specified player coordinates
+						Player l_SelectedPlayer = Main.MyServer.getPlayer(args[0]);
+						l_Result = this.ShowPlayerPosition(l_Player, l_SelectedPlayer);
+						
+						break;
+					default:
+						l_Result = false;
+						
+						break;
+				}
+			}
+		}
+		
+		return l_Result;
+	}
+	
+	// Write the requestedPlayer coordinates in the sender message console
+	private boolean ShowPlayerPosition(Player sender, Player requestedPlayer){
+		if(sender == null || requestedPlayer == null)
+		{
+			return false;
+		}
+		
+		int l_X = 0, l_Y = 0, l_Z = 0;
+		String l_Coords = "";
+		
+		l_X = (int)requestedPlayer.getLocation().getX();
+		l_Y = (int)requestedPlayer.getLocation().getY();
+		l_Z = (int)requestedPlayer.getLocation().getZ();
+		
+		l_Coords = String.format("%d, %d, %d", l_X, l_Y, l_Z);
+		
+		sender.sendMessage(ChatColor.DARK_RED + requestedPlayer.getName() + ": " + ChatColor.WHITE + l_Coords + 
+				" ~ " + nearestLocation(requestedPlayer).getKey().getName() + " (" + (int) (double) nearestLocation(requestedPlayer).getValue()+ " blocchi)");
+		
+		return true;
+	}
+	
+	
+	// TODO Alberto, sistemare
+	private Entry<CustomLocation, Double> nearestLocation(Player player) {
+
+		CustomLocation playerCurrentLocation = new CustomLocation(player.getDisplayName(), player.getLocation().getX(),
+				player.getLocation().getY(), player.getLocation().getZ());
+		
+		ArrayList<CustomLocation> savedLocations = new ArrayList<>();
+		savedLocations = readCoordsFromFile();
+		
+		double distance = 999999999;
+		CustomLocation nearestLocation = new CustomLocation();
+		for (CustomLocation cl : savedLocations) {			
+			if (playerCurrentLocation.calculateDistance(cl) < distance) {
+				distance = playerCurrentLocation.calculateDistance(cl);
+				nearestLocation = cl;
+			}
+		}
+		
+		Entry<CustomLocation, Double> result = Maps.immutableEntry(nearestLocation, distance);
+		
+		return result;
+	}
+	
+	// TODO Alberto, sistemare
+	
+	
+	private ArrayList<CustomLocation> readCoordsFromFile() {
+		ArrayList<CustomLocation> cls = new ArrayList<>();
+		 File f = new File("coordinateTEST.txt");
+	        try {
+	            FileInputStream fis = new FileInputStream(f);
+	            ObjectInputStream ois = new ObjectInputStream(fis);
+	            
+	            cls = (ArrayList<CustomLocation>)ois.readObject();
+	            ois.close();
+	            fis.close();
+	            
+	        } catch (FileNotFoundException ex) {
+	            ex.printStackTrace();
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	        } catch (ClassNotFoundException ex) {
+	            ex.printStackTrace();
+	        }
+	        return cls;
+	}
+}

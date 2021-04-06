@@ -1,0 +1,20 @@
+name: WriteOnlinePlayers
+main: plugin.spigot.defaulpackage.Main
+version: 1.0
+api-version: 1.16
+author: lucaacquafredda
+commands: 
+   PlayerPos:
+      description: Mostra le coordinate dei giocatori
+      usage: "Uso: /PlayerPos [playername]"
+      permission: perm.general
+   Coords:
+      description: Mostra le coordinate salvate del server
+      usage: "Uso: /Coords"
+      permission: perm.general
+      
+permissions:
+   perm.general:
+      default: true
+   perm.op:
+      default: op
