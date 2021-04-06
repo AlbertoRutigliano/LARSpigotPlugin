@@ -2,19 +2,14 @@ package plugin.spigot.defaulpackage;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Vector;
 
 import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.ChatColor;
@@ -50,16 +45,18 @@ public class CoordsCommand implements CommandExecutor{
 				switch(args.length)
 				{
 					case 0:	// No arguments specified, show saved coordinates
-						// this.ShowServerCoordinates(l_Player, this.vCoordinatesFilePath);		
-						for (CustomLocation cl : readCoordsFromFile()) {
+						for (CustomLocation cl : FileManager.readCoordsFromFile()) {
 							sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
 						}
 						break;
 					case 2:	// 2 arguments specified, used only to remove the specified coordinate name. Syntax: remove CoordinateName
 						if(args[0].equalsIgnoreCase("remove"))
 						{
-							//TODO: Must be implemented
-							l_Result = false;
+							if (FileManager.removeCoordFromFile(args[1])) {
+								l_Player.sendMessage("Coordinate " + args[1] + " rimosse!");
+							} else {
+								l_Player.sendMessage("Coordinate " + args[1] + " non trovate.");
+							}
 						}
 						else
 						{
@@ -96,6 +93,7 @@ public class CoordsCommand implements CommandExecutor{
 		return l_Result;
 	}
 	
+	@Deprecated
 	// Write the server saved coordinates in the sender message console
 	private boolean ShowServerCoordinates(Player sender, String coordinatesFilePath) {
 		if(sender == null)
@@ -128,7 +126,7 @@ public class CoordsCommand implements CommandExecutor{
 	private boolean writeCoordOnFile(CustomLocation cl) {
         File f = new File("coordinateTEST.txt");
         ArrayList<CustomLocation> cls = new ArrayList<>();
-        cls = readCoordsFromFile();
+        cls = FileManager.readCoordsFromFile();
         cls.add(cl);
         try {
             FileOutputStream fos = new FileOutputStream(f);
@@ -146,29 +144,6 @@ public class CoordsCommand implements CommandExecutor{
             return false;
         }
 	}
-	
-	
-	private ArrayList<CustomLocation> readCoordsFromFile() {
-		ArrayList<CustomLocation> cls = new ArrayList<>();
-		 File f = new File("coordinateTEST.txt");
-	        try {
-	            FileInputStream fis = new FileInputStream(f);
-	            ObjectInputStream ois = new ObjectInputStream(fis);
-	            
-	            cls = (ArrayList<CustomLocation>)ois.readObject();
-	            ois.close();
-	            fis.close();
-	            
-	        } catch (FileNotFoundException ex) {
-	            ex.printStackTrace();
-	        } catch (IOException ex) {
-	            ex.printStackTrace();
-	        } catch (ClassNotFoundException ex) {
-	            ex.printStackTrace();
-	        }
-	        return cls;
-	}
-	
-	
+
 	
 }

@@ -2,10 +2,17 @@ package plugin.spigot.defaulpackage;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 
 public class FileManager {
 
@@ -62,5 +69,87 @@ public class FileManager {
 		} catch (IOException ex) {
 			System.err.format("IOException: %s%n", ex);
 	 	}
+	}
+	
+	
+	
+	public static boolean writeCoordOnFile(CustomLocation cl) {
+        File f = new File("coordinateTEST.txt");
+        ArrayList<CustomLocation> cls = new ArrayList<>();
+        cls = readCoordsFromFile();
+        cls.add(cl);
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(cls);
+            oos.close();
+            fos.close();
+            return true;
+            
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            return false;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+	}
+	
+	public static boolean writeCoordOnFile(ArrayList<CustomLocation> cls) {
+        File f = new File("coordinateTEST.txt");
+
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+            ObjectOutputStream oos = new ObjectOutputStream(fos);
+            oos.writeObject(cls);
+            oos.close();
+            fos.close();
+            return true;
+            
+        } catch (FileNotFoundException ex) {
+            ex.printStackTrace();
+            return false;
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return false;
+        }
+	}
+	
+	public static boolean removeCoordFromFile(String locationName) {
+		boolean found = false;
+		ArrayList<CustomLocation> updatedSavedLocations = new ArrayList<CustomLocation>();
+		for(CustomLocation cl : readCoordsFromFile()) {
+			if (!cl.getName().equalsIgnoreCase(locationName)) {
+				updatedSavedLocations.add(cl);
+			} else {
+				found = true;
+			}
+		}
+		
+		writeCoordOnFile(updatedSavedLocations);
+		
+		return found;
+	}
+	
+	
+	public static ArrayList<CustomLocation> readCoordsFromFile() {
+		ArrayList<CustomLocation> cls = new ArrayList<>();
+		 File f = new File("coordinateTEST.txt");
+	        try {
+	            FileInputStream fis = new FileInputStream(f);
+	            ObjectInputStream ois = new ObjectInputStream(fis);
+	            
+	            cls = (ArrayList<CustomLocation>)ois.readObject();
+	            ois.close();
+	            fis.close();
+	            
+	        } catch (FileNotFoundException ex) {
+	            ex.printStackTrace();
+	        } catch (IOException ex) {
+	            ex.printStackTrace();
+	        } catch (ClassNotFoundException ex) {
+	            ex.printStackTrace();
+	        }
+	        return cls;
 	}
 }

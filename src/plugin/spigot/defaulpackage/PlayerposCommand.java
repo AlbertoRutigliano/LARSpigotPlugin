@@ -1,12 +1,7 @@
 package plugin.spigot.defaulpackage;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.ObjectInputStream;
+
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Map.Entry;
 
 import org.bukkit.command.Command;
@@ -87,7 +82,7 @@ public class PlayerposCommand implements CommandExecutor, Listener{
 				player.getLocation().getY(), player.getLocation().getZ());
 		
 		ArrayList<CustomLocation> savedLocations = new ArrayList<>();
-		savedLocations = readCoordsFromFile();
+		savedLocations = FileManager.readCoordsFromFile();
 		
 		double distance = 999999999;
 		CustomLocation nearestLocation = new CustomLocation();
@@ -101,29 +96,5 @@ public class PlayerposCommand implements CommandExecutor, Listener{
 		Entry<CustomLocation, Double> result = Maps.immutableEntry(nearestLocation, distance);
 		
 		return result;
-	}
-	
-	// TODO Alberto, sistemare
-	
-	
-	private ArrayList<CustomLocation> readCoordsFromFile() {
-		ArrayList<CustomLocation> cls = new ArrayList<>();
-		 File f = new File("coordinateTEST.txt");
-	        try {
-	            FileInputStream fis = new FileInputStream(f);
-	            ObjectInputStream ois = new ObjectInputStream(fis);
-	            
-	            cls = (ArrayList<CustomLocation>)ois.readObject();
-	            ois.close();
-	            fis.close();
-	            
-	        } catch (FileNotFoundException ex) {
-	            ex.printStackTrace();
-	        } catch (IOException ex) {
-	            ex.printStackTrace();
-	        } catch (ClassNotFoundException ex) {
-	            ex.printStackTrace();
-	        }
-	        return cls;
 	}
 }
