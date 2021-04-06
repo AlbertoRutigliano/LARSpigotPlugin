@@ -111,6 +111,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		Player l_Player = e.getPlayer();
+		ServerManager.ResetScoreboard(l_Player);
 		this.WritePlayerQuit(l_Player, this.vPlayersListFilePath);
 	}
 	
