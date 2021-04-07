@@ -12,6 +12,15 @@ public class ServerManager {
 
 	private static ScoreboardManager vScoreboardManager;
     private static Scoreboard vScoreboard;
+    private static int vTestServerPort;
+
+	public static int getTestServerPort() {
+		return vTestServerPort;
+	}
+
+	public static void setTestServerPort(int vTestServerPort) {
+		ServerManager.vTestServerPort = vTestServerPort;
+	}
     
 	// Return true if is day else false
 	public static boolean IsDay() {
@@ -33,8 +42,12 @@ public class ServerManager {
 		Objective objective = vScoreboard.registerNewObjective("CustomScoreboard", "cs", ChatColor.BLUE + "Giocatori online");
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		
-		if (Bukkit.getPort() == 25672) {
-			objective.getScore("Server di TEST").setScore(0);; 			
+		if (Bukkit.getPort() == getTestServerPort()) {
+			objective.getScore("Server di TEST").setScore(0);
+		}
+		else
+		{
+			vScoreboard.resetScores("Server di TEST");
 		}
 		
 		Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
@@ -55,5 +68,10 @@ public class ServerManager {
 	public static void ResetScoreboard(Player player) {
 		vScoreboard.resetScores(ChatColor.GOLD + player.getName() + ChatColor.GREEN);
 		vScoreboard.resetScores(ChatColor.GOLD + player.getName() + ChatColor.GREEN + " zZz");
+	}
+	
+	public static void RemoveScoreboard()
+	{
+		vScoreboard.getObjectives().removeAll(null);
 	}
 }
