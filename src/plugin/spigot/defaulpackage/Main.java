@@ -28,7 +28,8 @@ public class Main extends JavaPlugin implements Listener{
 		this.getCommand(COORDS.toString()).setExecutor(new CoordsCommand());
 		this.getCommand(COORDS.toString()).setTabCompleter(new CoordsCommand());
 		
-		this.getCommand("playerpos").setExecutor(new PlayerposCommand());
+		this.getCommand(PLAYERPOS.toString()).setExecutor(new PlayerposCommand());
+		this.getCommand(PLAYERPOS.toString()).setTabCompleter(new PlayerposCommand());
 		
 		
 		ServerManager.InitScoreboard();

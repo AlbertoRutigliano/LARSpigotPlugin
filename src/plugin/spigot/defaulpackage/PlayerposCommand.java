@@ -2,11 +2,16 @@ package plugin.spigot.defaulpackage;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Map.Entry;
+import java.util.stream.Collectors;
 
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 
@@ -15,7 +20,7 @@ import com.google.common.collect.Maps;
 import net.md_5.bungee.api.ChatColor;
 import static plugin.spigot.defaulpackage.Cmd.*;
 
-public class PlayerposCommand implements CommandExecutor, Listener{
+public class PlayerposCommand implements CommandExecutor, Listener, TabCompleter {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -93,5 +98,14 @@ public class PlayerposCommand implements CommandExecutor, Listener{
 		Entry<CustomLocation, Double> result = Maps.immutableEntry(nearestLocation, distance);
 		
 		return result;
+	}
+	
+
+	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
+		if (args.length == 1) {
+			return null;
+		} else {
+			return Collections.emptyList();
+		}
 	}
 }

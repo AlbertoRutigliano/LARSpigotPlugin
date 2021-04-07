@@ -132,7 +132,6 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 		Cmd[] COMMANDS = {ADD, REMOVE, ALL};
 		final List<String> completions = new ArrayList<>();
 		
-		
 		List<String> hintLocations = new ArrayList<>();
 		for(CustomLocation cl : FileManager.readCoordsFromFile()) {
 			hintLocations.add(cl.getName());
@@ -152,7 +151,14 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 			return completions;
 		}
 		
-		return null;
+		if (ADD.isEqual(args[0]) && args[1] != null && args.length == 3) {
+			completions.clear();
+			StringUtil.copyPartialMatches(args[2], Arrays.asList(HIDDEN.toString()), completions);
+			Collections.sort(completions);
+			return completions;
+		}
+		
+		return Collections.emptyList();
 	}
 	
 
