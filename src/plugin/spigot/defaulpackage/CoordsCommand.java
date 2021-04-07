@@ -22,19 +22,7 @@ import org.bukkit.util.StringUtil;
 import static plugin.spigot.defaulpackage.CMD.*;
 
 public class CoordsCommand implements CommandExecutor, TabCompleter {
-	
-	private String vCoordinatesFilePath;
-	
-	public CoordsCommand(String coordinateFilePath)
-	{
-		if(coordinateFilePath == null)
-		{
-			throw new NullArgumentException("coordinateFilePath");
-		}
-		
-		this.vCoordinatesFilePath = coordinateFilePath;
-	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 		boolean l_Result = true;
@@ -54,6 +42,16 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 							}
 						}
 						break;
+					case 1:
+						if(ALL.isEqual(args[0]))
+						{
+							for (CustomLocation cl : FileManager.readCoordsFromFile()) {
+								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " 
+										+ (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ()
+										+ (cl.isHidden() ? ChatColor.GRAY + " hidden" : ""));
+							}
+						}
+						break;
 					case 2:	// 2 arguments specified, used only to remove the specified coordinate name. Syntax: remove CoordinateName
 						if(REMOVE.isEqual(args[0]))
 						{
@@ -70,11 +68,6 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 								l_Player.sendMessage("Coordinate salvate!");
 							}
 						}
-						else
-						{
-							l_Result = false;
-						}
-						
 						break;
 					case 3: if(ADD.isEqual(args[0]) && HIDDEN.isEqual(args[2]))
 						{
@@ -82,11 +75,10 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 								l_Player.sendMessage("Coordinate salvate!");
 							}
 						}
+						break;
 					case 5:	// 5 arguments specified, used only to add new coordinate. Syntax: add CoordinateName XPosition YPosition ZPosition
 						if(ADD.isEqual(args[0]))
 						{
-							//String l_NewCoordinates = String.format("%s %s %s %s", args[1], args[2], args[3], args[4]);
-					        //FileManager.AppendStringOnFile(this.vCoordinatesFilePath, l_NewCoordinates);
 							CustomLocation customLocationToWrite = new CustomLocation(args[1], Double.valueOf(args[2]), Double.valueOf(args[3]), Double.valueOf(args[4]));
 							if (FileManager.writeCoordOnFile(customLocationToWrite)) {
 								l_Player.sendMessage("Coordinate salvate!");
@@ -143,7 +135,7 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		CMD[] COMMANDS = {ADD, REMOVE};
+		CMD[] COMMANDS = {ADD, REMOVE, ALL};
 		final List<String> completions = new ArrayList<>();
         StringUtil.copyPartialMatches(args[0], Arrays.stream(COMMANDS).map(Enum::toString).collect(Collectors.toList()), completions);
         Collections.sort(completions);

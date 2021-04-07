@@ -9,7 +9,6 @@ public class Main extends JavaPlugin implements Listener{
 	
 	private String vPlayersListFilePath;
 	private String vKickedPlayersFilePath;
-	private String vCoordinatesFilePath;
 	
 	private PlayerManager vPlayerManager;
 	
@@ -18,7 +17,6 @@ public class Main extends JavaPlugin implements Listener{
 	@Override
 	public void onEnable() {		
 		MyServer = getServer();
-		this.vCoordinatesFilePath = "Coordinate.txt";
 		this.vPlayersListFilePath = "onlinePlayers.txt";
 		this.vKickedPlayersFilePath = "kickedPlayers.txt";
 		this.vPlayerManager = new PlayerManager(this.vPlayersListFilePath, this.vKickedPlayersFilePath);
@@ -26,8 +24,8 @@ public class Main extends JavaPlugin implements Listener{
 		MyServer.getPluginManager().registerEvents(this, this);
 		MyServer.getPluginManager().registerEvents(vPlayerManager, this);
 
-		this.getCommand("coords").setExecutor(new CoordsCommand(this.vCoordinatesFilePath));
-		this.getCommand("coords").setTabCompleter(new CoordsCommand(this.vCoordinatesFilePath));
+		this.getCommand("coords").setExecutor(new CoordsCommand());
+		this.getCommand("coords").setTabCompleter(new CoordsCommand());
 		
 		this.getCommand("playerpos").setExecutor(new PlayerposCommand());
 		

@@ -6,7 +6,7 @@ public enum CMD {
 	
 	ADD("add"), REMOVE("remove"), 
 	
-	HIDDEN("hidden");
+	HIDDEN("hidden"), ALL("all");
 	
 	private String cmd;
 	
@@ -22,5 +22,5 @@ public enum CMD {
     public boolean isEqual(String value) { 
         return this.cmd.equalsIgnoreCase(value);
     }
-
+    
 }
