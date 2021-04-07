@@ -1,6 +1,6 @@
 package plugin.spigot.defaulpackage;
 
-public enum CMD {
+public enum Cmd {
 	
 	COORDS("coords"), PLAYERPOS("playerpos"),
 	
@@ -10,7 +10,7 @@ public enum CMD {
 	
 	private String cmd;
 	
-    private CMD(String cmd) {
+    private Cmd(String cmd) {
         this.cmd = cmd;
     }
    

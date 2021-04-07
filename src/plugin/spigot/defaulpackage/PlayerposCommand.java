@@ -13,7 +13,7 @@ import org.bukkit.event.Listener;
 import com.google.common.collect.Maps;
 
 import net.md_5.bungee.api.ChatColor;
-import static plugin.spigot.defaulpackage.CMD.*;
+import static plugin.spigot.defaulpackage.Cmd.*;
 
 public class PlayerposCommand implements CommandExecutor, Listener{
 
@@ -61,29 +61,25 @@ public class PlayerposCommand implements CommandExecutor, Listener{
 		}
 		
 		int l_X = 0, l_Y = 0, l_Z = 0;
-		String l_Coords = "";
 		
 		l_X = (int)requestedPlayer.getLocation().getX();
 		l_Y = (int)requestedPlayer.getLocation().getY();
 		l_Z = (int)requestedPlayer.getLocation().getZ();
 		
-		l_Coords = String.format("%d, %d, %d", l_X, l_Y, l_Z);
+		String l_Coords = String.format("%d %d %d", l_X, l_Y, l_Z);
 		
 		sender.sendMessage(ChatColor.DARK_RED + requestedPlayer.getName() + ": " + ChatColor.WHITE + l_Coords + 
 				" ~ " + nearestLocation(requestedPlayer).getKey().getName() + " (" + (int) (double) nearestLocation(requestedPlayer).getValue()+ " blocchi)");
-		
 		return true;
 	}
 	
 	
-	// TODO Alberto, sistemare
 	private Entry<CustomLocation, Double> nearestLocation(Player player) {
 
 		CustomLocation playerCurrentLocation = new CustomLocation(player.getDisplayName(), player.getLocation().getX(),
 				player.getLocation().getY(), player.getLocation().getZ());
 		
-		ArrayList<CustomLocation> savedLocations = new ArrayList<>();
-		savedLocations = FileManager.readCoordsFromFile();
+		ArrayList<CustomLocation> savedLocations = FileManager.readCoordsFromFile();
 		
 		double distance = 999999999;
 		CustomLocation nearestLocation = null;

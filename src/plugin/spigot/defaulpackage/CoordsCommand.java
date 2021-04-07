@@ -11,7 +11,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.apache.commons.lang.NullArgumentException;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -19,7 +18,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
-import static plugin.spigot.defaulpackage.CMD.*;
+import static plugin.spigot.defaulpackage.Cmd.*;
 
 public class CoordsCommand implements CommandExecutor, TabCompleter {
 
@@ -30,7 +29,7 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 		if(sender instanceof Player)
 		{
 			String l_Command = label.toLowerCase();
-			if(l_Command.equalsIgnoreCase("coords"))
+			if(COORDS.isEqual(l_Command))
 			{
 				Player l_Player = (Player) sender;
 				switch(args.length)
@@ -85,11 +84,6 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 							}
 					        
 						}
-						else
-						{
-							l_Result = false;
-						}
-						
 						break;
 					default:
 						l_Result = false;
@@ -135,12 +129,30 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		CMD[] COMMANDS = {ADD, REMOVE, ALL};
+		Cmd[] COMMANDS = {ADD, REMOVE, ALL};
 		final List<String> completions = new ArrayList<>();
-        StringUtil.copyPartialMatches(args[0], Arrays.stream(COMMANDS).map(Enum::toString).collect(Collectors.toList()), completions);
-        Collections.sort(completions);
-       
-        return (args.length <= 1 ? completions : null);
+		
+		
+		List<String> hintLocations = new ArrayList<>();
+		for(CustomLocation cl : FileManager.readCoordsFromFile()) {
+			hintLocations.add(cl.getName());
+		}
+		
+		if (args.length == 1) {
+			completions.clear();
+			StringUtil.copyPartialMatches(args[0], Arrays.stream(COMMANDS).map(Enum::toString).collect(Collectors.toList()), completions);
+			Collections.sort(completions);
+			return completions;
+		} 
+		
+		if (REMOVE.isEqual(args[0])) {
+			completions.clear();
+			StringUtil.copyPartialMatches(args[1], hintLocations, completions);
+			Collections.sort(completions);
+			return completions;
+		}
+		
+		return null;
 	}
 	
 
