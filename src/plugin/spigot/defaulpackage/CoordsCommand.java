@@ -9,13 +9,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
@@ -98,36 +95,6 @@ public class CoordsCommand implements TabExecutor {
 		return l_Result;
 	}
 	
-	@Deprecated
-	// Write the server saved coordinates in the sender message console
-	private boolean ShowServerCoordinates(Player sender, String coordinatesFilePath) {
-		if(sender == null)
-		{
-			return false;
-		}
-		
-		boolean l_CoordinateFileExist = Files.exists(Paths.get(coordinatesFilePath), LinkOption.values());
-		
-		if(l_CoordinateFileExist == true)
-		{
-			try (BufferedReader br = Files.newBufferedReader(Paths.get(coordinatesFilePath)))
-			{
-	        	String line;
-	            
-	            while ((line = br.readLine()) != null)
-	            {
-	            	sender.sendMessage(line);
-	            }
-	            return true;
-
-	        } catch (IOException ex) {
-	            System.err.format("IOException: %s%n", ex);
-	        }
-		}
-		
-		return false;
-	}
-
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		
