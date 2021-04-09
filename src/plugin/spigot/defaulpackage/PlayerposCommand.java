@@ -1,23 +1,18 @@
 package plugin.spigot.defaulpackage;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
-
 import com.google.common.collect.Maps;
-
 import net.md_5.bungee.api.ChatColor;
-import static plugin.spigot.defaulpackage.Cmd.*;
+import static plugin.spigot.defaulpackage.Commands.*;
 
-public class PlayerposCommand implements CommandExecutor, Listener, TabCompleter {
+public class PlayerposCommand implements TabExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -26,7 +21,7 @@ public class PlayerposCommand implements CommandExecutor, Listener, TabCompleter
 		if(sender instanceof Player)
 		{
 			String l_Command = label.toLowerCase();
-			if(PLAYERPOS.isEqual(l_Command))
+			if(PLAYERPOS.equalsIgnoreCase(l_Command))
 			{
 				Player l_Player = (Player) sender;
 				switch (args.length)

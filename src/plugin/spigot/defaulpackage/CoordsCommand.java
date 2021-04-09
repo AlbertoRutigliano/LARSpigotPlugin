@@ -9,18 +9,15 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.stream.Collectors;
-
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
-import static plugin.spigot.defaulpackage.Cmd.*;
+import static plugin.spigot.defaulpackage.Commands.*;
 
-public class CoordsCommand implements CommandExecutor, TabCompleter {
+public class CoordsCommand implements TabExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -29,7 +26,7 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 		if(sender instanceof Player)
 		{
 			String l_Command = label.toLowerCase();
-			if(COORDS.isEqual(l_Command))
+			if(COORDS.equalsIgnoreCase(l_Command))
 			{
 				Player l_Player = (Player) sender;
 				switch(args.length)
@@ -42,7 +39,7 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 						}
 						break;
 					case 1:
-						if(ALL.isEqual(args[0]))
+						if(ALL.equalsIgnoreCase(args[0]))
 						{
 							for (CustomLocation cl : FileManager.readCoordsFromFile()) {
 								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " 
@@ -52,7 +49,7 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 						}
 						break;
 					case 2:	// 2 arguments specified, used only to remove the specified coordinate name. Syntax: remove CoordinateName
-						if(REMOVE.isEqual(args[0]))
+						if(REMOVE.equalsIgnoreCase(args[0]))
 						{
 							if (FileManager.removeCoordFromFile(args[1])) {
 								l_Player.sendMessage("Coordinate " + args[1] + " rimosse!");
@@ -61,14 +58,14 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 							}
 						}
 						
-						if(ADD.isEqual(args[0]))
+						if(ADD.equalsIgnoreCase(args[0]))
 						{
 							if (FileManager.writeCoordOnFile(new CustomLocation(args[1], l_Player.getLocation().getX(), l_Player.getLocation().getY(), l_Player.getLocation().getZ()))) {
 								l_Player.sendMessage("Coordinate salvate!");
 							}
 						}
 						break;
-					case 3: if(ADD.isEqual(args[0]) && HIDDEN.isEqual(args[2]))
+					case 3: if(ADD.equalsIgnoreCase(args[0]) && HIDDEN.equalsIgnoreCase(args[2]))
 						{
 							if (FileManager.writeCoordOnFile(new CustomLocation(args[1], l_Player.getLocation().getX(), l_Player.getLocation().getY(), l_Player.getLocation().getZ(), true))) {
 								l_Player.sendMessage("Coordinate salvate!");
@@ -76,7 +73,7 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 						}
 						break;
 					case 5:	// 5 arguments specified, used only to add new coordinate. Syntax: add CoordinateName XPosition YPosition ZPosition
-						if(ADD.isEqual(args[0]))
+						if(ADD.equalsIgnoreCase(args[0]))
 						{
 							CustomLocation customLocationToWrite = new CustomLocation(args[1], Double.valueOf(args[2]), Double.valueOf(args[3]), Double.valueOf(args[4]));
 							if (FileManager.writeCoordOnFile(customLocationToWrite)) {
@@ -129,7 +126,8 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		Cmd[] COMMANDS = {ADD, REMOVE, ALL};
+		String[] COMMANDS = {ADD, REMOVE, ALL};
+		
 		final List<String> completions = new ArrayList<>();
 		
 		List<String> hintLocations = new ArrayList<>();
@@ -139,25 +137,23 @@ public class CoordsCommand implements CommandExecutor, TabCompleter {
 		
 		if (args.length == 1) {
 			completions.clear();
-			StringUtil.copyPartialMatches(args[0], Arrays.stream(COMMANDS).map(Enum::toString).collect(Collectors.toList()), completions);
-			Collections.sort(completions);
+			StringUtil.copyPartialMatches(args[0], Arrays.asList(COMMANDS), completions);
 			return completions;
 		} 
 		
-		if (REMOVE.isEqual(args[0])) {
+		if (REMOVE.equalsIgnoreCase((args[0]))) {
 			completions.clear();
 			StringUtil.copyPartialMatches(args[1], hintLocations, completions);
-			Collections.sort(completions);
 			return completions;
 		}
 		
-		if (ADD.isEqual(args[0]) && args[1] != null && args.length == 3) {
+		if (ADD.equalsIgnoreCase(args[0]) && args[1] != null && args.length == 3) {
 			completions.clear();
-			StringUtil.copyPartialMatches(args[2], Arrays.asList(HIDDEN.toString()), completions);
-			Collections.sort(completions);
+			StringUtil.copyPartialMatches(args[2], Arrays.asList(HIDDEN), completions);
 			return completions;
 		}
 		
+		Collections.sort(completions);
 		return Collections.emptyList();
 	}
 	
