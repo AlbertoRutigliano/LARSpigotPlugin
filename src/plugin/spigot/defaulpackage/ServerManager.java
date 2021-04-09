@@ -70,8 +70,9 @@ public class ServerManager {
 		vScoreboard.resetScores(ChatColor.GOLD + player.getName() + ChatColor.GREEN + " zZz");
 	}
 	
-	public static void RemoveScoreboard()
+	// Removes Scoreboard
+	public static void RemoveObjectives()
 	{
-		vScoreboard.getObjectives().removeAll(null);
+		vScoreboard.clearSlot(DisplaySlot.SIDEBAR);
 	}
 }

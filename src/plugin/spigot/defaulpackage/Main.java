@@ -8,20 +8,18 @@ import org.bukkit.Server;
 public class Main extends JavaPlugin implements Listener{
 	public static Server MyServer;
 	
-	private String vPropertiesFilePath;
 	private String vPlayersListFilePath;
 	private String vKickedPlayersFilePath;
 	
-	private PropertiesManager vPropertiesManager;
+	private ConfigManager vConfigManager;
 	private PlayerManager vPlayerManager;
 
 	@Override
 	public void onEnable() {
 		MyServer = getServer();
-		this.vPropertiesFilePath = "config.properties";
 		this.vPlayersListFilePath = "onlinePlayers.txt";
 		this.vKickedPlayersFilePath = "kickedPlayers.txt";
-		this.vPropertiesManager = new PropertiesManager(this.vPropertiesFilePath);
+		this.vConfigManager = new ConfigManager();
 		this.vPlayerManager = new PlayerManager(this.vPlayersListFilePath, this.vKickedPlayersFilePath);
 		
 		MyServer.getPluginManager().registerEvents(this, this);
@@ -31,15 +29,15 @@ public class Main extends JavaPlugin implements Listener{
 		this.getCommand(COORDS.toString()).setTabCompleter(new CoordsCommand());
 		
 		this.getCommand("playerpos").setExecutor(new PlayerposCommand());
-		
-		ServerManager.setTestServerPort(Integer.parseInt(vPropertiesManager.GetValue("serverTestPort")));
+
+		ServerManager.setTestServerPort(this.vConfigManager.GetCustomConfig().getInt("serverTestPort"));
 		
 		ServerManager.InitScoreboard();
 	}
 	
 	@Override
 	public void onDisable() {
-		ServerManager.RemoveScoreboard();
+		ServerManager.RemoveObjectives();
 	}
 	
 }
