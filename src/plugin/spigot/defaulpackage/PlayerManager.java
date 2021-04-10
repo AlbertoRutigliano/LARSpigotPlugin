@@ -1,6 +1,5 @@
 package plugin.spigot.defaulpackage;
 
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -32,7 +31,7 @@ public class PlayerManager implements Listener {
 	
 	private String vPlayersListFilePath;
 	private String vKickedPlayersFilePath;
-	
+    public static HashMap<Player, PlayerProperties> vPlayerProperties;
 	
 	public PlayerManager(String playerListFilePath, String kickedPlayersFilePath)
 	{
@@ -47,6 +46,27 @@ public class PlayerManager implements Listener {
 		
 		this.vPlayersListFilePath = playerListFilePath;
 		this.vKickedPlayersFilePath = kickedPlayersFilePath;
+		
+		vPlayerProperties = new HashMap<Player, PlayerProperties>();
+		for(Player p:Main.MyServer.getOnlinePlayers()) {
+			vPlayerProperties.put(p, new PlayerProperties());
+		}
+		
+		Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
+			public void run() {
+				for (Player player : Main.MyServer.getOnlinePlayers()) {
+					Timestamp now = new Timestamp(new Date().getTime());
+					PlayerProperties l_CurrentPlayer = vPlayerProperties.get(player);
+					if(l_CurrentPlayer != null) {
+						int seconds = (int) ((now.getTime() - l_CurrentPlayer.getLastMoveTimestamp().getTime()) / 1000) % 60 ;
+						if (seconds > ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_AFK.name())) {
+							l_CurrentPlayer.setAfk(true);
+						}	
+					}
+				}
+			}
+		}, 20, 20);
+		
 	}
 
 	@EventHandler
@@ -64,7 +84,6 @@ public class PlayerManager implements Listener {
 		        taker.sendMessage(ChatColor.DARK_RED + damagerPlayer.getDisplayName() + ChatColor.WHITE + l_Message);
 		    }
 		}
-		
 	}
 
 	@EventHandler
@@ -82,7 +101,6 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onPlayerEnchant(EnchantItemEvent e) {
 		Entity player = e.getEnchanter();
-		// ItemStack itemEnchanted = e.getItem();
 		Bukkit.broadcastMessage("Il bastardo " + player.getName() + " ha incantato un oggetto");
 	}
 	
@@ -97,12 +115,9 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onPlayerWakeUp(PlayerBedLeaveEvent e) {
 		Entity player = e.getPlayer();
-		if (ServerManager.IsDay() == false)
-		{
+		if (ServerManager.IsDay() == false){
 			Bukkit.broadcastMessage(player.getName() + " bastardo si è alzato");			
-		}
-		else
-		{
+		} else{
 			player.sendMessage("Buongiorno, ben svegliato");
 		}
 	}
@@ -111,6 +126,8 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player l_Player = e.getPlayer();
 		this.WritePlayerJoined(l_Player, this.vPlayersListFilePath);
+		
+		vPlayerProperties.put(l_Player, new PlayerProperties());
 	}
 	
 	@EventHandler
@@ -118,6 +135,7 @@ public class PlayerManager implements Listener {
 		Player l_Player = e.getPlayer();
 		ServerManager.ResetScoreboard(l_Player);
 		this.WritePlayerQuit(l_Player, this.vPlayersListFilePath);
+		vPlayerProperties.remove(l_Player);
 	}
 	
 	@EventHandler
@@ -130,9 +148,15 @@ public class PlayerManager implements Listener {
 	
 	@EventHandler
 	public void onPlayerMoveEvent(PlayerMoveEvent e) {
-		ServerManager.getPlayerMovement().put(e.getPlayer(), new Timestamp(new Date().getTime()));
+		Player l_Player = e.getPlayer();
+		Timestamp now = new Timestamp(new Date().getTime());
+		
+		PlayerProperties l_CurrentProperties = vPlayerProperties.get(l_Player); 
+		if(l_CurrentProperties != null) {
+			vPlayerProperties.get(l_Player).setAfk(false);
+			vPlayerProperties.get(l_Player).setLastMoveTimestamp(now);
+		}
 	}
-	
 	
 	// Add the player name to the playerListFilePath
 	private void WritePlayerJoined(Player player, String playersListFilePath) {
