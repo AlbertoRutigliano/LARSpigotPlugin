@@ -4,19 +4,27 @@ public enum ConfigProperties {
 	
 	SERVER_TEST_PORT("0"), SECONDS_TO_AFK("30");
 	
-	private String prop;
+	private String value;
 	
     private ConfigProperties(String prop) {
-        this.prop = prop;
+        this.value = prop;
     }
    
-    @Override
-    public String toString(){
-        return this.name()+": "+this.prop;
+    public String getValue() {
+		return value;
+	}
+
+	public void setValue(String value) {
+		this.value = value;
+	}
+
+	public boolean isEqual(String value) { 
+        return this.value.equalsIgnoreCase(value);
     }
-    
-    public boolean isEqual(String value) { 
-        return this.prop.equalsIgnoreCase(value);
+	
+	@Override
+    public String toString(){
+        return this.name() + ": " + this.value;
     }
     
 }

@@ -1,10 +1,5 @@
 package plugin.spigot.defaulpackage;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.LinkOption;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -34,8 +29,9 @@ public class CoordsCommand implements TabExecutor {
 				switch(args.length)
 				{
 					case 0:	// No arguments specified, show saved coordinates
+						sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
 						for (CustomLocation cl : FileManager.readCoordsFromFile()) {
-							if (!cl.isHidden()) {
+							if (!cl.isHidden()) {	
 								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
 							}
 						}
@@ -43,6 +39,7 @@ public class CoordsCommand implements TabExecutor {
 					case 1:
 						if(ALL.equalsIgnoreCase(args[0]))
 						{
+							sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
 							for (CustomLocation cl : FileManager.readCoordsFromFile()) {
 								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " 
 										+ (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ()
@@ -57,6 +54,16 @@ public class CoordsCommand implements TabExecutor {
 								l_Player.sendMessage("Coordinate " + args[1] + " rimosse!");
 							} else {
 								l_Player.sendMessage("Coordinate " + args[1] + " non trovate.");
+							}
+						}
+						
+						if(GET.equalsIgnoreCase(args[0]))
+						{
+							sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
+							for (CustomLocation cl : FileManager.readCoordsFromFile()) {
+								if (cl.getName().equalsIgnoreCase(args[1])) {	
+									sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
+								}
 							}
 						}
 						
@@ -98,29 +105,26 @@ public class CoordsCommand implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
 		
-		String[] COMMANDS = {ADD, REMOVE, ALL};
+		String[] ALLOWED_COMMANDS = {ADD, REMOVE, ALL, GET};
 		
-		final List<String> completions = new ArrayList<>();
-		
+		List<String> completions = new ArrayList<>();
 		List<String> hintLocations = new ArrayList<>();
+		
 		for(CustomLocation cl : FileManager.readCoordsFromFile()) {
 			hintLocations.add(cl.getName());
 		}
 		
 		if (args.length == 1) {
-			completions.clear();
-			StringUtil.copyPartialMatches(args[0], Arrays.asList(COMMANDS), completions);
+			StringUtil.copyPartialMatches(args[0], Arrays.asList(ALLOWED_COMMANDS), completions);
 			return completions;
 		} 
 		
-		if (REMOVE.equalsIgnoreCase((args[0]))) {
-			completions.clear();
+		if (REMOVE.equalsIgnoreCase((args[0])) || GET.equalsIgnoreCase(args[0])) {
 			StringUtil.copyPartialMatches(args[1], hintLocations, completions);
 			return completions;
 		}
 		
 		if (ADD.equalsIgnoreCase(args[0]) && args[1] != null && args.length == 3) {
-			completions.clear();
 			StringUtil.copyPartialMatches(args[2], Arrays.asList(HIDDEN), completions);
 			return completions;
 		}

@@ -1,6 +1,7 @@
 package plugin.spigot.defaulpackage;
 
 import java.sql.Timestamp;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -59,7 +60,7 @@ public class ServerManager {
 		objective.setDisplaySlot(DisplaySlot.SIDEBAR);
 		
 		if (Bukkit.getPort() == getTestServerPort()) {
-			objective.getScore("Server di TEST").setScore(0);
+			objective.getScore("Server di TEST").setScore(ConfigManager.GetCustomConfig().getInt(ConfigProperties.SERVER_TEST_PORT.name()));
 		}
 		else
 		{
@@ -70,11 +71,10 @@ public class ServerManager {
 			public void run() {
 				for (Player p : Main.MyServer.getOnlinePlayers()) {
 					ResetScoreboard(p);
-					
 					if (playerMovement.get(p) != null) {
 						Timestamp now = new Timestamp(new Date().getTime());
 						int seconds = (int) ((now.getTime() - playerMovement.get(p).getTime()) / 1000) % 60 ;
-						if (seconds > ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_AFK.name())) {
+						if (seconds > ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_AFK.name()) && !p.isSleeping()) {
 							objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GRAY + " afk").setScore((int) p.getHealth()); 										
 						} else {
 							objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GREEN + (p.isSleeping() ? " zZz" : ""))
