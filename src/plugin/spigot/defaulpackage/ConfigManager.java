@@ -21,8 +21,8 @@ public class ConfigManager {
 				vCustomConfigFile.createNewFile();
 				
 				//Default values
-				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), "serverTestPort: 0");
-				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), "secondsToAfk: 30");
+				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.SERVER_TEST_PORT.toString());
+				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.SECONDS_TO_AFK.toString());
             } catch (IOException e) {
 				e.printStackTrace();
 			}

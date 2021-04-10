@@ -30,7 +30,7 @@ public class Main extends JavaPlugin implements Listener {
 		
 		this.getCommand(PLAYERPOS).setExecutor(new PlayerposCommand());
 
-		ServerManager.setTestServerPort(ConfigManager.GetCustomConfig().getInt("serverTestPort"));
+		ServerManager.setTestServerPort(ConfigManager.GetCustomConfig().getInt(ConfigProperties.SERVER_TEST_PORT.name()));
 		
 		ServerManager.InitScoreboard();
 

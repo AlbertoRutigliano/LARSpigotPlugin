@@ -74,7 +74,7 @@ public class ServerManager {
 					if (playerMovement.get(p) != null) {
 						Timestamp now = new Timestamp(new Date().getTime());
 						int seconds = (int) ((now.getTime() - playerMovement.get(p).getTime()) / 1000) % 60 ;
-						if (seconds > ConfigManager.GetCustomConfig().getInt("secondsToAfk")) {
+						if (seconds > ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_AFK.name())) {
 							objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GRAY + " afk").setScore((int) p.getHealth()); 										
 						} else {
 							objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GREEN + (p.isSleeping() ? " zZz" : ""))
