@@ -1,7 +1,10 @@
 package plugin.spigot.defaulpackage;
 
+import java.sql.Time;
+import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Random;
 
 import org.apache.commons.lang.NullArgumentException;
@@ -21,6 +24,7 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerKickEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 
 import net.md_5.bungee.api.ChatColor;
 
@@ -28,6 +32,7 @@ public class PlayerManager implements Listener {
 	
 	private String vPlayersListFilePath;
 	private String vKickedPlayersFilePath;
+	
 	
 	public PlayerManager(String playerListFilePath, String kickedPlayersFilePath)
 	{
@@ -121,6 +126,11 @@ public class PlayerManager implements Listener {
 		Player l_Player = e.getPlayer();
 		String l_KickReason = e.getReason();
 		this.WritePlayerKicked(l_Player, l_KickReason, this.vKickedPlayersFilePath);
+	}
+	
+	@EventHandler
+	public void onPlayerMoveEvent(PlayerMoveEvent e) {
+		ServerManager.getPlayerMovement().put(e.getPlayer(), new Timestamp(new Date().getTime()));
 	}
 	
 	

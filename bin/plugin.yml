@@ -1,7 +1,7 @@
-api:  MySpigotPlugin
+api: MySpigotPluginAPI
 name: MySpigotPlugin
 main: plugin.spigot.defaulpackage.Main
-version: "3.0"
+version: "3.1"
 api-version: 1.16
 author: lucaacquafredda
 commands: 

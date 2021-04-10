@@ -7,40 +7,37 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
  
 public class ConfigManager {
-	private File vCustomConfigFile;
-    private FileConfiguration vCustomConfig;
+	private static File vCustomConfigFile;
+    private static FileConfiguration vCustomConfig;
  
-	public ConfigManager()
-	{
-		this.CreateCustomConfig();
-	}
-	
+    
 	//Create config file if doesn't exist and populate it with base configuration
-	private void CreateCustomConfig() {
-        this.vCustomConfigFile = new File("./plugins/"+Main.getPlugin(Main.class).getName()+"/config.yml");
+	public static void CreateCustomConfig() {
+        vCustomConfigFile = new File("./plugins/"+Main.getPlugin(Main.class).getName()+"/config.yml");
         
         if (!vCustomConfigFile.exists()) {
             vCustomConfigFile.getParentFile().mkdirs();
             try {
-				this.vCustomConfigFile.createNewFile();
+				vCustomConfigFile.createNewFile();
 				
 				//Default values
-				FileManager.AppendStringOnFile(this.vCustomConfigFile.getPath(), "serverTestPort: 0");
-			} catch (IOException e) {
+				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), "serverTestPort: 0");
+				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), "secondsToAfk: 30");
+            } catch (IOException e) {
 				e.printStackTrace();
 			}
         }
 
-        this.vCustomConfig= new YamlConfiguration();
+        vCustomConfig= new YamlConfiguration();
         try {
-        	this.vCustomConfig.load(vCustomConfigFile);
+        	vCustomConfig.load(vCustomConfigFile);
         } catch (IOException | InvalidConfigurationException e) {
         	e.printStackTrace();
         }
     }
 	
-	public FileConfiguration GetCustomConfig()
+	public static FileConfiguration GetCustomConfig()
 	{
-        return this.vCustomConfig;
+        return vCustomConfig;
     }
 }

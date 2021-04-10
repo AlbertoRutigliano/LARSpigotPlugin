@@ -1,5 +1,10 @@
 package plugin.spigot.defaulpackage;
 
+import java.sql.Timestamp;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.HashSet;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -13,6 +18,17 @@ public class ServerManager {
 	private static ScoreboardManager vScoreboardManager;
     private static Scoreboard vScoreboard;
     private static int vTestServerPort;
+    private static HashMap<Player, Timestamp> playerMovement = new HashMap<>();
+    
+    
+    
+	public static HashMap<Player, Timestamp> getPlayerMovement() {
+		return playerMovement;
+	}
+
+	public static void setPlayerMovement(HashMap<Player, Timestamp> playerMovement) {
+		ServerManager.playerMovement = playerMovement;
+	}
 
 	public static int getTestServerPort() {
 		return vTestServerPort;
@@ -54,20 +70,37 @@ public class ServerManager {
 			public void run() {
 				for (Player p : Main.MyServer.getOnlinePlayers()) {
 					ResetScoreboard(p);
-					objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GREEN + (p.isSleeping() ? " zZz" : ""))
-						.setScore((int) p.getHealth()); 										
-					p.setScoreboard(vScoreboard);
+					
+					if (playerMovement.get(p) != null) {
+						Timestamp now = new Timestamp(new Date().getTime());
+						int seconds = (int) ((now.getTime() - playerMovement.get(p).getTime()) / 1000) % 60 ;
+						if (seconds > ConfigManager.GetCustomConfig().getInt("secondsToAfk")) {
+							objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GRAY + " afk").setScore((int) p.getHealth()); 										
+						} else {
+							objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GREEN + (p.isSleeping() ? " zZz" : ""))
+							.setScore((int) p.getHealth()); 		
+						}
+					} else {
+						objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GRAY + " afk").setScore((int) p.getHealth()); 										
+					}
 				}
 				
 				
 			}
 		}, 10, 10);
+		
+		for (Player p : Main.MyServer.getOnlinePlayers()) {
+			p.setScoreboard(vScoreboard);
+		}
+	
 	}
+	
 	
 	// Reset Scoreboard
 	public static void ResetScoreboard(Player player) {
 		vScoreboard.resetScores(ChatColor.GOLD + player.getName() + ChatColor.GREEN);
 		vScoreboard.resetScores(ChatColor.GOLD + player.getName() + ChatColor.GREEN + " zZz");
+		vScoreboard.resetScores(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " afk");
 	}
 	
 	// Removes Scoreboard

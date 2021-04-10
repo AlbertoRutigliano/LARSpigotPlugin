@@ -5,21 +5,21 @@ import static plugin.spigot.defaulpackage.Commands.*;
 import org.bukkit.event.Listener;
 import org.bukkit.Server;
 
-public class Main extends JavaPlugin implements Listener{
+public class Main extends JavaPlugin implements Listener {
 	public static Server MyServer;
 	
 	private String vPlayersListFilePath;
 	private String vKickedPlayersFilePath;
 	
-	private ConfigManager vConfigManager;
 	private PlayerManager vPlayerManager;
 
 	@Override
 	public void onEnable() {
+		ConfigManager.CreateCustomConfig();
 		MyServer = getServer();
+
 		this.vPlayersListFilePath = "onlinePlayers.txt";
 		this.vKickedPlayersFilePath = "kickedPlayers.txt";
-		this.vConfigManager = new ConfigManager();
 		this.vPlayerManager = new PlayerManager(this.vPlayersListFilePath, this.vKickedPlayersFilePath);
 		
 		MyServer.getPluginManager().registerEvents(this, this);
@@ -30,9 +30,10 @@ public class Main extends JavaPlugin implements Listener{
 		
 		this.getCommand(PLAYERPOS).setExecutor(new PlayerposCommand());
 
-		ServerManager.setTestServerPort(this.vConfigManager.GetCustomConfig().getInt("serverTestPort"));
+		ServerManager.setTestServerPort(ConfigManager.GetCustomConfig().getInt("serverTestPort"));
 		
 		ServerManager.InitScoreboard();
+
 	}
 	
 	@Override
