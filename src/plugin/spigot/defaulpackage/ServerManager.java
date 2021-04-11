@@ -1,11 +1,7 @@
 package plugin.spigot.defaulpackage;
 
 import java.sql.Timestamp;
-import java.util.Collections;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.HashSet;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -19,17 +15,6 @@ public class ServerManager {
 	private static ScoreboardManager vScoreboardManager;
     private static Scoreboard vScoreboard;
     private static int vTestServerPort;
-    private static HashMap<Player, Timestamp> playerMovement = new HashMap<>();
-    
-    
-    
-	public static HashMap<Player, Timestamp> getPlayerMovement() {
-		return playerMovement;
-	}
-
-	public static void setPlayerMovement(HashMap<Player, Timestamp> playerMovement) {
-		ServerManager.playerMovement = playerMovement;
-	}
 
 	public static int getTestServerPort() {
 		return vTestServerPort;
@@ -71,9 +56,9 @@ public class ServerManager {
 			public void run() {
 				for (Player p : Main.MyServer.getOnlinePlayers()) {
 					ResetScoreboard(p);
-					if (playerMovement.get(p) != null) {
+					if (PlayerManager.vPlayerProperties.get(p) != null) {
 						Timestamp now = new Timestamp(new Date().getTime());
-						int seconds = (int) ((now.getTime() - playerMovement.get(p).getTime()) / 1000) % 60 ;
+						int seconds = (int) ((now.getTime() - PlayerManager.vPlayerProperties.get(p).getLastMoveTimestamp().getTime()) / 1000) % 60 ;
 						if (seconds > ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_AFK.name()) && !p.isSleeping()) {
 							objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GRAY + " afk").setScore((int) p.getHealth()); 										
 						} else {
@@ -84,15 +69,11 @@ public class ServerManager {
 						objective.getScore(ChatColor.GOLD + p.getName() + ChatColor.GRAY + " afk").setScore((int) p.getHealth()); 										
 					}
 				}
-				
-				
+				for (Player p : Main.MyServer.getOnlinePlayers()) {
+					p.setScoreboard(vScoreboard);
+				}
 			}
 		}, 10, 10);
-		
-		for (Player p : Main.MyServer.getOnlinePlayers()) {
-			p.setScoreboard(vScoreboard);
-		}
-	
 	}
 	
 	
