@@ -33,12 +33,14 @@ public class PlayerposCommand implements TabExecutor {
 						{
 							l_Result = this.ShowPlayerPosition(l_Player, p);
 						}
+						sender.sendMessage(ChatColor.BLUE + "===========================");
 						
 						break;
 					case 1:	// 1 argument specified, show specified player coordinates
 						Player l_SelectedPlayer = Main.MyServer.getPlayer(args[0]);
 						sender.sendMessage(ChatColor.BLUE + "=== Posizione in tempo reale ===");
 						l_Result = this.ShowPlayerPosition(l_Player, l_SelectedPlayer);
+						sender.sendMessage(ChatColor.BLUE + "===========================");
 						
 						break;
 					default:

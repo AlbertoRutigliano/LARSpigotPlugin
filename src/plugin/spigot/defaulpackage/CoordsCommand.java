@@ -35,6 +35,7 @@ public class CoordsCommand implements TabExecutor {
 								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
 							}
 						}
+						sender.sendMessage(ChatColor.BLUE + "=============================");
 						break;
 					case 1:
 						if(ALL.equalsIgnoreCase(args[0]))
@@ -45,6 +46,7 @@ public class CoordsCommand implements TabExecutor {
 										+ (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ()
 										+ (cl.isHidden() ? ChatColor.GRAY + " hidden" : ""));
 							}
+							sender.sendMessage(ChatColor.BLUE + "=============================");
 						}
 						break;
 					case 2:	// 2 arguments specified, used only to remove the specified coordinate name. Syntax: remove CoordinateName
@@ -65,6 +67,7 @@ public class CoordsCommand implements TabExecutor {
 									sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
 								}
 							}
+							sender.sendMessage(ChatColor.BLUE + "=============================");
 						}
 						
 						if(ADD.equalsIgnoreCase(args[0]))
