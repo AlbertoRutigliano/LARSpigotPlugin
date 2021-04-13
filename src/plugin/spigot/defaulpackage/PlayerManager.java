@@ -242,37 +242,17 @@ public class PlayerManager implements Listener {
 		    	}
 				
 		    	
-				chestInventoryCopy.sort(new Comparator<ItemStack>() {
-		    	    public int compare(ItemStack i1, ItemStack i2)
-		    	    {
-		    	    	if (i1.getType().equals(Material.AIR)) return 1;
-		    	    	if (i2.getType().equals(Material.AIR)) return -1;
-		    	        return i1.getType().compareTo(i2.getType());
-		    	    }
-		    	});
+				chestInventoryCopy.sort(new ItemStackComparator(SortingType.SIMPLE_ASC));
 				
 				// Se già ordinato, inverti l'ordinamento
 				if (chestInventoryCopy.equals(chestInventory)) {
-					chestInventory.sort(new Comparator<ItemStack>() {
-			    	    public int compare(ItemStack i1, ItemStack i2)
-			    	    {
-			    	    	if (i1.getType().equals(Material.AIR)) return 1;
-			    	    	if (i2.getType().equals(Material.AIR)) return -1;
-			    	        return -1 * i1.getType().compareTo(i2.getType());
-			    	    }
-			    	});
+					chestInventory.sort(new ItemStackComparator(SortingType.SIMPLE_DESC));
 				} else {
-					chestInventory.sort(new Comparator<ItemStack>() {
-			    	    public int compare(ItemStack i1, ItemStack i2)
-			    	    {
-			    	    	if (i1.getType().equals(Material.AIR)) return 1;
-			    	    	if (i2.getType().equals(Material.AIR)) return -1;
-			    	        return i1.getType().compareTo(i2.getType());
-			    	    }
-			    	});
+					chestInventory.sort(new ItemStackComparator(SortingType.SIMPLE_ASC));
 				}
 				
 
+				// Prepara e mostra l'inventario aggiornato con l'ordinamento
 		    	ItemStack[] sortedInventory = new ItemStack[chestInventory.size()];
 		    	for(int i = 0; i < sortedInventory.length ; i++) {
 		    		sortedInventory[i] = chestInventory.get(i);
