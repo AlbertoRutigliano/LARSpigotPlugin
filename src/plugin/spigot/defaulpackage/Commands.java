@@ -9,4 +9,5 @@ public interface Commands {
 	final static String HIDDEN = "hidden";
 	final static String COORDS = "coords";
 	final static String PLAYERPOS = "playerpos";
+	final static String JOKE = "joke";
 }

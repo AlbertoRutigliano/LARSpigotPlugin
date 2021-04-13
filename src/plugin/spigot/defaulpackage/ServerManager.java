@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
 import org.bukkit.scoreboard.Objective;
@@ -34,6 +35,18 @@ public class ServerManager {
 	// Send message to all players
 	public static void SendMessageToAllPlayers(String message) {
 		Bukkit.broadcastMessage(message);
+	}
+	
+	// Send sound to all players
+	public static void SendSound(Sound sound) {
+		for(Player p : Main.MyServer.getOnlinePlayers()) {
+			p.playSound(p.getLocation(), sound, 1.0f, 1.0f);
+		}
+	}
+	
+	// Send sound to a single player
+	public static void SendSound(Sound sound, Player player) {
+		player.playSound(player.getLocation(), sound, 1.0f, 1.0f);
 	}
 	
 	// Initialize Scoreboard

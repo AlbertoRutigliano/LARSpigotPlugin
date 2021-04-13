@@ -29,6 +29,8 @@ public class Main extends JavaPlugin implements Listener {
 		this.getCommand(COORDS).setTabCompleter(new CoordsCommand());
 		
 		this.getCommand(PLAYERPOS).setExecutor(new PlayerposCommand());
+		
+		this.getCommand(JOKE).setExecutor(new JokeCommand());
 
 		ServerManager.setTestServerPort(ConfigManager.GetCustomConfig().getInt(ConfigProperties.SERVER_TEST_PORT.name()));
 
