@@ -23,6 +23,7 @@ import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
+import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
@@ -101,23 +102,23 @@ public class PlayerManager implements Listener {
 		Location toLocation = e.getTo();
 		
 		if (toLocation.getWorld().getName().equalsIgnoreCase("world_nether")) {
-			Bukkit.broadcastMessage(player.getName() + " è entrato nel Nether");
+			Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " è entrato nel " + ChatColor.DARK_RED + "Nether");
 		} else if (toLocation.getWorld().getName().equalsIgnoreCase("world")) {
-			Bukkit.broadcastMessage(player.getName() + " è tornato nel nostro Mondo");
+			Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " è tornato nell' " + ChatColor.DARK_GREEN + "OverWorld");
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerEnchant(EnchantItemEvent e) {
 		Entity player = e.getEnchanter();
-		Bukkit.broadcastMessage("Il bastardo " + player.getName() + " ha incantato un oggetto");
+		Bukkit.broadcastMessage("Il bastardo " + ChatColor.GOLD + player.getName() + ChatColor.GRAY + " ha incantato un oggetto");
 	}
 	
 	@EventHandler
 	public void onPlayerSleep(PlayerBedEnterEvent e) {
 		Entity player = e.getPlayer();
 		if (e.getBedEnterResult() == BedEnterResult.OK) {
-			Bukkit.broadcastMessage(player.getName() + " sta dormendo");
+			Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " sta dormendo");
 		}
 	}
 	
@@ -125,7 +126,7 @@ public class PlayerManager implements Listener {
 	public void onPlayerWakeUp(PlayerBedLeaveEvent e) {
 		Entity player = e.getPlayer();
 		if (ServerManager.IsDay() == false){
-			Bukkit.broadcastMessage(player.getName() + " bastardo si è alzato");			
+			Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " bastardo si è alzato");			
 		} else{
 			player.sendMessage("Buongiorno, ben svegliato");
 		}
@@ -135,7 +136,7 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player l_Player = e.getPlayer();
 		this.WritePlayerJoined(l_Player, this.vPlayersListFilePath);
-		
+		e.setJoinMessage(ChatColor.GOLD + l_Player.getName() + ChatColor.GRAY + " ha trasut");
 		vPlayerProperties.put(l_Player, new PlayerProperties());
 	}
 	
@@ -144,6 +145,7 @@ public class PlayerManager implements Listener {
 		Player l_Player = e.getPlayer();
 		ServerManager.ResetScoreboard(l_Player);
 		this.WritePlayerQuit(l_Player, this.vPlayersListFilePath);
+		e.setQuitMessage(ChatColor.GOLD + l_Player.getName() + ChatColor.GRAY + " è assut");
 		vPlayerProperties.remove(l_Player);
 	}
 	
@@ -251,6 +253,14 @@ public class PlayerManager implements Listener {
 			
 		}
 		
+	}
+	
+	@EventHandler
+    public void onChat(AsyncPlayerChatEvent event) {
+		 Player player = event.getPlayer();
+	     String message = event.getMessage();
+	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "§8: " + ChatColor.WHITE + message);
+	    
 	}
 	
 }
