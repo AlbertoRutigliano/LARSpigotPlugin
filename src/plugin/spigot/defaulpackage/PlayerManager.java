@@ -90,53 +90,52 @@ public class PlayerManager implements Listener {
 		    if (damager instanceof Player) {
 		        //Damage Causer is also a player
 		        Player damagerPlayer = (Player) damager;
-		        String l_Message = getRandomDamageText();
-		        taker.sendMessage(ChatColor.DARK_RED + damagerPlayer.getDisplayName() + ChatColor.WHITE + l_Message);
+		        taker.sendMessage(MSG.GET_DAMAGE.getMessage(damagerPlayer));
 		    }
 		}
 	}
 
 	@EventHandler
 	public void onPlayerWorldChange(PlayerPortalEvent e) {
-		Entity player = e.getPlayer();
+		Player player = e.getPlayer();
 		Location toLocation = e.getTo();
 		
 		if (toLocation.getWorld().getName().equalsIgnoreCase("world_nether")) {
-			Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " è entrato nel " + ChatColor.DARK_RED + "Nether");
+			Bukkit.broadcastMessage(MSG.IN_NETHER.getMessage(player));
 		} else if (toLocation.getWorld().getName().equalsIgnoreCase("world")) {
-			Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " è tornato nell' " + ChatColor.DARK_GREEN + "OverWorld");
+			Bukkit.broadcastMessage(MSG.IN_OVERWORLD.getMessage(player));
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerEnchant(EnchantItemEvent e) {
-		Entity player = e.getEnchanter();
-		Bukkit.broadcastMessage("Il bastardo " + ChatColor.GOLD + player.getName() + ChatColor.GRAY + " ha incantato un oggetto");
+		Player player = e.getEnchanter();
+		Bukkit.broadcastMessage(MSG.ENCHANTMENT.getMessage(player));
 	}
 	
 	@EventHandler
 	public void onPlayerSleep(PlayerBedEnterEvent e) {
-		Entity player = e.getPlayer();
+		Player player = e.getPlayer();
 		if (e.getBedEnterResult() == BedEnterResult.OK) {
-			Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " sta dormendo");
+			Bukkit.broadcastMessage(MSG.SLEEP.getMessage(player));
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerWakeUp(PlayerBedLeaveEvent e) {
-		Entity player = e.getPlayer();
+		Player player = e.getPlayer();
 		if (ServerManager.IsDay() == false){
-			Bukkit.broadcastMessage(ChatColor.GOLD + player.getName() + ChatColor.GRAY + " bastardo si è alzato");			
+			Bukkit.broadcastMessage(MSG.WAKE_UP.getMessage(player));			
 		} else{
-			player.sendMessage("Buongiorno, ben svegliato");
+			player.sendMessage(MSG.GOOD_MORNING.getMessage());
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player l_Player = e.getPlayer();
-		this.WritePlayerJoined(l_Player, this.vPlayersListFilePath);
-		e.setJoinMessage(ChatColor.GOLD + l_Player.getName() + ChatColor.GRAY + " ha trasut");
+		e.setJoinMessage(MSG.PLAYER_JOIN.getMessage(l_Player));
+		this.WritePlayerJoined(l_Player, this.vPlayersListFilePath);		
 		vPlayerProperties.put(l_Player, new PlayerProperties());
 	}
 	
@@ -144,8 +143,8 @@ public class PlayerManager implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		Player l_Player = e.getPlayer();
 		ServerManager.ResetScoreboard(l_Player);
-		this.WritePlayerQuit(l_Player, this.vPlayersListFilePath);
-		e.setQuitMessage(ChatColor.GOLD + l_Player.getName() + ChatColor.GRAY + " è assut");
+		e.setQuitMessage(MSG.PLAYER_LEFT.getMessage(l_Player));
+		this.WritePlayerQuit(l_Player, this.vPlayersListFilePath);		
 		vPlayerProperties.remove(l_Player);
 	}
 	
@@ -200,15 +199,6 @@ public class PlayerManager implements Listener {
 		FileManager.AppendStringOnFile(kickedPlayersFilePath, l_FileContent.toString());
 	}
 	
-	//Return random damage message
-	private String getRandomDamageText() {
-		String[] randomDamageTexts = {" ti ha inchiappettato.", " ti ha dato una botta.", " ti sta menando.", " ti ha fatto la bua.", " ha voglia di te."};
-		Random r = new Random();
-		int random = r.nextInt(randomDamageTexts.length);
-		return " " + randomDamageTexts[random];
-	}
-	
-
 	@EventHandler
     public void inventoryclick(InventoryClickEvent event){
 		if (event.getClick() == ClickType.MIDDLE) {
