@@ -2,7 +2,6 @@ package plugin.spigot.defaulpackage;
 
 import static plugin.spigot.defaulpackage.Commands.JOKE;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.bukkit.Sound;

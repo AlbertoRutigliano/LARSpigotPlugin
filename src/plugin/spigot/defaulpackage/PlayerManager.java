@@ -5,8 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.Random;
-
 import org.apache.commons.lang.NullArgumentException;
 
 import org.bukkit.Bukkit;
