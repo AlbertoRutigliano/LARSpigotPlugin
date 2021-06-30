@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
+
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -69,8 +71,18 @@ public class PlayerposCommand implements TabExecutor {
 		
 		String l_Coords = String.format("%d %d %d", l_X, l_Y, l_Z);
 		
-		sender.sendMessage(ChatColor.DARK_RED + requestedPlayer.getName() + ": " + ChatColor.WHITE + l_Coords + 
-				" ~ " + nearestLocation(requestedPlayer).getKey().getName() + " (" + (int) (double) nearestLocation(requestedPlayer).getValue()+ " blocchi)");
+		String nearestLocation = nearestLocation(requestedPlayer).getKey().getName();
+		StringBuilder msg = new StringBuilder()
+				.append(ChatColor.DARK_RED + requestedPlayer.getName() + ": " + ChatColor.WHITE + l_Coords + " ~ ");
+		
+		// IF in his house
+		if (nearestLocation.contains(requestedPlayer.getName())) {
+			msg.append("vicino casa sua");
+		} else {
+			msg.append("a " + (int) (double) nearestLocation(requestedPlayer).getValue()+ " blocchi da " + nearestLocation);
+		}
+		
+		sender.sendMessage(msg.toString());
 		return true;
 	}
 	
