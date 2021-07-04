@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map.Entry;
 
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -70,16 +69,17 @@ public class PlayerposCommand implements TabExecutor {
 		l_Z = (int)requestedPlayer.getLocation().getZ();
 		
 		String l_Coords = String.format("%d %d %d", l_X, l_Y, l_Z);
-		
 		String nearestLocation = nearestLocation(requestedPlayer).getKey().getName();
+		int distanceToLocation = (int) (double) nearestLocation(requestedPlayer).getValue();
+		
 		StringBuilder msg = new StringBuilder()
 				.append(ChatColor.DARK_RED + requestedPlayer.getName() + ": " + ChatColor.WHITE + l_Coords + " ~ ");
 		
 		// IF in his house
-		if (nearestLocation.contains(requestedPlayer.getName())) {
+		if (nearestLocation.toUpperCase().contains(requestedPlayer.getName().toUpperCase()) && distanceToLocation <= 100)  {
 			msg.append("vicino casa sua");
 		} else {
-			msg.append("a " + (int) (double) nearestLocation(requestedPlayer).getValue()+ " blocchi da " + nearestLocation);
+			msg.append("a " + distanceToLocation + " blocchi da " + nearestLocation);
 		}
 		
 		sender.sendMessage(msg.toString());
@@ -89,14 +89,14 @@ public class PlayerposCommand implements TabExecutor {
 	
 	private Entry<CustomLocation, Double> nearestLocation(Player player) {
 
-		CustomLocation playerCurrentLocation = new CustomLocation(player.getDisplayName(), player.getLocation().getX(),
-				player.getLocation().getY(), player.getLocation().getZ());
+		CustomLocation playerCurrentLocation = new CustomLocation(player.getDisplayName(), (int) player.getLocation().getX(),
+				(int) player.getLocation().getY(), (int) player.getLocation().getZ());
 		
-		ArrayList<CustomLocation> savedLocations = FileManager.readCoordsFromFile();
+		List<CustomLocation> savedLocations = FileManager.readAllCSVCoord();
 		
 		double distance = 999999999;
 		CustomLocation nearestLocation = null;
-		for (CustomLocation cl : savedLocations) {			
+		for (CustomLocation cl : savedLocations) {
 			if (playerCurrentLocation.calculateDistance(cl) < distance) {
 				distance = playerCurrentLocation.calculateDistance(cl);
 				nearestLocation = cl;

@@ -2,7 +2,7 @@ package plugin.spigot.defaulpackage;
 
 public enum ConfigProperties {
 	
-	SERVER_TEST_PORT("0"), SECONDS_TO_AFK("30");
+	SERVER_TEST_PORT("0"), SECONDS_TO_AFK("30"), COORDS_FILE("./coords.csv");
 	
 	private String value;
 	

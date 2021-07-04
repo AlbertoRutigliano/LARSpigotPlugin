@@ -10,9 +10,18 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVParser;
+import org.apache.commons.csv.CSVPrinter;
+import org.apache.commons.csv.CSVRecord;
+
+
 
 public class FileManager {
 
@@ -72,8 +81,9 @@ public class FileManager {
 	}
 	
 	
-	
+	@Deprecated
 	public static boolean writeCoordOnFile(CustomLocation cl) {
+		
         File f = new File("coordinateTEST.txt");
         ArrayList<CustomLocation> cls = new ArrayList<>();
         cls = readCoordsFromFile();
@@ -95,6 +105,59 @@ public class FileManager {
         }
 	}
 	
+	public static List<CustomLocation> readAllCSVCoord() {
+		List<CustomLocation> cls = new ArrayList<CustomLocation>();
+		try (
+				Reader reader = Files.newBufferedReader(Paths.get(ConfigProperties.COORDS_FILE.getValue()));
+				CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
+						.withHeader("NAME", "X", "Y", "Z", "HIDDEN")
+						.withFirstRecordAsHeader()
+						.withIgnoreHeaderCase()
+						.withTrim());
+				) {
+			for (CSVRecord csvRecord : csvParser) {
+				cls.add(new CustomLocation(
+						csvRecord.get("NAME"), 
+						Integer.parseInt(csvRecord.get("X")), 
+						Integer.parseInt(csvRecord.get("Y")), 
+						Integer.parseInt(csvRecord.get("Z")),
+						csvRecord.get("HIDDEN").equalsIgnoreCase("true") ? true : false
+						));
+			}
+		} catch (IOException e) {
+			System.out.print("Problemi nella lettura del file");
+		}
+		return cls;
+	}
+
+	public static boolean saveCSVCoord(CustomLocation cl){
+		List<CustomLocation> cls = readAllCSVCoord();
+		cls.add(cl);	
+		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(ConfigProperties.COORDS_FILE.getValue()));
+				CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
+						.withHeader("NAME", "X", "Y", "Z", "HIDDEN")
+						);
+				) {
+			for(CustomLocation singleCl : cls) {
+				csvPrinter.printRecord(
+						singleCl.getName(), 
+						singleCl.getX(), 
+						singleCl.getY(), 
+						singleCl.getZ(), 
+						singleCl.isHidden());
+
+			}
+			csvPrinter.flush();         
+			return true;
+		} catch (IOException e) {
+			System.out.print("Problemi nella scrittura del file");
+			return false;
+		}
+	}
+
+	
+	
+	@Deprecated
 	public static boolean writeCoordOnFile(ArrayList<CustomLocation> cls) {
         File f = new File("coordinateTEST.txt");
 
@@ -115,10 +178,10 @@ public class FileManager {
         }
 	}
 	
-	public static boolean removeCoordFromFile(String locationName) {
+	public static boolean removeCSVCoord(String locationName) {
 		boolean found = false;
 		ArrayList<CustomLocation> updatedSavedLocations = new ArrayList<CustomLocation>();
-		for(CustomLocation cl : readCoordsFromFile()) {
+		for(CustomLocation cl : readAllCSVCoord()) {
 			if (!cl.getName().equalsIgnoreCase(locationName)) {
 				updatedSavedLocations.add(cl);
 			} else {
@@ -131,7 +194,7 @@ public class FileManager {
 		return found;
 	}
 	
-	
+	@Deprecated
 	public static ArrayList<CustomLocation> readCoordsFromFile() {
 		ArrayList<CustomLocation> cls = new ArrayList<>();
 		 File f = new File("coordinateTEST.txt");

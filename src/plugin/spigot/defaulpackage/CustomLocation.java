@@ -2,16 +2,14 @@ package plugin.spigot.defaulpackage;
 
 import java.io.Serializable;
 
-//TODO Alberto, analizzare, decidere, sistemare
-
 public class CustomLocation implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private double x, y, z;
+	private int x, y, z;
 	private String name;
 	private boolean hidden = false;
 	
-	public CustomLocation(String name, double x, double y, double z) {
+	public CustomLocation(String name, int x, int y, int z) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -19,7 +17,7 @@ public class CustomLocation implements Serializable {
 		this.hidden = false;
 	}
 	
-	public CustomLocation(String name, double x, double y, double z, boolean hidden) {
+	public CustomLocation(String name, int x, int y, int z, boolean hidden) {
 		this.name = name;
 		this.x = x;
 		this.y = y;
@@ -27,22 +25,22 @@ public class CustomLocation implements Serializable {
 		this.hidden = hidden;
 	}
 	
-	public double getX() {
+	public int getX() {
 		return x;
 	}
-	public void setX(double x) {
+	public void setX(int x) {
 		this.x = x;
 	}
-	public double getY() {
+	public int getY() {
 		return y;
 	}
-	public void setY(double y) {
+	public void setY(int y) {
 		this.y = y;
 	}
-	public double getZ() {
+	public int getZ() {
 		return z;
 	}
-	public void setZ(double z) {
+	public void setZ(int z) {
 		this.z = z;
 	}
 	public String getName() {
@@ -57,7 +55,6 @@ public class CustomLocation implements Serializable {
 		return name + " " + x + " " + y + " " + z;
 	} 
 	
-	
 	public boolean isHidden() {
 		return hidden;
 	}
@@ -68,8 +65,8 @@ public class CustomLocation implements Serializable {
 
 	public double calculateDistance(CustomLocation xz2) {
         
-	    double ac = Math.abs(xz2.getZ() - this.getZ());
-	    double cb = Math.abs(xz2.getX() - this.getX());
+	    int ac = Math.abs(xz2.getZ() - this.getZ());
+	    int cb = Math.abs(xz2.getX() - this.getX());
 	        
 	    return Math.hypot(ac, cb);
 	}
