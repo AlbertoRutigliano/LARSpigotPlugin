@@ -18,6 +18,10 @@ public class ItemStackComparator implements Comparator<ItemStack> {
 		this.sortingType = sortingType;
 	}
 	
+	public void setSortingType(SortingType sortingType) {
+		this.sortingType = sortingType;
+	}
+	
 	
 	@Override
 	public int compare(ItemStack i1, ItemStack i2) {
