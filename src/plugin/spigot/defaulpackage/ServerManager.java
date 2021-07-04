@@ -85,10 +85,23 @@ public class ServerManager {
 				for (Player p : Main.MyServer.getOnlinePlayers()) {
 					p.setScoreboard(vScoreboard);
 				}
+				
+				if (isMidnight()) {
+					ServerManager.SendSound(Sound.BLOCK_BELL_USE);
+				}
 			}
 		}, 10, 10);
 	}
 	
+	private static boolean isMidnight() {
+	    long time = Main.MyServer.getWorld("world").getTime();
+
+	    if(time > 13000 && time < 13010) {
+	        return true;
+	    } else {
+	        return false;
+	    }
+	}
 	
 	// Reset Scoreboard
 	public static void ResetScoreboard(Player player) {
