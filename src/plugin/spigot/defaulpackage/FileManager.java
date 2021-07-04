@@ -14,6 +14,8 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
@@ -105,7 +107,7 @@ public class FileManager {
         }
 	}
 	
-	public static List<CustomLocation> readAllCSVCoord() {
+	public static List<CustomLocation> readAllCSVCoords() {
 		List<CustomLocation> cls = new ArrayList<CustomLocation>();
 		try (
 				Reader reader = Files.newBufferedReader(Paths.get(ConfigProperties.COORDS_FILE.getValue()));
@@ -115,6 +117,7 @@ public class FileManager {
 						.withIgnoreHeaderCase()
 						.withTrim());
 				) {
+
 			for (CSVRecord csvRecord : csvParser) {
 				cls.add(new CustomLocation(
 						csvRecord.get("NAME"), 
@@ -124,6 +127,14 @@ public class FileManager {
 						csvRecord.get("HIDDEN").equalsIgnoreCase("true") ? true : false
 						));
 			}
+
+			// Sort in alphabetic order (by location Name field)
+			Collections.sort(cls, new Comparator<CustomLocation>() {
+				@Override
+				public int compare(CustomLocation cl1, CustomLocation cl2) {
+					return cl1.getName().compareToIgnoreCase(cl2.getName());
+				}
+			});
 		} catch (IOException e) {
 			System.out.print("Problemi nella lettura del file");
 		}
@@ -131,7 +142,7 @@ public class FileManager {
 	}
 
 	public static boolean saveCSVCoord(CustomLocation cl){
-		List<CustomLocation> cls = readAllCSVCoord();
+		List<CustomLocation> cls = readAllCSVCoords();
 		cls.add(cl);	
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(ConfigProperties.COORDS_FILE.getValue()));
 				CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
@@ -181,7 +192,7 @@ public class FileManager {
 	public static boolean removeCSVCoord(String locationName) {
 		boolean found = false;
 		ArrayList<CustomLocation> updatedSavedLocations = new ArrayList<CustomLocation>();
-		for(CustomLocation cl : readAllCSVCoord()) {
+		for(CustomLocation cl : readAllCSVCoords()) {
 			if (!cl.getName().equalsIgnoreCase(locationName)) {
 				updatedSavedLocations.add(cl);
 			} else {

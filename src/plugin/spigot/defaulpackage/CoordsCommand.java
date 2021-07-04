@@ -32,7 +32,7 @@ public class CoordsCommand implements TabExecutor {
 				{
 					case 0:	// No arguments specified, show saved coordinates
 						sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
-						for (CustomLocation cl : FileManager.readAllCSVCoord()) {
+						for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 							if (!cl.isHidden()) {	
 								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
 							}
@@ -43,7 +43,7 @@ public class CoordsCommand implements TabExecutor {
 						if(ALL.equalsIgnoreCase(args[0]))
 						{
 							sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
-							for (CustomLocation cl : FileManager.readAllCSVCoord()) {
+							for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " 
 										+ cl.getX() + " " + cl.getY() + " " + cl.getZ()
 										+ (cl.isHidden() ? ChatColor.GRAY + " hidden" : ""));
@@ -64,7 +64,7 @@ public class CoordsCommand implements TabExecutor {
 						if(GET.equalsIgnoreCase(args[0]))
 						{
 							sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
-							for (CustomLocation cl : FileManager.readAllCSVCoord()) {
+							for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 								if (cl.getName().equalsIgnoreCase(args[1])) {	
 									sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + cl.getX() + " " + cl.getY() + " " + cl.getZ());
 								}
@@ -115,7 +115,7 @@ public class CoordsCommand implements TabExecutor {
 		List<String> completions = new ArrayList<>();
 		List<String> hintLocations = new ArrayList<>();
 		
-		for(CustomLocation cl : FileManager.readAllCSVCoord()) {
+		for(CustomLocation cl : FileManager.readAllCSVCoords()) {
 			hintLocations.add(cl.getName());
 		}
 		

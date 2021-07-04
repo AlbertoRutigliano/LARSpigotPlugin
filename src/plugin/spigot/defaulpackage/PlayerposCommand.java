@@ -92,7 +92,7 @@ public class PlayerposCommand implements TabExecutor {
 		CustomLocation playerCurrentLocation = new CustomLocation(player.getDisplayName(), (int) player.getLocation().getX(),
 				(int) player.getLocation().getY(), (int) player.getLocation().getZ());
 		
-		List<CustomLocation> savedLocations = FileManager.readAllCSVCoord();
+		List<CustomLocation> savedLocations = FileManager.readAllCSVCoords();
 		
 		double distance = 999999999;
 		CustomLocation nearestLocation = null;
