@@ -89,8 +89,10 @@ public class ServerManager {
 				if (isMidnight()) {
 					ServerManager.SendSound(Sound.BLOCK_BELL_USE);
 				}
+								
 			}
 		}, 10, 10);
+		
 	}
 	
 	private static boolean isMidnight() {
@@ -101,6 +103,14 @@ public class ServerManager {
 	    } else {
 	        return false;
 	    }
+	}
+	
+	public static void InitRandomQuote() {
+	    Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
+			public void run() {
+				 ServerManager.SendMessageToAllPlayers(MSG.QUOTE.getMessage());
+			}
+		}, 20L * 60, 20L * 300); // Every 5 minutes
 	}
 	
 	// Reset Scoreboard

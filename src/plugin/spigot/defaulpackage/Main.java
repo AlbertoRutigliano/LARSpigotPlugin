@@ -35,6 +35,8 @@ public class Main extends JavaPlugin implements Listener {
 		ServerManager.setTestServerPort(ConfigManager.GetCustomConfig().getInt(ConfigProperties.SERVER_TEST_PORT.name()));
 
 		ServerManager.InitScoreboard();
+		
+		ServerManager.InitRandomQuote();
 
 	}
 	

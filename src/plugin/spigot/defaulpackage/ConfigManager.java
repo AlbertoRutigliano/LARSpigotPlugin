@@ -23,6 +23,7 @@ public class ConfigManager {
 				//Default values
 				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.SERVER_TEST_PORT.toString());
 				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.SECONDS_TO_AFK.toString());
+				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.COORDS_FILE.toString());
             } catch (IOException e) {
 				e.printStackTrace();
 			}

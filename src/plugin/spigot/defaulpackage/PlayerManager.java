@@ -19,16 +19,21 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryEvent;
+import org.bukkit.event.inventory.InventoryInteractEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
+import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.inventory.InventoryView;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerKickEvent;
@@ -116,7 +121,11 @@ public class PlayerManager implements Listener {
 	public void onPlayerSleep(PlayerBedEnterEvent e) {
 		Player player = e.getPlayer();
 		if (e.getBedEnterResult() == BedEnterResult.OK) {
-			Bukkit.broadcastMessage(MSG.SLEEP.getMessage(player));
+			Bukkit.broadcastMessage(MSG.SLEEP.getMessage(player) + ChatColor.GREEN + " zZz");
+		} else {
+			if (e.getBedEnterResult() == BedEnterResult.NOT_SAFE) {
+				Bukkit.broadcastMessage(MSG.CANT_SLEEP.getMessage(player));
+			}
 		}
 	}
 	
@@ -167,14 +176,13 @@ public class PlayerManager implements Listener {
 		}
 	}
 	
+	
 	@EventHandler
     public void inventoryclick(InventoryClickEvent event){
-		if (event.getClick() == ClickType.MIDDLE) {
-
+		if (event.getClick().equals(ClickType.SWAP_OFFHAND)) {
 			InventoryType inventoryType = event.getView().getType();
 			
 			if (inventoryType.equals(InventoryType.CHEST) || inventoryType.equals(InventoryType.BARREL) || inventoryType.equals(InventoryType.ENDER_CHEST) ) {
-				
 				Player player = (Player) event.getWhoClicked();
 				Inventory chest = event.getView().getTopInventory();
 			
