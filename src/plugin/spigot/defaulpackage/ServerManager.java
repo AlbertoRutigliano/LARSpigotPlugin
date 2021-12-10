@@ -1,6 +1,7 @@
 package plugin.spigot.defaulpackage;
 
 import java.sql.Timestamp;
+import java.util.Collection;
 import java.util.Date;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -25,18 +26,15 @@ public class ServerManager {
 		ServerManager.vTestServerPort = vTestServerPort;
 	}
     
-	// Return true if is day else false
-	public static boolean IsDay() {
-	    long l_Time = Main.MyServer.getWorld("world").getTime() % 24000;
-
-	    return l_Time < 12300 || l_Time > 23850;
+	public static Collection<? extends Player> getOnlinePlayers() {
+		return Bukkit.getOnlinePlayers();
 	}
 	
 	// Send message to all players
 	public static void SendMessageToAllPlayers(String message) {
 		Bukkit.broadcastMessage(message);
 	}
-	
+		
 	// Send sound to all players
 	public static void SendSound(Sound sound) {
 		for(Player p : Main.MyServer.getOnlinePlayers()) {
@@ -97,18 +95,20 @@ public class ServerManager {
 	
 	private static boolean isMidnight() {
 	    long time = Main.MyServer.getWorld("world").getTime();
-
-	    if(time > 13000 && time < 13010) {
-	        return true;
-	    } else {
-	        return false;
-	    }
+	    return time > 13000 && time < 13010;
+	}
+	
+	public static boolean IsDay() {
+		long l_Time = Main.MyServer.getWorld("world").getTime() % 24000;
+		return l_Time < 12300 || l_Time > 23850;
 	}
 	
 	public static void InitRandomQuote() {
 	    Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
 			public void run() {
-				 ServerManager.SendMessageToAllPlayers(MSG.QUOTE.getMessage());
+				if (!ServerManager.getOnlinePlayers().isEmpty()) {
+					ServerManager.SendMessageToAllPlayers(MSG.QUOTE.getMessage());
+				}
 			}
 		}, 20L * 60, 20L * 300); // Every 5 minutes
 	}
