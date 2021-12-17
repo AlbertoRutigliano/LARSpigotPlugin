@@ -1,5 +1,6 @@
 # Eclipse Core      
 .project
+.settings
 
 # JDT-specific (Eclipse Java Development Tools)     
 .classpath
@@ -10,6 +11,7 @@
 # Generated files
 /target/
 /bin/
+dependency-reduced-pom.xml
 
 # Log file
 *.log
