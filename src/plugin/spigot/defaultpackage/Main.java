@@ -1,8 +1,10 @@
-package plugin.spigot.defaulpackage;
+package plugin.spigot.defaultpackage;
 
 import org.bukkit.plugin.java.JavaPlugin;
-import static plugin.spigot.defaulpackage.Commands.*;
 import org.bukkit.event.Listener;
+
+import static plugin.spigot.defaultpackage.Commands.*;
+
 import org.bukkit.Server;
 
 public class Main extends JavaPlugin implements Listener {

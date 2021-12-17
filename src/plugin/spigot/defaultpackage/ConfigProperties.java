@@ -1,4 +1,4 @@
-package plugin.spigot.defaulpackage;
+package plugin.spigot.defaultpackage;
 
 public enum ConfigProperties {
 	

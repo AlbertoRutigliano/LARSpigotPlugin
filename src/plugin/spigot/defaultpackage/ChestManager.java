@@ -1,4 +1,4 @@
-package plugin.spigot.defaulpackage;
+package plugin.spigot.defaultpackage;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;

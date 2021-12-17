@@ -1,4 +1,4 @@
-package plugin.spigot.defaulpackage;
+package plugin.spigot.defaultpackage;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -81,32 +81,7 @@ public class FileManager {
 			System.err.format("IOException: %s%n", ex);
 	 	}
 	}
-	
-	
-	@Deprecated
-	public static boolean writeCoordOnFile(CustomLocation cl) {
-		
-        File f = new File("coordinateTEST.txt");
-        ArrayList<CustomLocation> cls = new ArrayList<>();
-        cls = readCoordsFromFile();
-        cls.add(cl);
-        try {
-            FileOutputStream fos = new FileOutputStream(f);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(cls);
-            oos.close();
-            fos.close();
-            return true;
-            
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            return false;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-	}
-	
+
 	public static List<CustomLocation> readAllCSVCoords() {
 		List<CustomLocation> cls = new ArrayList<CustomLocation>();
 		try (
@@ -166,29 +141,6 @@ public class FileManager {
 		}
 	}
 
-	
-	
-	@Deprecated
-	public static boolean writeCoordOnFile(ArrayList<CustomLocation> cls) {
-        File f = new File("coordinateTEST.txt");
-
-        try {
-            FileOutputStream fos = new FileOutputStream(f);
-            ObjectOutputStream oos = new ObjectOutputStream(fos);
-            oos.writeObject(cls);
-            oos.close();
-            fos.close();
-            return true;
-            
-        } catch (FileNotFoundException ex) {
-            ex.printStackTrace();
-            return false;
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            return false;
-        }
-	}
-	
 	public static boolean removeCSVCoord(String locationName) {
 		boolean found = false;
 		ArrayList<CustomLocation> updatedSavedLocations = new ArrayList<CustomLocation>();
@@ -198,32 +150,7 @@ public class FileManager {
 			} else {
 				found = true;
 			}
-		}
-		
-		writeCoordOnFile(updatedSavedLocations);
-		
+		}		
 		return found;
-	}
-	
-	@Deprecated
-	public static ArrayList<CustomLocation> readCoordsFromFile() {
-		ArrayList<CustomLocation> cls = new ArrayList<>();
-		 File f = new File("coordinateTEST.txt");
-	        try {
-	            FileInputStream fis = new FileInputStream(f);
-	            ObjectInputStream ois = new ObjectInputStream(fis);
-	            
-	            cls = (ArrayList<CustomLocation>)ois.readObject();
-	            ois.close();
-	            fis.close();
-	            
-	        } catch (FileNotFoundException ex) {
-	            ex.printStackTrace();
-	        } catch (IOException ex) {
-	            ex.printStackTrace();
-	        } catch (ClassNotFoundException ex) {
-	            ex.printStackTrace();
-	        }
-	        return cls;
 	}
 }

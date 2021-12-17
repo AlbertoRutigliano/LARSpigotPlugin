@@ -1,4 +1,4 @@
-package plugin.spigot.defaulpackage;
+package plugin.spigot.defaultpackage;
 
 import java.io.File;
 import java.io.IOException;

@@ -1,4 +1,4 @@
-package plugin.spigot.defaulpackage;
+package plugin.spigot.defaultpackage;
 
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;

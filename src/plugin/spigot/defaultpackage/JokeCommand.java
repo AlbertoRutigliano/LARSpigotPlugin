@@ -1,6 +1,6 @@
-package plugin.spigot.defaulpackage;
+package plugin.spigot.defaultpackage;
 
-import static plugin.spigot.defaulpackage.Commands.JOKE;
+import static plugin.spigot.defaultpackage.Commands.JOKE;
 
 import java.util.List;
 
