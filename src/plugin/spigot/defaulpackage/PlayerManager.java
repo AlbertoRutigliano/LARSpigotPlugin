@@ -173,7 +173,7 @@ public class PlayerManager implements Listener {
 	
 	@EventHandler
     public void inventoryclick(InventoryClickEvent event){
-		if (event.getClick().equals(ClickType.SWAP_OFFHAND)) {
+		if (event.getClick().equals(ClickType.MIDDLE)) {
 			InventoryType inventoryType = event.getView().getType();
 			
 			if (inventoryType.equals(InventoryType.CHEST) || inventoryType.equals(InventoryType.BARREL) || inventoryType.equals(InventoryType.ENDER_CHEST) ) {
