@@ -20,8 +20,8 @@ public class Main extends JavaPlugin implements Listener {
 		ConfigManager.CreateCustomConfig();
 		MyServer = getServer();
 
-		this.vPlayersListFilePath = "onlinePlayers.txt";
-		this.vKickedPlayersFilePath = "kickedPlayers.txt";
+		this.vPlayersListFilePath = "onlinePlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
+		this.vKickedPlayersFilePath = "kickedPlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
 		this.vPlayerManager = new PlayerManager(this.vPlayersListFilePath, this.vKickedPlayersFilePath);
 		
 		MyServer.getPluginManager().registerEvents(this, this);

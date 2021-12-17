@@ -13,8 +13,9 @@ public class ConfigManager {
     
 	//Create config file if doesn't exist and populate it with base configuration
 	public static void CreateCustomConfig() {
-        vCustomConfigFile = new File("./plugins/"+Main.getPlugin(Main.class).getName()+"/config.yml");
-        
+
+        vCustomConfigFile = new File(ConfigProperties.PLUGIN_FOLDER_PATH.getValue() + ConfigProperties.CONFIG_FILE.getValue());
+
         if (!vCustomConfigFile.exists()) {
             vCustomConfigFile.getParentFile().mkdirs();
             try {
