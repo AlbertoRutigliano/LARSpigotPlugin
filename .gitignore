@@ -1,9 +1,9 @@
 # Eclipse Core      
-/*.project
+.project
 /.settings/
 
 # JDT-specific (Eclipse Java Development Tools)     
-/.classpath
+.classpath
 
 # Compiled class file
 *.class
