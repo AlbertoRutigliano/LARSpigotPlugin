@@ -10,4 +10,8 @@ public interface Commands {
 	final static String COORDS = "coords";
 	final static String PLAYERPOS = "playerpos";
 	final static String JOKE = "joke";
+	final static String CREEPER = "creeper";
+	final static String ENDERMAN = "enderman";
+	final static String WITCH = "witch";
+	final static String ARROW = "arrow";
 }
