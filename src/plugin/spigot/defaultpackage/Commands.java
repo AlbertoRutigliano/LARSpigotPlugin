@@ -14,4 +14,10 @@ public interface Commands {
 	final static String ENDERMAN = "enderman";
 	final static String WITCH = "witch";
 	final static String ARROW = "arrow";
+	final static String TRACK = "track";
+	final static String PLAYER = "player";
+	final static String LOCATION = "location";
+	final static String NEW = "new";
+	final static String STOP = "stop";
+	
 }

@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 
 import static plugin.spigot.defaultpackage.Commands.*;
 
+
 import org.bukkit.Server;
 
 public class Main extends JavaPlugin implements Listener {
@@ -15,11 +16,13 @@ public class Main extends JavaPlugin implements Listener {
 	
 	private PlayerManager vPlayerManager;
 
+    private TrackRunner trackRunner;
+	
 	@Override
 	public void onEnable() {
 		ConfigManager.CreateCustomConfig();
 		MyServer = getServer();
-
+		
 		this.vPlayersListFilePath = "onlinePlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
 		this.vKickedPlayersFilePath = "kickedPlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
 		this.vPlayerManager = new PlayerManager(this.vPlayersListFilePath, this.vKickedPlayersFilePath);
@@ -27,6 +30,12 @@ public class Main extends JavaPlugin implements Listener {
 		MyServer.getPluginManager().registerEvents(this, this);
 		MyServer.getPluginManager().registerEvents(vPlayerManager, this);
 
+		
+        this.trackRunner = new TrackRunner();
+        this.trackRunner.runTaskTimer(this, 0, 5);
+        
+        this.getCommand(TRACK).setExecutor(new TrackCommand(this));
+        
 		this.getCommand(COORDS).setExecutor(new CoordsCommand());
 		this.getCommand(COORDS).setTabCompleter(new CoordsCommand());
 		
@@ -46,6 +55,10 @@ public class Main extends JavaPlugin implements Listener {
 	public void onDisable() {
 		ServerManager.RemoveObjectives();
 	}
+	
+    public TrackRunner getTrackRunner() {
+        return trackRunner;
+    }
 	
 }
 

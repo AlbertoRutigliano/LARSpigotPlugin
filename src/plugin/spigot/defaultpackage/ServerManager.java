@@ -1,6 +1,7 @@
 package plugin.spigot.defaultpackage;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import org.bukkit.Bukkit;
@@ -28,6 +29,14 @@ public class ServerManager {
     
 	public static Collection<? extends Player> getOnlinePlayers() {
 		return Bukkit.getOnlinePlayers();
+	}
+	
+	public static ArrayList<String> getOnlinePlayersNames() {
+		ArrayList<String> onlinePlayersNames = new ArrayList<>(Bukkit.getOnlinePlayers().size());
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			onlinePlayersNames.add(p.getDisplayName());
+		}
+		return onlinePlayersNames;
 	}
 	
 	// Send message to all players

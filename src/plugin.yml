@@ -1,7 +1,7 @@
 api: MySpigotPluginAPI
 name: MySpigotPlugin
 main: plugin.spigot.defaultpackage.Main
-version: "6.4.0"
+version: "7.0.0"
 api-version: 1.18
 author: Luca Acquafredda & Alberto Rutigliano
 commands: 
@@ -16,6 +16,10 @@ commands:
    Joke:
       description: Fai uno scherzo a un tuo amico
       usage: "Uso: /Joke [playername]"
+      permission: perm.general
+   Track:
+      description: Traccia
+      usage: "Uso: /track [playername]"
       permission: perm.general
 permissions:
    perm.general:
