@@ -1,5 +1,6 @@
 package plugin.spigot.defaultpackage;
 
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -36,9 +37,9 @@ public class TrackCommand implements TabExecutor {
 					if (args[0].equalsIgnoreCase(STOP)) {
 						if(plugin.getTrackRunner().isTracking(p.getUniqueId())) {
 							stopTracking(p);
-							p.sendMessage("Navigatore stoppato");
+							p.sendMessage(ChatColor.GRAY + "Navigatore stoppato");
 		                } else {
-		                    p.sendMessage("Non stai seguendo nessuna coordinata");
+		                    p.sendMessage(ChatColor.GRAY + "Non stai seguendo nessuna coordinata");
 		                }
 					}
 				break;
@@ -46,6 +47,7 @@ public class TrackCommand implements TabExecutor {
 				case 2: // PLAYER <player>, LOCATION <location>
 					if (args[0].equalsIgnoreCase(PLAYER)) {
 						stopTracking(p);
+						p.sendMessage("WORK IN PROGRESS");
 						// TODO Implementare
 					}
 					if (args[0].equalsIgnoreCase(LOCATION)) {
@@ -53,10 +55,9 @@ public class TrackCommand implements TabExecutor {
 						String locationName = args[1];
 						for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 							if (cl.getName().equalsIgnoreCase(locationName)) {
-								//Location loc = plugin.getLocationConfig().getLocation(path);
 								Location loc = new Location(Main.MyServer.getWorld("world"), cl.getX(), 0, cl.getZ());
 								plugin.getTrackRunner().setTracking(p.getUniqueId(), loc);
-			                    p.sendMessage("Stai seguendo " + cl.getName());
+			                    p.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + cl.getName());
 							}
 						}
 					}
@@ -68,9 +69,9 @@ public class TrackCommand implements TabExecutor {
 							stopTracking(p);
 		                    Location loc = new Location(Main.MyServer.getWorld("world"), Double.parseDouble(args[1]), 0, Double.parseDouble(args[2]));
 							plugin.getTrackRunner().setTracking(p.getUniqueId(), loc);
-							p.sendMessage("Stai seguendo (x: " + args[1] + ", z: " + args[2] + ")");
+							p.sendMessage(ChatColor.GRAY + "Stai seguendo (x: " + ChatColor.GOLD + args[1] + ChatColor.GRAY + ", z: " + ChatColor.GOLD +args[2] + ChatColor.GRAY +")");
 		                } catch(NumberFormatException e) {
-		                    p.sendMessage("Inserisci dei numeri per le coordinate");
+		                    p.sendMessage(ChatColor.GRAY + "Inserisci dei numeri interi per le coordinate");
 		                }     
 					}	
 				break;
@@ -81,7 +82,7 @@ public class TrackCommand implements TabExecutor {
     
     private void stopTracking(Player p) {
     	if(plugin.getTrackRunner().isTracking(p.getUniqueId())) {
-            plugin.getTrackRunner().unsetTracking(p.getUniqueId());
+           plugin.getTrackRunner().unsetTracking(p.getUniqueId());
         }
     }
 

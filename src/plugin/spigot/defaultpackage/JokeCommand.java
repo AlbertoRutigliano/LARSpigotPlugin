@@ -21,15 +21,10 @@ public class JokeCommand implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-		String[] ALLOWED_COMMANDS = {CREEPER, ENDERMAN, WITCH};
+		String[] ALLOWED_COMMANDS = {CREEPER, ENDERMAN, WITCH, ARROW};
 		
-		List<String> completions = new ArrayList<>();
-		List<String> hintLocations = new ArrayList<>();
-		
-		for(CustomLocation cl : FileManager.readAllCSVCoords()) {
-			hintLocations.add(cl.getName());
-		}
-		
+		List<String> completions = new ArrayList<>();		
+
 		if (args.length == 1) {
 			StringUtil.copyPartialMatches(args[0], Arrays.asList(ALLOWED_COMMANDS), completions);
 			return completions;
@@ -52,17 +47,18 @@ public class JokeCommand implements TabExecutor {
 				break;
 			case 1:					
 				switch (args[0]) {
-				case CREEPER:
-					ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);
-					break;
-				case ENDERMAN:
-					ServerManager.SendSound(Sound.ENTITY_ENDERMAN_STARE);
-					break;
-				case WITCH:
-					ServerManager.SendSound(Sound.ENTITY_WITCH_CELEBRATE);
-				case ARROW:
-					ServerManager.SendSound(Sound.ENTITY_ARROW_HIT);
-					break;
+					case CREEPER:
+						ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);
+						break;
+					case ENDERMAN:
+						ServerManager.SendSound(Sound.ENTITY_ENDERMAN_STARE);
+						break;
+					case WITCH:
+						ServerManager.SendSound(Sound.ENTITY_WITCH_CELEBRATE);
+						break;
+					case ARROW:
+						ServerManager.SendSound(Sound.ENTITY_ARROW_HIT);
+						break;
 				default: ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);	
 				}
 				sender.sendMessage(ChatColor.GRAY + "Scherzetto in corso...");

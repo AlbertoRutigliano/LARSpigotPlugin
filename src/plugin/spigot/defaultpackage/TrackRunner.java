@@ -29,7 +29,7 @@ public class TrackRunner extends BukkitRunnable {
         // A set with all done players to dodge a concurrent modification when a player is at the destination
         Set<UUID> done = new HashSet<>();
 
-        String trackFormat = ChatColor.WHITE + "%left%" + ChatColor.GOLD + " %distance%m " + ChatColor.WHITE + "%right%";
+        String trackFormat = ChatColor.WHITE + "%left%" + ChatColor.GOLD + " %distance% blocchi " + ChatColor.WHITE + "%right%";
         tracking.forEach((uuid, location) -> {
             Player p = Bukkit.getPlayer(uuid);
             if(p != null && p.isOnline()) {
@@ -39,7 +39,7 @@ public class TrackRunner extends BukkitRunnable {
                     double distance = location.distance(pLoc);
 
                     if(distance < 10) {
-                        p.sendMessage("Arrivato a destinazione");
+                    	p.sendMessage(ChatColor.GRAY + "Sei arrivato a destinazione");
                         done.add(uuid);
                         return;
                     }

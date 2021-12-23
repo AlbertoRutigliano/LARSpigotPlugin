@@ -73,14 +73,14 @@ public class CoordsCommand implements TabExecutor {
 						if(ADD.equalsIgnoreCase(args[0]))
 						{
 							if (FileManager.saveCSVCoord(new CustomLocation(args[1], (int) l_Player.getLocation().getX(), (int) l_Player.getLocation().getY(), (int) l_Player.getLocation().getZ()))) {
-								l_Player.sendMessage("Coordinate salvate!");
+								l_Player.sendMessage(ChatColor.GRAY + "Coordinate salvate!");
 							}
 						}
 						break;
 					case 3: if(ADD.equalsIgnoreCase(args[0]) && HIDDEN.equalsIgnoreCase(args[2]))
 						{
 							if (FileManager.saveCSVCoord(new CustomLocation(args[1], (int) l_Player.getLocation().getX(), (int) l_Player.getLocation().getY(), (int) l_Player.getLocation().getZ(), true))) {
-								l_Player.sendMessage("Coordinate salvate!");
+								l_Player.sendMessage(ChatColor.GRAY + "Coordinate salvate!");
 							}
 						}
 						break;
@@ -89,7 +89,7 @@ public class CoordsCommand implements TabExecutor {
 						{
 							CustomLocation customLocationToWrite = new CustomLocation(args[1], Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]));
 							if (FileManager.saveCSVCoord(customLocationToWrite)) {
-								l_Player.sendMessage("Coordinate salvate!");
+								l_Player.sendMessage(ChatColor.GRAY + "Coordinate salvate!");
 							}
 					        
 						}
