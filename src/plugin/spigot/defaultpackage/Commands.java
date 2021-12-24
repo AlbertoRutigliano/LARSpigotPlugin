@@ -11,6 +11,7 @@ public interface Commands {
 	final static String PLAYERPOS = "playerpos";
 	final static String JOKE = "joke";
 	final static String CREEPER = "creeper";
+	final static String CREEPER_HURT = "creeper_hurt";
 	final static String ENDERMAN = "enderman";
 	final static String WITCH = "witch";
 	final static String ARROW = "arrow";

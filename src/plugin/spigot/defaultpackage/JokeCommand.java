@@ -21,16 +21,23 @@ public class JokeCommand implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-		String[] ALLOWED_COMMANDS = {CREEPER, ENDERMAN, WITCH, ARROW};
+		String[] ALLOWED_COMMANDS = {CREEPER, CREEPER_HURT, ENDERMAN, WITCH, ARROW};
 		
 		List<String> completions = new ArrayList<>();		
 
 		if (args.length == 1) {
 			StringUtil.copyPartialMatches(args[0], Arrays.asList(ALLOWED_COMMANDS), completions);
+			Collections.sort(completions);
 			return completions;
 		} 
 		
-		Collections.sort(completions);
+		if (args.length == 2) {
+			StringUtil.copyPartialMatches(args[1], ServerManager.getOnlinePlayersNames(), completions);
+			Collections.sort(completions);
+			return completions;
+		} 
+		
+		
 		return Collections.emptyList();
 		
 	}
@@ -42,13 +49,15 @@ public class JokeCommand implements TabExecutor {
 			switch (args.length) {
 			case 0:	
 				ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);
-				// TODO Implement random SOUND
 				sender.sendMessage(ChatColor.GRAY + "Scherzetto in corso...");
 				break;
 			case 1:					
 				switch (args[0]) {
 					case CREEPER:
 						ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);
+						break;
+					case CREEPER_HURT:
+						ServerManager.SendSound(Sound.ENTITY_CREEPER_HURT);
 						break;
 					case ENDERMAN:
 						ServerManager.SendSound(Sound.ENTITY_ENDERMAN_STARE);
@@ -64,9 +73,25 @@ public class JokeCommand implements TabExecutor {
 				sender.sendMessage(ChatColor.GRAY + "Scherzetto in corso...");
 				break;
 			case 2:	
-				// TODO Implement specific SOUND to specific PLAYER
 				Player l_SelectedPlayer = Main.MyServer.getPlayer(args[1]);
-				ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED, l_SelectedPlayer);
+				switch (args[0]) {
+					case CREEPER:
+						ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED, l_SelectedPlayer);
+						break;
+					case CREEPER_HURT:
+						ServerManager.SendSound(Sound.ENTITY_CREEPER_HURT, l_SelectedPlayer);
+						break;
+					case ENDERMAN:
+						ServerManager.SendSound(Sound.ENTITY_ENDERMAN_STARE, l_SelectedPlayer);
+						break;
+					case WITCH:
+						ServerManager.SendSound(Sound.ENTITY_WITCH_CELEBRATE, l_SelectedPlayer);
+						break;
+					case ARROW:
+						ServerManager.SendSound(Sound.ENTITY_ARROW_HIT, l_SelectedPlayer);
+						break;
+					default: ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED, l_SelectedPlayer);	
+				}
 				sender.sendMessage(ChatColor.GRAY + "Scherzetto a " + l_SelectedPlayer.getDisplayName() + " in corso...");
 				break;
 			default: break;
