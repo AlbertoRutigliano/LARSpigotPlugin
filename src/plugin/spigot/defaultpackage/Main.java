@@ -25,7 +25,12 @@ public class Main extends JavaPlugin implements Listener {
 		
 		this.vPlayersListFilePath = "onlinePlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
 		this.vKickedPlayersFilePath = "kickedPlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
-		this.vPlayerManager = new PlayerManager(this.vPlayersListFilePath, this.vKickedPlayersFilePath);
+		try {
+			this.vPlayerManager = new PlayerManager(this.vPlayersListFilePath, this.vKickedPlayersFilePath);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		MyServer.getPluginManager().registerEvents(this, this);
 		MyServer.getPluginManager().registerEvents(vPlayerManager, this);

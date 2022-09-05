@@ -5,7 +5,6 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import org.apache.commons.lang.NullArgumentException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
@@ -41,15 +40,15 @@ public class PlayerManager implements Listener {
 	private String vKickedPlayersFilePath;
     public static HashMap<Player, PlayerProperties> vPlayerProperties;
 	
-	public PlayerManager(String playerListFilePath, String kickedPlayersFilePath)
+	public PlayerManager(String playerListFilePath, String kickedPlayersFilePath) throws Exception
 	{
 		if(playerListFilePath == null)
 		{
-			throw new NullArgumentException("playerListFilePath");
+			throw new Exception("playerListFilePath");
 		}
 		if(kickedPlayersFilePath == null)
 		{
-			throw new NullArgumentException("kickedPlayersFilePath");
+			throw new Exception("kickedPlayersFilePath");
 		}
 		
 		this.vPlayersListFilePath = playerListFilePath;
