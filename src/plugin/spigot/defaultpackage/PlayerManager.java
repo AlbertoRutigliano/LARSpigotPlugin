@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.function.Predicate;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
@@ -39,15 +40,17 @@ public class PlayerManager implements Listener {
 	private String vPlayersListFilePath;
 	private String vKickedPlayersFilePath;
     public static HashMap<Player, PlayerProperties> vPlayerProperties;
-	
-	public PlayerManager(String playerListFilePath, String kickedPlayersFilePath) throws Exception
-	{
-		if(playerListFilePath == null)
-		{
+    
+    private final Main plugin;
+
+
+	public PlayerManager(Main plugin, String playerListFilePath, String kickedPlayersFilePath) throws Exception {
+		this.plugin = plugin;
+		
+		if(playerListFilePath == null) {
 			throw new Exception("playerListFilePath");
 		}
-		if(kickedPlayersFilePath == null)
-		{
+		if(kickedPlayersFilePath == null) {
 			throw new Exception("kickedPlayersFilePath");
 		}
 		
@@ -145,6 +148,10 @@ public class PlayerManager implements Listener {
 		Player l_Player = e.getPlayer();
 		ServerManager.ResetScoreboard(l_Player);
 		e.setQuitMessage(MSG.PLAYER_LEFT.getMessage(l_Player));
+		// Stop all track running
+		if(plugin.getTrackRunner().isTracking(l_Player.getUniqueId())) {
+			plugin.getTrackRunner().unsetTracking(l_Player.getUniqueId());
+	    }
 		this.WritePlayerQuit(l_Player, this.vPlayersListFilePath);		
 		vPlayerProperties.remove(l_Player);
 	}
@@ -233,7 +240,14 @@ public class PlayerManager implements Listener {
 		 Player player = event.getPlayer();
 	     String message = event.getMessage();
 	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "§8: " + ChatColor.WHITE + message);
-	    
+	     
+	     for(String messageWord: message.split(" ")) {
+	    	 for(String thanksWord: ThanksCommand.THANKS_WORDS){
+	    		 if (messageWord.equalsIgnoreCase(thanksWord)) {
+	        		 ThanksCommand.makeHeartEffect(player);
+	        	 }
+	          }
+	     }  
 	}
 	
 	// Add the player name to the playerListFilePath

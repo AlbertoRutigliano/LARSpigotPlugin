@@ -26,7 +26,7 @@ public class Main extends JavaPlugin implements Listener {
 		this.vPlayersListFilePath = "onlinePlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
 		this.vKickedPlayersFilePath = "kickedPlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
 		try {
-			this.vPlayerManager = new PlayerManager(this.vPlayersListFilePath, this.vKickedPlayersFilePath);
+			this.vPlayerManager = new PlayerManager(this, this.vPlayersListFilePath, this.vKickedPlayersFilePath);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -47,6 +47,8 @@ public class Main extends JavaPlugin implements Listener {
 		this.getCommand(PLAYERPOS).setExecutor(new PlayerposCommand());
 		
 		this.getCommand(JOKE).setExecutor(new JokeCommand());
+
+		this.getCommand(THANKS).setExecutor(new ThanksCommand());
 
 		ServerManager.setTestServerPort(ConfigManager.GetCustomConfig().getInt(ConfigProperties.SERVER_TEST_PORT.name()));
 
