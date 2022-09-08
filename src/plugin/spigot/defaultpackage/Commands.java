@@ -20,5 +20,9 @@ public interface Commands {
 	final static String LOCATION = "location";
 	final static String NEW = "new";
 	final static String STOP = "stop";
-	
+	final static String THANKS = "thanks";
+	final static String GRAZIE = "grazie";
+	final static String GRZ = "grz";
+	final static String TY = "ty";
+
 }
