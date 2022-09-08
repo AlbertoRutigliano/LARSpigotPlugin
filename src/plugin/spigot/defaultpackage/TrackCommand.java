@@ -1,5 +1,6 @@
 package plugin.spigot.defaultpackage;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -48,6 +49,14 @@ public class TrackCommand implements TabExecutor {
 					if (args[0].equalsIgnoreCase(PLAYER)) {
 						stopTracking(p);
 						p.sendMessage("WORK IN PROGRESS");
+						
+						for(Player player : ServerManager.getOnlinePlayers()) {
+							if (player.getDisplayName().equalsIgnoreCase(args[1])) {
+								Location loc = new Location(Main.MyServer.getWorld("world"), player.getLocation().getX(), 0, player.getLocation().getZ());
+								plugin.getTrackRunner().setTracking(p.getUniqueId(), loc);
+								p.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + player.getDisplayName());
+							}
+						}
 						// TODO Implementare
 					}
 					if (args[0].equalsIgnoreCase(LOCATION)) {
@@ -110,6 +119,7 @@ public class TrackCommand implements TabExecutor {
 		}
 		
 		if (PLAYER.equalsIgnoreCase((args[0]))) {
+			// TODO Rimuovere dalla lista il nome del giocatore che invia il comando
 			StringUtil.copyPartialMatches(args[1], ServerManager.getOnlinePlayersNames(), completions);
 			Collections.sort(completions);
 			return completions;
