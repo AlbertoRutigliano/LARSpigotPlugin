@@ -1,8 +1,8 @@
 package plugin.spigot.defaultpackage;
 
 public enum ConfigProperties {
-	
-	SERVER_TEST_PORT("0"), SECONDS_TO_AFK("30"), COORDS_FILE("coords.csv"),
+
+	SERVER_TEST_PORT("0"), SECONDS_TO_AFK("30"), COORDS_FILE("coords.csv"), MINUTES_QUOTE_INTERVAL("10"),
 	CONFIG_FILE("config.yml"),
 	PLUGIN_FOLDER_PATH("./plugins/" + Main.getPlugin(Main.class).getName() + "/");
 	
