@@ -119,7 +119,7 @@ public class ServerManager {
 					ServerManager.SendMessageToAllPlayers(MSG.QUOTE.getMessage());
 				}
 			}
-		}, 20L * 60, 20L * 300); // Every 5 minutes
+		}, ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name()) * 60000L, ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name()) * 60000L); // Every MINUTES_QUOTE_INTERVAL minutes
 	}
 	
 	// Reset Scoreboard
