@@ -18,6 +18,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -27,6 +28,7 @@ import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
@@ -34,6 +36,9 @@ import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import net.md_5.bungee.api.ChatColor;
+/*
+ * Event Handlers list: https://github.com/Bukkit/Bukkit/tree/master/src/main/java/org/bukkit/event
+ */
 
 public class PlayerManager implements Listener {
 	
@@ -176,6 +181,23 @@ public class PlayerManager implements Listener {
 		}
 	}
 	
+	// TODO Testare onPlayerDeath e onPlayerRespawnEvent
+	Location prova;
+	@EventHandler
+	public void onPlayerDeath(PlayerDeathEvent e){
+		Player deathPlayer = e.getEntity().getPlayer();
+		prova =  deathPlayer.getLocation();
+		plugin.getTrackRunner().unsetTracking(deathPlayer.getUniqueId());
+		deathPlayer.sendMessage(deathPlayer.getLocation().toString());
+	
+	}
+	
+	@EventHandler
+	public void onPlayerRespawnEvent(PlayerRespawnEvent e){
+		Player player = e.getPlayer();
+		plugin.getTrackRunner().setTracking(player.getUniqueId(), prova);
+		player.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + " punto di morte");
+    }
 	
 	@EventHandler
     public void inventoryclick(InventoryClickEvent event){

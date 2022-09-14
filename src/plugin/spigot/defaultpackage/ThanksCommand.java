@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 
 import static plugin.spigot.defaultpackage.Commands.*;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -44,7 +45,10 @@ public class ThanksCommand  implements TabExecutor {
             double z = Math.sin(radians);
             Location heartLocation = playerLocation;
             heartLocation.add(x, 1.5, z);
-            player.spawnParticle(Particle.HEART, heartLocation, 2);
+            Collection<? extends Player> players = Main.MyServer.getOnlinePlayers();
+            for(Player p : players) {
+            	p.spawnParticle(Particle.HEART, heartLocation, 2);
+            }
             heartLocation.subtract(x, 1.5, z);
         }
 	}
