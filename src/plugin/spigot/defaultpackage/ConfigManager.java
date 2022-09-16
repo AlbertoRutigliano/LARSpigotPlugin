@@ -26,6 +26,8 @@ public class ConfigManager {
 				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.SECONDS_TO_AFK.toString());
 				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.COORDS_FILE.toString());
 				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.MINUTES_QUOTE_INTERVAL.toString());
+				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.SECONDS_TO_NOT_SLEEPING_KICK.toString());
+				FileManager.AppendStringOnFile(vCustomConfigFile.getPath(), ConfigProperties.PERCENTAGE_SLEEPING_TO_NOT_SLEEPING_KICK.toString());
 				
             } catch (IOException e) {
 				e.printStackTrace();

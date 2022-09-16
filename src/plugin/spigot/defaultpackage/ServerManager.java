@@ -13,12 +13,16 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
+
 public class ServerManager {
 
 	private static ScoreboardManager vScoreboardManager;
     private static Scoreboard vScoreboard;
     private static int vTestServerPort;
-
+    private static long vCheckPlayersSleepingStartTime = 0;
+    
 	public static int getTestServerPort() {
 		return vTestServerPort;
 	}
@@ -120,6 +124,34 @@ public class ServerManager {
 				}
 			}
 		}, ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name()) * 60000L, ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name()) * 60000L); // Every MINUTES_QUOTE_INTERVAL minutes
+	}
+	
+	public static void InitSleepingKicker()
+	{
+		Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
+			public void run() {
+				//Get total count of players
+				float onlinePlayers = ServerManager.getOnlinePlayers().size();
+				//Get total count of players
+				float sleepingPlayers = PlayerManager.getSleepingPlayers().size();
+				//Check if the percentage of sleeping players is greater than a percentage
+				if ((sleepingPlayers / onlinePlayers) * 100 >= ConfigManager.GetCustomConfig().getInt(ConfigProperties.PERCENTAGE_SLEEPING_TO_NOT_SLEEPING_KICK.name())) {
+					if (vCheckPlayersSleepingStartTime == 0)
+					{
+						vCheckPlayersSleepingStartTime = Main.MyServer.getWorld("world").getTime();
+					}
+					
+					long execTime = Main.MyServer.getWorld("world").getTime();
+					long passedSeconds = (execTime-vCheckPlayersSleepingStartTime) / 20;
+					ServerManager.getOnlinePlayers().stream().filter(q -> PlayerManager.vPlayerProperties.get(q).isSleeping() == false).forEach(q -> q.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(MSG.GO_TO_SLEEP.getMessage(ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_NOT_SLEEPING_KICK.name())-passedSeconds))));
+					if (passedSeconds >= ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_NOT_SLEEPING_KICK.name())) {
+						ServerManager.getOnlinePlayers().stream().filter(q -> PlayerManager.vPlayerProperties.get(q).isSleeping() == false).forEach(q -> q.kickPlayer(MSG.NOT_SLEEPING_KICK.getMessage()));
+					}
+				} else {
+					vCheckPlayersSleepingStartTime = 0;
+				}
+			}
+		}, 20, 20); //1 second = 20 ticks
 	}
 	
 	// Reset Scoreboard

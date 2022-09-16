@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.function.Predicate;
+import java.util.Map;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
@@ -121,23 +121,28 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onPlayerSleep(PlayerBedEnterEvent e) {
 		Player player = e.getPlayer();
+		PlayerProperties l_CurrentPlayer = vPlayerProperties.get(player);
 		if (e.getBedEnterResult() == BedEnterResult.OK) {
 			Bukkit.broadcastMessage(MSG.SLEEP.getMessage(player) + ChatColor.GREEN + " zZz");
+			l_CurrentPlayer.setSleeping(true);
 		} else {
 			if (e.getBedEnterResult() == BedEnterResult.NOT_SAFE) {
 				Bukkit.broadcastMessage(MSG.CANT_SLEEP.getMessage(player));
 			}
+			l_CurrentPlayer.setSleeping(false);
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerWakeUp(PlayerBedLeaveEvent e) {
 		Player player = e.getPlayer();
+		PlayerProperties l_CurrentPlayer = vPlayerProperties.get(player);
 		if (ServerManager.IsDay() == false){
-			Bukkit.broadcastMessage(MSG.WAKE_UP.getMessage(player));			
+			ServerManager.SendMessageToAllPlayers(vKickedPlayersFilePath);			
 		} else{
 			player.sendMessage(MSG.GOOD_MORNING.getMessage());
 		}
+		l_CurrentPlayer.setSleeping(false);
 	}
 	
 	@EventHandler
@@ -201,7 +206,7 @@ public class PlayerManager implements Listener {
 	
 	@EventHandler
     public void inventoryclick(InventoryClickEvent event){
-		if (event.getClick().equals(ClickType.MIDDLE)) {
+		if (event.getClick().equals(ClickType.DOUBLE_CLICK)) {
 			InventoryType inventoryType = event.getView().getType();
 			
 			if (inventoryType.equals(InventoryType.CHEST) || inventoryType.equals(InventoryType.BARREL) || inventoryType.equals(InventoryType.ENDER_CHEST) ) {
@@ -220,7 +225,7 @@ public class PlayerManager implements Listener {
 				
 				chestInventory.sort(l_SortingType);
 		    					
-				// Se già ordinato, inverti l'ordinamento
+				// Se giï¿½ ordinato, inverti l'ordinamento
 				if (chestInventoryCopy.equals(chestInventory)) {
 					l_SortingType.setSortingType(SortingType.SIMPLE_DESC);
 				} else {
@@ -261,7 +266,7 @@ public class PlayerManager implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
 		 Player player = event.getPlayer();
 	     String message = event.getMessage();
-	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "§8: " + ChatColor.WHITE + message);
+	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "ï¿½8: " + ChatColor.WHITE + message);
 	     
 	     for(String messageWord: message.split(" ")) {
 	    	 for(String thanksWord: ThanksCommand.THANKS_WORDS){
@@ -301,5 +306,18 @@ public class PlayerManager implements Listener {
 		l_FileContent.append(reason);
 		
 		FileManager.AppendStringOnFile(kickedPlayersFilePath, l_FileContent.toString());
+	}
+	
+	public static HashMap<Player, PlayerProperties> getSleepingPlayers()
+	{
+		HashMap<Player, PlayerProperties> sleepingPlayers = new HashMap<>();
+		for(Map.Entry<Player, PlayerProperties> playerProp : vPlayerProperties.entrySet())
+		{
+			if(playerProp.getValue().isSleeping() == true)
+			{
+				sleepingPlayers.put(playerProp.getKey(), playerProp.getValue());
+			}
+		}
+		return sleepingPlayers; 
 	}
 }

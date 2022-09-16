@@ -6,6 +6,7 @@ import java.util.Date;
 public class PlayerProperties {
 	private Timestamp vLastMoveTimestamp;
 	private boolean vAfk;
+	private boolean vIsSleeping;
 
 	public boolean isAfk() {
 		return vAfk;
@@ -15,6 +16,14 @@ public class PlayerProperties {
 		this.vAfk = vAfk;
 	}
 
+	public boolean isSleeping() {
+		return vIsSleeping;
+	}
+
+	public void setSleeping(boolean vIsSleeping) {
+		this.vIsSleeping = vIsSleeping;
+	}
+	
 	public Timestamp getLastMoveTimestamp() {
 		return vLastMoveTimestamp;
 	}
@@ -26,5 +35,7 @@ public class PlayerProperties {
 	public PlayerProperties() {
 		setLastMoveTimestamp(new Timestamp(new Date().getTime()));
 		setAfk(false);
+		setSleeping(false);
 	}
+
 }

@@ -55,6 +55,8 @@ public class Main extends JavaPlugin implements Listener {
 		ServerManager.InitScoreboard();
 		
 		ServerManager.InitRandomQuote();
+		
+		ServerManager.InitSleepingKicker();
 
 	}
 	

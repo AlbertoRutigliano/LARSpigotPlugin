@@ -1,6 +1,5 @@
 package plugin.spigot.defaultpackage;
 
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.command.Command;
