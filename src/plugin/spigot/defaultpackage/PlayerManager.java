@@ -1,7 +1,6 @@
 package plugin.spigot.defaultpackage;
 
 import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -18,7 +17,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
-import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -28,11 +26,9 @@ import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
-import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
-import org.bukkit.event.player.PlayerKickEvent;
 import org.bukkit.event.player.PlayerMoveEvent;
 
 import net.md_5.bungee.api.ChatColor;
@@ -42,25 +38,13 @@ import net.md_5.bungee.api.ChatColor;
 
 public class PlayerManager implements Listener {
 	
-	private String vPlayersListFilePath;
-	private String vKickedPlayersFilePath;
     public static HashMap<Player, PlayerProperties> vPlayerProperties;
     
     private final Main plugin;
 
 
-	public PlayerManager(Main plugin, String playerListFilePath, String kickedPlayersFilePath) throws Exception {
+	public PlayerManager(Main plugin) throws Exception {
 		this.plugin = plugin;
-		
-		if(playerListFilePath == null) {
-			throw new Exception("playerListFilePath");
-		}
-		if(kickedPlayersFilePath == null) {
-			throw new Exception("kickedPlayersFilePath");
-		}
-		
-		this.vPlayersListFilePath = playerListFilePath;
-		this.vKickedPlayersFilePath = kickedPlayersFilePath;
 		
 		vPlayerProperties = new HashMap<Player, PlayerProperties>();
 		for(Player p:Main.MyServer.getOnlinePlayers()) {
@@ -147,7 +131,6 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player l_Player = e.getPlayer();
 		e.setJoinMessage(MSG.PLAYER_JOIN.getMessage(l_Player));
-		this.WritePlayerJoined(l_Player, this.vPlayersListFilePath);		
 		vPlayerProperties.put(l_Player, new PlayerProperties());
 	}
 	
@@ -160,16 +143,7 @@ public class PlayerManager implements Listener {
 		if(plugin.getTrackRunner().isTracking(l_Player.getUniqueId())) {
 			plugin.getTrackRunner().unsetTracking(l_Player.getUniqueId());
 	    }
-		this.WritePlayerQuit(l_Player, this.vPlayersListFilePath);		
 		vPlayerProperties.remove(l_Player);
-	}
-	
-	@EventHandler
-	public void onPlayerKicked(PlayerKickEvent e)
-	{
-		Player l_Player = e.getPlayer();
-		String l_KickReason = e.getReason();
-		this.WritePlayerKicked(l_Player, l_KickReason, this.vKickedPlayersFilePath);
 	}
 	
 	@EventHandler
@@ -274,36 +248,6 @@ public class PlayerManager implements Listener {
 	        	 }
 	          }
 	     }  
-	}
-	
-	// Add the player name to the playerListFilePath
-	private void WritePlayerJoined(Player player, String playersListFilePath) {
-		String l_PlayerName = player.getName();
-		FileManager.AppendStringOnFile(playersListFilePath, l_PlayerName);
-	}
-	
-	// Removes the player name from the playerListFilePath
-	private void WritePlayerQuit(Player player, String playersListFilePath) {
-		String l_StringToReplace = player.getName() + System.lineSeparator();
-		FileManager.ReplaceStringOnFile(playersListFilePath, l_StringToReplace, "");
-	}
-	
-	// Writes kick datetime, kicked player, kick reason
-	private void WritePlayerKicked(Player player, String reason, String kickedPlayersFilePath)
-	{
-		SimpleDateFormat l_DateFormatter= new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		Date l_Date = new Date(System.currentTimeMillis());
-		String l_FormattedDate = l_DateFormatter.format(l_Date);
-		String l_PlayerName = player.getName();
-
-		StringBuilder l_FileContent = new StringBuilder();
-		l_FileContent.append(l_FormattedDate);
-		l_FileContent.append(" ");
-		l_FileContent.append(l_PlayerName);
-		l_FileContent.append(" ");
-		l_FileContent.append(reason);
-		
-		FileManager.AppendStringOnFile(kickedPlayersFilePath, l_FileContent.toString());
 	}
 	
 	public static HashMap<Player, PlayerProperties> getSleepingPlayers()

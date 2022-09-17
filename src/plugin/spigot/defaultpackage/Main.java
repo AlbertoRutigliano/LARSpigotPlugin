@@ -11,9 +11,6 @@ import org.bukkit.Server;
 public class Main extends JavaPlugin implements Listener {
 	public static Server MyServer;
 	
-	private String vPlayersListFilePath;
-	private String vKickedPlayersFilePath;
-	
 	private PlayerManager vPlayerManager;
 
     private TrackRunner trackRunner;
@@ -23,10 +20,8 @@ public class Main extends JavaPlugin implements Listener {
 		ConfigManager.CreateCustomConfig();
 		MyServer = getServer();
 		
-		this.vPlayersListFilePath = "onlinePlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
-		this.vKickedPlayersFilePath = "kickedPlayers.txt"; // TODO Spostare sotto ./plugins/MySpigotPlugin ?
 		try {
-			this.vPlayerManager = new PlayerManager(this, this.vPlayersListFilePath, this.vKickedPlayersFilePath);
+			this.vPlayerManager = new PlayerManager(this);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
