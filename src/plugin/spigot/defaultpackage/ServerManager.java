@@ -123,7 +123,7 @@ public class ServerManager {
 					ServerManager.SendMessageToAllPlayers(MSG.QUOTE.getMessage());
 				}
 			}
-		}, ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name()) * 60000L, ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name()) * 60000L); // Every MINUTES_QUOTE_INTERVAL minutes
+		}, 100, 20 * 60 * ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name())); // Every MINUTES_QUOTE_INTERVAL minutes
 	}
 	
 	public static void InitSleepingKicker()

@@ -12,8 +12,6 @@ import static plugin.spigot.defaultpackage.Commands.*;
 import java.util.Collection;
 import java.util.List;
 
-
-
 public class ThanksCommand  implements TabExecutor {
 	
 	public final static String[] THANKS_WORDS = new String[] {THANKS, GRAZIE, GRZ, TY, "tkx", "tnks", "ths", "thank", "<3", "ringrazio"};
@@ -44,8 +42,8 @@ public class ThanksCommand  implements TabExecutor {
             double z = Math.sin(radians);
             Location heartLocation = playerLocation;
             heartLocation.add(x, 1.5, z);
-            Collection<? extends Player> players = Main.MyServer.getOnlinePlayers();
-            for(Player p : players) {
+            Collection<? extends Player> allPlayers = Main.MyServer.getOnlinePlayers();
+            for(Player p : allPlayers) {
             	p.spawnParticle(Particle.HEART, heartLocation, 2);
             }
             heartLocation.subtract(x, 1.5, z);

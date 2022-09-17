@@ -187,14 +187,14 @@ public class PlayerManager implements Listener {
 	}
 	
 	// TODO Testare onPlayerDeath e onPlayerRespawnEvent
-	Location prova;
+	/*
+	 * Location prova;
 	@EventHandler
 	public void onPlayerDeath(PlayerDeathEvent e){
 		Player deathPlayer = e.getEntity().getPlayer();
 		prova =  deathPlayer.getLocation();
 		plugin.getTrackRunner().unsetTracking(deathPlayer.getUniqueId());
 		deathPlayer.sendMessage(deathPlayer.getLocation().toString());
-	
 	}
 	
 	@EventHandler
@@ -203,6 +203,7 @@ public class PlayerManager implements Listener {
 		plugin.getTrackRunner().setTracking(player.getUniqueId(), prova);
 		player.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + " punto di morte");
     }
+	*/
 	
 	@EventHandler
     public void inventoryclick(InventoryClickEvent event){
@@ -225,7 +226,7 @@ public class PlayerManager implements Listener {
 				
 				chestInventory.sort(l_SortingType);
 		    					
-				// Se giï¿½ ordinato, inverti l'ordinamento
+				// Se già ordinato, inverti l'ordinamento
 				if (chestInventoryCopy.equals(chestInventory)) {
 					l_SortingType.setSortingType(SortingType.SIMPLE_DESC);
 				} else {
@@ -266,7 +267,7 @@ public class PlayerManager implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
 		 Player player = event.getPlayer();
 	     String message = event.getMessage();
-	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "ï¿½8: " + ChatColor.WHITE + message);
+	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "§8: " + ChatColor.WHITE + message);
 	     
 	     for(String messageWord: message.split(" ")) {
 	    	 for(String thanksWord: ThanksCommand.THANKS_WORDS){
@@ -286,7 +287,6 @@ public class PlayerManager implements Listener {
 	// Removes the player name from the playerListFilePath
 	private void WritePlayerQuit(Player player, String playersListFilePath) {
 		String l_StringToReplace = player.getName() + System.lineSeparator();
-		
 		FileManager.ReplaceStringOnFile(playersListFilePath, l_StringToReplace, "");
 	}
 	

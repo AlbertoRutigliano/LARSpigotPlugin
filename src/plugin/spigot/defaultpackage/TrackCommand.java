@@ -48,16 +48,30 @@ public class TrackCommand implements TabExecutor {
 				case 2: // PLAYER <player>, LOCATION <location>
 					if (args[0].equalsIgnoreCase(PLAYER)) {
 						stopTracking(p);
-						p.sendMessage("WORK IN PROGRESS");
+						p.sendMessage(ChatColor.GRAY + "Funzione attualmente in alpha.");
 						
 						for(Player player : ServerManager.getOnlinePlayers()) {
 							if (player.getDisplayName().equalsIgnoreCase(args[1])) {
-								Location loc = new Location(Main.MyServer.getWorld("world"), player.getLocation().getX(), 0, player.getLocation().getZ());
-								plugin.getTrackRunner().setTracking(p.getUniqueId(), loc);
+								plugin.getTrackRunner().setTracking(p.getUniqueId(),  player.getLocation());
+								// Location loc = new Location(Main.MyServer.getWorld("world"), player.getLocation().getX(), 0, player.getLocation().getZ());
+								/*
+								 * TODO Implementare
+								plugin.getTrackRunner().setTracking(p.getUniqueId(), player.getLocation());
+								Runnable r = new Runnable() {
+									public void run() {
+										if (plugin.getTrackRunner().isTracking(p.getUniqueId())) {
+											plugin.getTrackRunner().unsetTracking(p.getUniqueId());
+											plugin.getTrackRunner().setTracking(p.getUniqueId(),  player.getLocation());
+										} else {
+											plugin.getTrackRunner().unsetTracking(p.getUniqueId());
+										}
+									}
+								};
+								r.run();
+								*/
 								p.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + player.getDisplayName());
 							}
 						}
-						// TODO Implementare
 					}
 					if (args[0].equalsIgnoreCase(LOCATION)) {
 						stopTracking(p);
