@@ -137,9 +137,7 @@ public class PlayerManager implements Listener {
 	public void onPlayerWakeUp(PlayerBedLeaveEvent e) {
 		Player player = e.getPlayer();
 		PlayerProperties l_CurrentPlayer = vPlayerProperties.get(player);
-		if (ServerManager.IsDay() == false){
-			ServerManager.SendMessageToAllPlayers(vKickedPlayersFilePath);			
-		} else{
+		if (ServerManager.IsDay()){
 			player.sendMessage(MSG.GOOD_MORNING.getMessage());
 		}
 		l_CurrentPlayer.setSleeping(false);
