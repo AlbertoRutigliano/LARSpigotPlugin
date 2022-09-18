@@ -5,6 +5,7 @@ import org.bukkit.event.Listener;
 
 import static plugin.spigot.defaultpackage.Commands.*;
 
+import java.nio.file.Paths;
 
 import org.bukkit.Server;
 
@@ -52,6 +53,8 @@ public class Main extends JavaPlugin implements Listener {
 		ServerManager.InitRandomQuote();
 		
 		ServerManager.InitSleepingKicker();
+		
+		MSGManager.loadMessagesFile(Paths.get(ConfigProperties.PLUGIN_FOLDER_PATH.getValue(), ConfigManager.GetCustomConfig().getString(ConfigProperties.MESSAGES_FILE.name())).toString());
 
 	}
 	
