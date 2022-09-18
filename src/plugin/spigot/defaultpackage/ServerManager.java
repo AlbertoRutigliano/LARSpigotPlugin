@@ -137,7 +137,7 @@ public class ServerManager {
 	    Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
 			public void run() {
 				if (!ServerManager.getOnlinePlayers().isEmpty()) {
-					ServerManager.SendMessageToAllPlayers(MSG.QUOTE.getMessage());
+					ServerManager.SendMessageToAllPlayers(MSGManager.getMessage(MSGManager.Message.QUOTE));
 				}
 			}
 		}, 100, 20 * 60 * ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name())); // Every MINUTES_QUOTE_INTERVAL minutes
@@ -160,9 +160,9 @@ public class ServerManager {
 					
 					long execTime = Main.MyServer.getWorld("world").getTime();
 					long passedSeconds = (execTime-vCheckPlayersSleepingStartTime) / 20;
-					ServerManager.getOnlinePlayers().stream().filter(q -> PlayerManager.vPlayerProperties.get(q).isSleeping() == false).forEach(q -> q.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(MSG.GO_TO_SLEEP.getMessage(ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_NOT_SLEEPING_KICK.name())-passedSeconds))));
+					ServerManager.getOnlinePlayers().stream().filter(q -> PlayerManager.vPlayerProperties.get(q).isSleeping() == false).forEach(q -> q.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(ChatColor.RED + MSGManager.getMessage(MSGManager.Message.GO_TO_SLEEP,ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_NOT_SLEEPING_KICK.name())-passedSeconds))));
 					if (passedSeconds >= ConfigManager.GetCustomConfig().getInt(ConfigProperties.SECONDS_TO_NOT_SLEEPING_KICK.name())) {
-						ServerManager.getOnlinePlayers().stream().filter(q -> PlayerManager.vPlayerProperties.get(q).isSleeping() == false).forEach(q -> q.kickPlayer(MSG.NOT_SLEEPING_KICK.getMessage()));
+						ServerManager.getOnlinePlayers().stream().filter(q -> PlayerManager.vPlayerProperties.get(q).isSleeping() == false).forEach(q -> q.kickPlayer(MSGManager.getMessage(MSGManager.Message.NOT_SLEEPING_KICK)));
 					}
 				} else {
 					vCheckPlayersSleepingStartTime = 0;

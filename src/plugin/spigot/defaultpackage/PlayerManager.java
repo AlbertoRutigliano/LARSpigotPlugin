@@ -81,7 +81,7 @@ public class PlayerManager implements Listener {
 		    if (damager instanceof Player) {
 		        //Damage Causer is also a player
 		        Player damagerPlayer = (Player) damager;
-		        taker.sendMessage(MSG.GET_DAMAGE.getMessage(damagerPlayer));
+		        taker.sendMessage(MSGManager.getMessage(MSGManager.Message.GET_DAMAGE, damagerPlayer.getName()));
 		    }
 		}
 	}
@@ -92,16 +92,16 @@ public class PlayerManager implements Listener {
 		Location toLocation = e.getTo();
 		
 		if (toLocation.getWorld().getName().equalsIgnoreCase("world_nether")) {
-			Bukkit.broadcastMessage(MSG.IN_NETHER.getMessage(player));
+			Bukkit.broadcastMessage(MSGManager.getMessage(MSGManager.Message.IN_NETHER, player.getName(), ChatColor.DARK_RED));
 		} else if (toLocation.getWorld().getName().equalsIgnoreCase("world")) {
-			Bukkit.broadcastMessage(MSG.IN_OVERWORLD.getMessage(player));
+			Bukkit.broadcastMessage(MSGManager.getMessage(MSGManager.Message.IN_OVERWORLD, player.getName(), ChatColor.DARK_GREEN));
 		}
 	}
 	
 	@EventHandler
 	public void onPlayerEnchant(EnchantItemEvent e) {
 		Player player = e.getEnchanter();
-		Bukkit.broadcastMessage(MSG.ENCHANTMENT.getMessage(player));
+		Bukkit.broadcastMessage(MSGManager.getMessage(MSGManager.Message.ENCHANTMENT, player.getName()));
 	}
 	
 	@EventHandler
@@ -109,11 +109,11 @@ public class PlayerManager implements Listener {
 		Player player = e.getPlayer();
 		PlayerProperties l_CurrentPlayer = vPlayerProperties.get(player);
 		if (e.getBedEnterResult() == BedEnterResult.OK) {
-			Bukkit.broadcastMessage(MSG.SLEEP.getMessage(player) + ChatColor.GREEN + " zZz");
+			Bukkit.broadcastMessage(MSGManager.getMessage(MSGManager.Message.SLEEP, player.getName()) + ChatColor.GREEN + " zZz");
 			l_CurrentPlayer.setSleeping(true);
 		} else {
 			if (e.getBedEnterResult() == BedEnterResult.NOT_SAFE) {
-				Bukkit.broadcastMessage(MSG.CANT_SLEEP.getMessage(player));
+				Bukkit.broadcastMessage(MSGManager.getMessage(MSGManager.Message.CANT_SLEEP, player.getName()));
 			}
 			l_CurrentPlayer.setSleeping(false);
 		}
@@ -124,8 +124,10 @@ public class PlayerManager implements Listener {
 		Player player = e.getPlayer();
 		PlayerProperties l_CurrentPlayer = vPlayerProperties.get(player);
 		if (ServerManager.IsDay()){
-			player.sendMessage(MSG.GOOD_MORNING.getMessage());
 			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Giorno" + Main.MyServer.getWorld("world").getFullTime() / 24000));
+			player.sendMessage(MSGManager.getMessage(MSGManager.Message.GOOD_MORNING));
+		} else {
+			ServerManager.SendMessageToAllPlayers(MSGManager.getMessage(MSGManager.Message.WAKE_UP, player.getName()));
 		}
 		l_CurrentPlayer.setSleeping(false);
 	}
@@ -133,7 +135,7 @@ public class PlayerManager implements Listener {
 	@EventHandler
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player l_Player = e.getPlayer();
-		e.setJoinMessage(MSG.PLAYER_JOIN.getMessage(l_Player));
+		e.setJoinMessage(MSGManager.getMessage(MSGManager.Message.PLAYER_JOIN, l_Player.getName(), ChatColor.RED, ChatColor.WHITE));
 		vPlayerProperties.put(l_Player, new PlayerProperties());
 	}
 	
@@ -141,7 +143,7 @@ public class PlayerManager implements Listener {
 	public void onPlayerQuit(PlayerQuitEvent e) {
 		Player l_Player = e.getPlayer();
 		ServerManager.ResetScoreboard(l_Player);
-		e.setQuitMessage(MSG.PLAYER_LEFT.getMessage(l_Player));
+		e.setQuitMessage(MSGManager.getMessage(MSGManager.Message.PLAYER_LEFT, l_Player.getName()));
 		// Stop all track running
 		if(plugin.getTrackRunner().isTracking(l_Player.getUniqueId())) {
 			plugin.getTrackRunner().unsetTracking(l_Player.getUniqueId());
