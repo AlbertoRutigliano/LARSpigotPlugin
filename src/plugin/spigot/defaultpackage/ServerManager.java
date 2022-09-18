@@ -1,6 +1,8 @@
 package plugin.spigot.defaultpackage;
 
 import java.sql.Timestamp;
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
@@ -104,6 +106,21 @@ public class ServerManager {
 			}
 		}, 10, 10);
 		
+	}
+	
+	/**
+	 * Get World time
+	 * @param Main.MyServer.getWorld("world").getTime()
+	 * @return String hh : mm
+	 */
+	private static String parseTime(long time) {
+	    long gameTime = time;
+	    long hours = gameTime / 1000 + 6;
+	    long minutes = (gameTime % 1000) * 60 / 1000;
+	    if (hours == 24) hours = 0;
+	    String mm = "0" + minutes;
+	    mm = mm.substring(mm.length() - 2, mm.length());
+	    return hours + ":" + mm;
 	}
 	
 	private static boolean isMidnight() {

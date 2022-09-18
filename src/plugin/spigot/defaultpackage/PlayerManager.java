@@ -35,6 +35,8 @@ import net.md_5.bungee.api.ChatColor;
 /*
  * Event Handlers list: https://github.com/Bukkit/Bukkit/tree/master/src/main/java/org/bukkit/event
  */
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 
 public class PlayerManager implements Listener {
 	
@@ -123,6 +125,7 @@ public class PlayerManager implements Listener {
 		PlayerProperties l_CurrentPlayer = vPlayerProperties.get(player);
 		if (ServerManager.IsDay()){
 			player.sendMessage(MSG.GOOD_MORNING.getMessage());
+			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Giorno" + Main.MyServer.getWorld("world").getFullTime() / 24000));
 		}
 		l_CurrentPlayer.setSleeping(false);
 	}
