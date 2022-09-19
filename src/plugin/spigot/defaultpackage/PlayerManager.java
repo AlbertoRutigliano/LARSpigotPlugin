@@ -124,7 +124,7 @@ public class PlayerManager implements Listener {
 		Player player = e.getPlayer();
 		PlayerProperties l_CurrentPlayer = vPlayerProperties.get(player);
 		if (ServerManager.IsDay()){
-			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Giorno" + Main.MyServer.getWorld("world").getFullTime() / 24000));
+			player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText("Giorno " + Main.MyServer.getWorld("world").getFullTime() / 24000));
 			player.sendMessage(MSGManager.getMessage(MSGManager.Message.GOOD_MORNING));
 		} else {
 			ServerManager.SendMessageToAllPlayers(MSGManager.getMessage(MSGManager.Message.WAKE_UP, player.getName()));
