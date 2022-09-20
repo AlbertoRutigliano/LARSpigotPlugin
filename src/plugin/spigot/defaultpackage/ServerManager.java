@@ -45,6 +45,16 @@ public class ServerManager {
 		return onlinePlayersNames;
 	}
 	
+	public static ArrayList<String> getOnlinePlayersNames(String worldName) {
+		ArrayList<String> onlinePlayersNames = new ArrayList<>(Bukkit.getOnlinePlayers().size());
+		for(Player p : Bukkit.getOnlinePlayers()) {
+			if (p.getWorld().getName().equalsIgnoreCase(worldName)) {
+				onlinePlayersNames.add(p.getDisplayName());
+			}
+		}
+		return onlinePlayersNames;
+	}
+	
 	// Send message to all players
 	public static void SendMessageToAllPlayers(String message) {
 		Bukkit.broadcastMessage(message);
