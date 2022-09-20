@@ -19,30 +19,6 @@ import org.bukkit.Sound;
 public class JokeCommand implements TabExecutor {
 
 	@Override
-	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-
-		String[] ALLOWED_COMMANDS = {CREEPER, CREEPER_HURT, ENDERMAN, WITCH, ARROW};
-		
-		List<String> completions = new ArrayList<>();		
-
-		if (args.length == 1) {
-			StringUtil.copyPartialMatches(args[0], Arrays.asList(ALLOWED_COMMANDS), completions);
-			Collections.sort(completions);
-			return completions;
-		} 
-		
-		if (args.length == 2) {
-			StringUtil.copyPartialMatches(args[1], ServerManager.getOnlinePlayersNames(), completions);
-			Collections.sort(completions);
-			return completions;
-		} 
-		
-		
-		return Collections.emptyList();
-		
-	}
-
-	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
 		if(sender instanceof Player && JOKE.equalsIgnoreCase(label) ) {
@@ -99,10 +75,33 @@ public class JokeCommand implements TabExecutor {
 
 		}
 
-		
 		return true;
 	}
 	
-	
+	@Override
+	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
+		String[] ALLOWED_COMMANDS = {CREEPER, CREEPER_HURT, ENDERMAN, WITCH, ARROW};
+		
+		List<String> completions = new ArrayList<>();	
+		
+		Player p = (sender instanceof Player) ? (Player) sender : null;
+		
+		if (args.length == 1) {
+			StringUtil.copyPartialMatches(args[0], Arrays.asList(ALLOWED_COMMANDS), completions);
+			Collections.sort(completions);
+			return completions;
+		} 
+		
+		if (args.length == 2) {
+			ArrayList<String> onlinePlayersNames = ServerManager.getOnlinePlayersNames(p.getWorld().getName());
+			onlinePlayersNames.remove(p.getDisplayName());
+			StringUtil.copyPartialMatches(args[1], onlinePlayersNames, completions);
+			Collections.sort(completions);
+			return completions;
+		} 
+		
+		return Collections.emptyList();
+	}
+	
 }
