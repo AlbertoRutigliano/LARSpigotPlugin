@@ -9,6 +9,8 @@ import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import net.md_5.bungee.api.ChatColor;
+
 public class MSGManager {
 	
 	public enum Message
@@ -51,12 +53,12 @@ public class MSGManager {
 	
 	public static String getMessage(MSGManager.Message message)
 	{
-		return messages.get(message).get(new Random().nextInt(messages.get(message).size()));
+		return ChatColor.GRAY + messages.get(message).get(new Random().nextInt(messages.get(message).size()));
 	}
 
 	public static String getMessage(MSGManager.Message message, Object... params)
 	{
-		return String.format(getMessage(message), params);
+		return ChatColor.GRAY + String.format(getMessage(message), params);
 	}
 	
 }

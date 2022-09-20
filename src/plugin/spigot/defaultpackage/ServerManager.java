@@ -147,7 +147,7 @@ public class ServerManager {
 	    Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
 			public void run() {
 				if (!ServerManager.getOnlinePlayers().isEmpty()) {
-					ServerManager.SendMessageToAllPlayers(MSGManager.getMessage(MSGManager.Message.QUOTE));
+					ServerManager.SendMessageToAllPlayers(ChatColor.GRAY + MSGManager.getMessage(MSGManager.Message.QUOTE));
 				}
 			}
 		}, 100, 20 * 60 * ConfigManager.GetCustomConfig().getLong(ConfigProperties.MINUTES_QUOTE_INTERVAL.name())); // Every MINUTES_QUOTE_INTERVAL minutes
