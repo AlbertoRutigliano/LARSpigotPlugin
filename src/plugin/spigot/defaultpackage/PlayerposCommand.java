@@ -98,7 +98,7 @@ public class PlayerposCommand implements TabExecutor {
 		double distance = 999999999;
 		CustomLocation nearestLocation = null;
 		for (CustomLocation cl : savedLocations) {
-			if (playerCurrentLocation.calculateDistance(cl) < distance) {
+			if (CustomLocation.WorldName.valueOf(player.getWorld().getName()) == cl.getWorldName() && playerCurrentLocation.calculateDistance(cl) < distance) {
 				distance = playerCurrentLocation.calculateDistance(cl);
 				nearestLocation = cl;
 			}

@@ -79,7 +79,7 @@ public class FileManager {
 		try (
 				Reader reader = Files.newBufferedReader(Paths.get(ConfigProperties.PLUGIN_FOLDER_PATH.getValue() + ConfigManager.GetCustomConfig().getString(ConfigProperties.COORDS_FILE.name())));
 				CSVParser csvParser = new CSVParser(reader, CSVFormat.DEFAULT
-						.withHeader("NAME", "X", "Y", "Z", "HIDDEN")
+						.withHeader("NAME", "X", "Y", "Z", "HIDDEN", "WORLD_NAME")
 						.withFirstRecordAsHeader()
 						.withIgnoreHeaderCase()
 						.withTrim());
@@ -91,7 +91,8 @@ public class FileManager {
 						Integer.parseInt(csvRecord.get("X")), 
 						Integer.parseInt(csvRecord.get("Y")), 
 						Integer.parseInt(csvRecord.get("Z")),
-						csvRecord.get("HIDDEN").equalsIgnoreCase("true") ? true : false
+						csvRecord.get("HIDDEN").equalsIgnoreCase("true") ? true : false,
+						csvRecord.get("WORLD_NAME")
 						));
 			}
 
@@ -113,7 +114,7 @@ public class FileManager {
 		cls.add(cl);
 		try (BufferedWriter writer = Files.newBufferedWriter(Paths.get(ConfigProperties.PLUGIN_FOLDER_PATH.getValue() + ConfigManager.GetCustomConfig().getString(ConfigProperties.COORDS_FILE.name())));
 				CSVPrinter csvPrinter = new CSVPrinter(writer, CSVFormat.DEFAULT
-						.withHeader("NAME", "X", "Y", "Z", "HIDDEN"));
+						.withHeader("NAME", "X", "Y", "Z", "HIDDEN", "WORLD_NAME"));
 				) {
 			for(CustomLocation singleCl : cls) {
 				csvPrinter.printRecord(
@@ -121,7 +122,8 @@ public class FileManager {
 						singleCl.getX(), 
 						singleCl.getY(), 
 						singleCl.getZ(), 
-						singleCl.isHidden());
+						singleCl.isHidden(),
+						singleCl.getWorldName());
 
 			}
 			csvPrinter.flush();         

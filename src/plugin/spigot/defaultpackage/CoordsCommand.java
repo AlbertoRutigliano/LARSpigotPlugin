@@ -32,7 +32,7 @@ public class CoordsCommand implements TabExecutor {
 						sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
 						for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 							if (!cl.isHidden()) {	
-								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ());
+								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ() + " " + ChatColor.GRAY + cl.getWorldNameString());
 							}
 						}
 						sender.sendMessage(ChatColor.BLUE + "=============================");
@@ -44,7 +44,7 @@ public class CoordsCommand implements TabExecutor {
 							for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " 
 										+ cl.getX() + " " + cl.getY() + " " + cl.getZ()
-										+ (cl.isHidden() ? ChatColor.GRAY + " hidden" : ""));
+										+ (cl.isHidden() ? ChatColor.GRAY + " hidden" : "") + " " + ChatColor.GRAY + cl.getWorldNameString());
 							}
 							sender.sendMessage(ChatColor.BLUE + "=============================");
 						}
@@ -64,7 +64,7 @@ public class CoordsCommand implements TabExecutor {
 							sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
 							for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 								if (cl.getName().equalsIgnoreCase(args[1])) {	
-									sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + cl.getX() + " " + cl.getY() + " " + cl.getZ());
+									sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + cl.getX() + " " + cl.getY() + " " + cl.getZ() + " " + ChatColor.GRAY + cl.getWorldNameString());
 								}
 							}
 							sender.sendMessage(ChatColor.BLUE + "=============================");
@@ -72,14 +72,14 @@ public class CoordsCommand implements TabExecutor {
 						
 						if(ADD.equalsIgnoreCase(args[0]))
 						{
-							if (FileManager.saveCSVCoord(new CustomLocation(args[1], (int) l_Player.getLocation().getX(), (int) l_Player.getLocation().getY(), (int) l_Player.getLocation().getZ()))) {
+							if (FileManager.saveCSVCoord(new CustomLocation(args[1], (int) l_Player.getLocation().getX(), (int) l_Player.getLocation().getY(), (int) l_Player.getLocation().getZ(), false, l_Player.getWorld().getName()))) {
 								l_Player.sendMessage(ChatColor.GRAY + "Coordinate salvate!");
 							}
 						}
 						break;
 					case 3: if(ADD.equalsIgnoreCase(args[0]) && HIDDEN.equalsIgnoreCase(args[2]))
 						{
-							if (FileManager.saveCSVCoord(new CustomLocation(args[1], (int) l_Player.getLocation().getX(), (int) l_Player.getLocation().getY(), (int) l_Player.getLocation().getZ(), true))) {
+							if (FileManager.saveCSVCoord(new CustomLocation(args[1], (int) l_Player.getLocation().getX(), (int) l_Player.getLocation().getY(), (int) l_Player.getLocation().getZ(), true, l_Player.getWorld().getName()))) {
 								l_Player.sendMessage(ChatColor.GRAY + "Coordinate salvate!");
 							}
 						}
@@ -87,7 +87,7 @@ public class CoordsCommand implements TabExecutor {
 					case 5:	// 5 arguments specified, used only to add new coordinate. Syntax: add CoordinateName XPosition YPosition ZPosition
 						if(ADD.equalsIgnoreCase(args[0]))
 						{
-							CustomLocation customLocationToWrite = new CustomLocation(args[1], Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]));
+							CustomLocation customLocationToWrite = new CustomLocation(args[1], Integer.valueOf(args[2]), Integer.valueOf(args[3]), Integer.valueOf(args[4]), false, l_Player.getWorld().getName());
 							if (FileManager.saveCSVCoord(customLocationToWrite)) {
 								l_Player.sendMessage(ChatColor.GRAY + "Coordinate salvate!");
 							}

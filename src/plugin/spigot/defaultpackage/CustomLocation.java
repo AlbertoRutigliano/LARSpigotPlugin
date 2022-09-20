@@ -3,11 +3,13 @@ package plugin.spigot.defaultpackage;
 import java.io.Serializable;
 
 public class CustomLocation implements Serializable {
-
+	
+	public enum WorldName { world, world_nether, world_the_end }
 	private static final long serialVersionUID = 1L;
 	private int x, y, z;
 	private String name;
 	private boolean hidden = false;
+	private WorldName worldName;
 	
 	public CustomLocation(String name, int x, int y, int z) {
 		this.name = name;
@@ -23,6 +25,24 @@ public class CustomLocation implements Serializable {
 		this.y = y;
 		this.z = z;
 		this.hidden = hidden;
+	}
+	
+	public CustomLocation(String name, int x, int y, int z, boolean hidden, WorldName worldName) {
+		this.name = name;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.hidden = hidden;
+		this.worldName = worldName;
+	}
+	
+	public CustomLocation(String name, int x, int y, int z, boolean hidden, String worldName) {
+		this.name = name;
+		this.x = x;
+		this.y = y;
+		this.z = z;
+		this.hidden = hidden;
+		this.worldName = WorldName.valueOf(worldName);
 	}
 	
 	public int getX() {
@@ -61,6 +81,27 @@ public class CustomLocation implements Serializable {
 
 	public void setHidden(boolean hidden) {
 		this.hidden = hidden;
+	}
+	
+	public WorldName getWorldName() {
+		return worldName;
+	}
+	
+	public String getWorldNameString() {
+		switch (worldName) {
+			case world:
+				return "WORLD";
+			case world_nether:
+				return "NETHER";
+			case world_the_end:
+				return "END";
+			default:
+				return "WORLD";
+		}
+	}
+
+	public void setWorldName(WorldName worldName) {
+		this.worldName = worldName;
 	}
 
 	public double calculateDistance(CustomLocation xz2) {
