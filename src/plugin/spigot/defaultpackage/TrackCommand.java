@@ -38,7 +38,7 @@ public class TrackCommand implements TabExecutor {
 					if (args[0].equalsIgnoreCase(STOP)) {
 						if(plugin.getTrackRunner().isTracking(p.getUniqueId())) {
 							stopTracking(p);
-							p.sendMessage(ChatColor.GRAY + "Navigatore stoppato");
+							p.sendMessage(ChatColor.GRAY + "Navigatore spento");
 		                } else {
 		                    p.sendMessage(ChatColor.GRAY + "Non stai seguendo nessuna coordinata");
 		                }
@@ -78,7 +78,7 @@ public class TrackCommand implements TabExecutor {
 						String locationName = args[1];
 						for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 							if (cl.getName().equalsIgnoreCase(locationName)) {
-								Location loc = new Location(Main.MyServer.getWorld("world"), cl.getX(), 0, cl.getZ());
+								Location loc = new Location(Main.MyServer.getWorld(p.getWorld().getName()), cl.getX(), 0, cl.getZ());
 								plugin.getTrackRunner().setTracking(p.getUniqueId(), loc);
 			                    p.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + cl.getName());
 							}
@@ -117,8 +117,12 @@ public class TrackCommand implements TabExecutor {
 		List<String> completions = new ArrayList<>();
 		List<String> hintLocations = new ArrayList<>();
 		
+		Player p = (sender instanceof Player) ? (Player) sender : null;
+		
 		for(CustomLocation cl : FileManager.readAllCSVCoords()) {
-			hintLocations.add(cl.getName());
+			if (CustomLocation.WorldName.valueOf(p.getWorld().getName()) == cl.getWorldName()) {
+				hintLocations.add(cl.getName());
+			}
 		}
 		
 		if (args.length == 1) {
@@ -133,13 +137,13 @@ public class TrackCommand implements TabExecutor {
 		}
 		
 		if (PLAYER.equalsIgnoreCase((args[0]))) {
-			// TODO Rimuovere dalla lista il nome del giocatore che invia il comando
-			StringUtil.copyPartialMatches(args[1], ServerManager.getOnlinePlayersNames(), completions);
+			ArrayList<String> onlinePlayersNames = ServerManager.getOnlinePlayersNames(p.getWorld().getName());
+			onlinePlayersNames.remove(p.getDisplayName());
+			StringUtil.copyPartialMatches(args[1], onlinePlayersNames, completions);
 			Collections.sort(completions);
 			return completions;
 		}
 				
-		
 		return Collections.emptyList();
 	}
     
