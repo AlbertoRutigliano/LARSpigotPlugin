@@ -1,7 +1,7 @@
 api: MySpigotPluginAPI
 name: MySpigotPlugin
 main: plugin.spigot.defaultpackage.Main
-version: "8.5.1"
+version: "8.5.2"
 api-version: 1.19
 authors: [Alberto Rutigliano, Luca Acquafredda]
 website: https://github.com/AlbertoRutigliano/MinecraftPluginDev

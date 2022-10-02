@@ -44,8 +44,7 @@ public class PlayerManager implements Listener {
     
     private final Main plugin;
 
-
-	public PlayerManager(Main plugin) throws Exception {
+	public PlayerManager(Main plugin) {
 		this.plugin = plugin;
 		
 		vPlayerProperties = new HashMap<Player, PlayerProperties>();
@@ -183,7 +182,7 @@ public class PlayerManager implements Listener {
 	*/
 	
 	@EventHandler
-    public void inventoryclick(InventoryClickEvent event){
+    public void onInventoryclick(InventoryClickEvent event){
 		if (event.getClick().equals(ClickType.DOUBLE_CLICK)) {
 			InventoryType inventoryType = event.getView().getType();
 			
@@ -255,12 +254,17 @@ public class PlayerManager implements Listener {
 	     }  
 	}
 	
+	/**
+	* Returns an HashMap containing all the players that are currently sleeping
+	* 
+	* @return      HashMap of sleeping players
+	*/
 	public static HashMap<Player, PlayerProperties> getSleepingPlayers()
 	{
 		HashMap<Player, PlayerProperties> sleepingPlayers = new HashMap<>();
 		for(Map.Entry<Player, PlayerProperties> playerProp : vPlayerProperties.entrySet())
 		{
-			if(playerProp.getValue().isSleeping() == true)
+			if(playerProp.getValue().isSleeping())
 			{
 				sleepingPlayers.put(playerProp.getKey(), playerProp.getValue());
 			}

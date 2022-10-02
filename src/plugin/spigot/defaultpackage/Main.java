@@ -21,12 +21,7 @@ public class Main extends JavaPlugin implements Listener {
 		ConfigManager.CreateCustomConfig();
 		MyServer = getServer();
 		
-		try {
-			this.vPlayerManager = new PlayerManager(this);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		this.vPlayerManager = new PlayerManager(this);
 		
 		MyServer.getPluginManager().registerEvents(this, this);
 		MyServer.getPluginManager().registerEvents(vPlayerManager, this);
