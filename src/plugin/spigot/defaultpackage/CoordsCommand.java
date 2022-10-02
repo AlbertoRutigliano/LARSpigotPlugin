@@ -30,7 +30,7 @@ public class CoordsCommand implements TabExecutor {
 				{
 					case 0:	// No arguments specified, show saved coordinates
 						sender.sendMessage(ChatColor.BLUE + "====== Coordinate Salvate ======");
-						for (CustomLocation cl : FileManager.readAllCSVCoords()) {
+						for (CustomLocation cl : FileManager.readAllCSVCoords(l_Player.getWorld().getName())) {
 							if (!cl.isHidden()) {	
 								sender.sendMessage(ChatColor.GOLD + cl.getName() + ChatColor.RED + " " + (int) cl.getX() + " " + (int) cl.getY() + " " + (int) cl.getZ() + " " + ChatColor.GRAY + cl.getWorldNameString());
 							}

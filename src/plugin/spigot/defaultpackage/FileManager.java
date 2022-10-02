@@ -108,6 +108,13 @@ public class FileManager {
 		}
 		return cls;
 	}
+	
+	public static List<CustomLocation> readAllCSVCoords(String world) {
+		List<CustomLocation> cls = new ArrayList<CustomLocation>();
+		cls = readAllCSVCoords().stream().filter(q -> q.getWorldName().toString().equalsIgnoreCase(world)).toList();
+		
+		return cls;
+	}
 
 	public static boolean saveCSVCoord(CustomLocation cl){
 		List<CustomLocation> cls = readAllCSVCoords();
