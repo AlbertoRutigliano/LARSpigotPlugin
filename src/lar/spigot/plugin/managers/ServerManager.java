@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage.managers;
+package lar.spigot.plugin.managers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -15,11 +15,11 @@ import org.bukkit.scoreboard.Objective;
 import org.bukkit.scoreboard.Scoreboard;
 import org.bukkit.scoreboard.ScoreboardManager;
 
+import lar.spigot.plugin.ConfigProperties;
+import lar.spigot.plugin.Main;
+import lar.spigot.plugin.entities.CustomLocation;
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import plugin.spigot.defaultpackage.ConfigProperties;
-import plugin.spigot.defaultpackage.Main;
-import plugin.spigot.defaultpackage.entities.CustomLocation;
 
 public class ServerManager {
 

@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage.managers;
+package lar.spigot.plugin.managers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -28,6 +28,14 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import lar.spigot.plugin.ConfigProperties;
+import lar.spigot.plugin.ItemStackComparator;
+import lar.spigot.plugin.Main;
+import lar.spigot.plugin.commands.ThanksCommand;
+import lar.spigot.plugin.entities.PlayerProperties;
+import lar.spigot.plugin.entities.SortingType;
+
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerMoveEvent;
 
@@ -37,12 +45,6 @@ import net.md_5.bungee.api.ChatColor;
  */
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
-import plugin.spigot.defaultpackage.ConfigProperties;
-import plugin.spigot.defaultpackage.ItemStackComparator;
-import plugin.spigot.defaultpackage.Main;
-import plugin.spigot.defaultpackage.commands.ThanksCommand;
-import plugin.spigot.defaultpackage.entities.PlayerProperties;
-import plugin.spigot.defaultpackage.entities.SortingType;
 
 public class PlayerManager implements Listener {
 	

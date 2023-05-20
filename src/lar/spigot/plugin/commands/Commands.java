@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage.commands;
+package lar.spigot.plugin.commands;
 
 public interface Commands {
 

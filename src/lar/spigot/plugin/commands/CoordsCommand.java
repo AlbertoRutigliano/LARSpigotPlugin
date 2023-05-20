@@ -1,6 +1,6 @@
-package plugin.spigot.defaultpackage.commands;
+package lar.spigot.plugin.commands;
 
-import static plugin.spigot.defaultpackage.commands.Commands.*;
+import static lar.spigot.plugin.commands.Commands.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -14,8 +14,8 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import plugin.spigot.defaultpackage.entities.CustomLocation;
-import plugin.spigot.defaultpackage.managers.FileManager;
+import lar.spigot.plugin.entities.CustomLocation;
+import lar.spigot.plugin.managers.FileManager;
 
 public class CoordsCommand implements TabExecutor {
 

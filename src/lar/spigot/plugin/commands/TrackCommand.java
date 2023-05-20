@@ -1,9 +1,9 @@
-package plugin.spigot.defaultpackage.commands;
+package lar.spigot.plugin.commands;
 
-import static plugin.spigot.defaultpackage.commands.Commands.LOCATION;
-import static plugin.spigot.defaultpackage.commands.Commands.NEW;
-import static plugin.spigot.defaultpackage.commands.Commands.PLAYER;
-import static plugin.spigot.defaultpackage.commands.Commands.STOP;
+import static lar.spigot.plugin.commands.Commands.LOCATION;
+import static lar.spigot.plugin.commands.Commands.NEW;
+import static lar.spigot.plugin.commands.Commands.PLAYER;
+import static lar.spigot.plugin.commands.Commands.STOP;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -18,10 +18,10 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import plugin.spigot.defaultpackage.Main;
-import plugin.spigot.defaultpackage.entities.CustomLocation;
-import plugin.spigot.defaultpackage.managers.FileManager;
-import plugin.spigot.defaultpackage.managers.ServerManager;
+import lar.spigot.plugin.Main;
+import lar.spigot.plugin.entities.CustomLocation;
+import lar.spigot.plugin.managers.FileManager;
+import lar.spigot.plugin.managers.ServerManager;
 
 
 /**

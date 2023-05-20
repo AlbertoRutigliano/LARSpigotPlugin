@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage.managers;
+package lar.spigot.plugin.managers;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -17,8 +17,8 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 
-import plugin.spigot.defaultpackage.ConfigProperties;
-import plugin.spigot.defaultpackage.entities.CustomLocation;
+import lar.spigot.plugin.ConfigProperties;
+import lar.spigot.plugin.entities.CustomLocation;
 
 public class FileManager {
 

@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage.entities;
+package lar.spigot.plugin.entities;
 
 import java.io.Serializable;
 
