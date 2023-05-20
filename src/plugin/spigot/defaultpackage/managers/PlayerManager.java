@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage;
+package plugin.spigot.defaultpackage.managers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -37,6 +37,12 @@ import net.md_5.bungee.api.ChatColor;
  */
 import net.md_5.bungee.api.ChatMessageType;
 import net.md_5.bungee.api.chat.TextComponent;
+import plugin.spigot.defaultpackage.ConfigProperties;
+import plugin.spigot.defaultpackage.ItemStackComparator;
+import plugin.spigot.defaultpackage.Main;
+import plugin.spigot.defaultpackage.commands.ThanksCommand;
+import plugin.spigot.defaultpackage.entities.PlayerProperties;
+import plugin.spigot.defaultpackage.entities.SortingType;
 
 public class PlayerManager implements Listener {
 	

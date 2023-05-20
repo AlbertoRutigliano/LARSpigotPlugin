@@ -1,7 +1,9 @@
-package plugin.spigot.defaultpackage;
+package plugin.spigot.defaultpackage.managers;
 
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
+
+import plugin.spigot.defaultpackage.ItemStackComparator;
 
 public class ChestManager {
 

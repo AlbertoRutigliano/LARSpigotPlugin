@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage;
+package plugin.spigot.defaultpackage.commands;
 
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -7,7 +7,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 
-import static plugin.spigot.defaultpackage.Commands.*;
+import plugin.spigot.defaultpackage.Main;
+
+import static plugin.spigot.defaultpackage.commands.Commands.*;
 
 import java.util.Collection;
 import java.util.List;

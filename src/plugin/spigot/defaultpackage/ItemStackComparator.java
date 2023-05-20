@@ -5,6 +5,8 @@ import java.util.Comparator;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 
+import plugin.spigot.defaultpackage.entities.SortingType;
+
 public class ItemStackComparator implements Comparator<ItemStack> {
 
 	private SortingType sortingType;

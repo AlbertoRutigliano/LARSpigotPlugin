@@ -1,10 +1,12 @@
-package plugin.spigot.defaultpackage;
+package plugin.spigot.defaultpackage.managers;
 
 import java.io.File;
 import java.io.IOException;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+
+import plugin.spigot.defaultpackage.ConfigProperties;
  
 public class ConfigManager {
 	private static File vCustomConfigFile;

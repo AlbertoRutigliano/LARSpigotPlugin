@@ -1,9 +1,20 @@
 package plugin.spigot.defaultpackage;
 
 import org.bukkit.plugin.java.JavaPlugin;
+
+import plugin.spigot.defaultpackage.commands.CoordsCommand;
+import plugin.spigot.defaultpackage.commands.JokeCommand;
+import plugin.spigot.defaultpackage.commands.PlayerposCommand;
+import plugin.spigot.defaultpackage.commands.ThanksCommand;
+import plugin.spigot.defaultpackage.commands.TrackCommand;
+import plugin.spigot.defaultpackage.managers.ConfigManager;
+import plugin.spigot.defaultpackage.managers.MSGManager;
+import plugin.spigot.defaultpackage.managers.PlayerManager;
+import plugin.spigot.defaultpackage.managers.ServerManager;
+
 import org.bukkit.event.Listener;
 
-import static plugin.spigot.defaultpackage.Commands.*;
+import static plugin.spigot.defaultpackage.commands.Commands.*;
 
 import java.nio.file.Paths;
 

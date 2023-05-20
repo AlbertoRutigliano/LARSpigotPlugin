@@ -1,6 +1,6 @@
-package plugin.spigot.defaultpackage;
+package plugin.spigot.defaultpackage.commands;
 
-import static plugin.spigot.defaultpackage.Commands.*;
+import static plugin.spigot.defaultpackage.commands.Commands.PLAYERPOS;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -11,8 +11,13 @@ import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
+
 import com.google.common.collect.Maps;
+
 import net.md_5.bungee.api.ChatColor;
+import plugin.spigot.defaultpackage.Main;
+import plugin.spigot.defaultpackage.entities.CustomLocation;
+import plugin.spigot.defaultpackage.managers.FileManager;
 
 public class PlayerposCommand implements TabExecutor {
 

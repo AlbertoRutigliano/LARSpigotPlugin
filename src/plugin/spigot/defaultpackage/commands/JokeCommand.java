@@ -1,17 +1,22 @@
-package plugin.spigot.defaultpackage;
+package plugin.spigot.defaultpackage.commands;
 
+
+import static plugin.spigot.defaultpackage.commands.Commands.*;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import static plugin.spigot.defaultpackage.Commands.*;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
+
+import plugin.spigot.defaultpackage.Main;
+import plugin.spigot.defaultpackage.managers.ServerManager;
 
 import org.bukkit.Sound;
 
