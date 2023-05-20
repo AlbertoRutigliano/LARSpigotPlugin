@@ -22,5 +22,5 @@ jobs:
         port: 22
         username: 'multicraft'
         password: ${{ secrets.FTP_PASSWORD }}
-        localPath: './pom.xml'
+        localPath: './home/runner/work/MinecraftPluginDev/MinecraftPluginDev/target/'
         remotePath: './multicraftServer/servers/svil/plugins/'
