@@ -114,8 +114,8 @@ public class FileManager {
 	
 	public static List<CustomLocation> readAllCSVCoords(String world) {
 		List<CustomLocation> cls = new ArrayList<CustomLocation>();
+		// TODO Fix
 		cls = readAllCSVCoords().stream().filter(q -> q.getWorldName().toString().equalsIgnoreCase(world)).toList();
-		
 		return cls;
 	}
 
