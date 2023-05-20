@@ -1,5 +1,6 @@
 package lar.spigot.plugin;
 
+import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import lar.spigot.plugin.commands.CoordsCommand;
@@ -11,6 +12,7 @@ import lar.spigot.plugin.managers.ConfigManager;
 import lar.spigot.plugin.managers.MSGManager;
 import lar.spigot.plugin.managers.PlayerManager;
 import lar.spigot.plugin.managers.ServerManager;
+import net.md_5.bungee.api.ChatColor;
 
 import org.bukkit.event.Listener;
 
@@ -18,6 +20,7 @@ import static lar.spigot.plugin.commands.Commands.*;
 
 import java.nio.file.Paths;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Server;
 
 public class Main extends JavaPlugin implements Listener {
@@ -27,10 +30,17 @@ public class Main extends JavaPlugin implements Listener {
 
     private TrackRunner trackRunner;
 	
+    @Override
+    public void onLoad() {
+    	MyServer = getServer();
+		MyServer.broadcastMessage(ChatColor.GRAY + "--> " + ChatColor.GREEN + this.getDescription().getName() + " v" + this.getDescription().getVersion() + ChatColor.GRAY + " reloaded");
+    }
+    
 	@Override
 	public void onEnable() {
 		ConfigManager.CreateCustomConfig();
 		MyServer = getServer();
+		MyServer.broadcastMessage(ChatColor.GRAY + "--> " + ChatColor.GREEN + this.getDescription().getName() + " v" + this.getDescription().getVersion() + ChatColor.GRAY + " enabled");
 		
 		this.vPlayerManager = new PlayerManager(this);
 		
