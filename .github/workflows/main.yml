@@ -14,6 +14,8 @@ jobs:
         server: 185.25.206.75
         username: multicraft
         password: ${{ secrets.FTP_PASSWORD }}
-        protocol: ftps-legacy
+        protocol: ftps
         port: 22
         server-dir: provola/
+        timeout: 60000
+        dry-run: true
