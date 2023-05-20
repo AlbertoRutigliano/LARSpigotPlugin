@@ -23,4 +23,4 @@ jobs:
         username: 'multicraft'
         password: ${{ secrets.FTP_PASSWORD }}
         localPath: './pom.xml'
-        remotePath: './multicraftServer/servers/svil/plugins'
+        remotePath: './multicraftServer/servers/svil/plugins/'
