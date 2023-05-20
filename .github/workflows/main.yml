@@ -13,12 +13,12 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
     - name: Build with Maven
-      run: mvn clean package
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.2
+      run: mvn --batch-mode --update-snapshots package
+    - run: mkdir staging && cp target/*.jar staging
+    - uses: actions/upload-artifact@v3
       with:
-        name: 'LARSpigotPlugin'
-        path: './'
+       name: 'LARSpigotPlugin'
+       path: './provola'
     - name: Upload Files
       id: upload
       uses: Creepios/sftp-action@v1.0.3
@@ -27,5 +27,5 @@ jobs:
         port: 22
         username: 'multicraft'
         password: ${{ secrets.FTP_PASSWORD }}
-        localPath: './target/LARSpigotPlugin/'
+        localPath: './provola'
         remotePath: './multicraftServer/servers/svil/plugins/'
