@@ -1,6 +1,15 @@
-package plugin.spigot.defaultpackage;
+package lar.spigot.plugin.commands;
 
-import org.bukkit.Bukkit;
+import static lar.spigot.plugin.commands.Commands.LOCATION;
+import static lar.spigot.plugin.commands.Commands.NEW;
+import static lar.spigot.plugin.commands.Commands.PLAYER;
+import static lar.spigot.plugin.commands.Commands.STOP;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -9,12 +18,10 @@ import org.bukkit.command.TabExecutor;
 import org.bukkit.entity.Player;
 import org.bukkit.util.StringUtil;
 
-import static plugin.spigot.defaultpackage.Commands.*;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import lar.spigot.plugin.Main;
+import lar.spigot.plugin.entities.CustomLocation;
+import lar.spigot.plugin.managers.FileManager;
+import lar.spigot.plugin.managers.ServerManager;
 
 
 /**

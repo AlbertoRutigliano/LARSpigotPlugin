@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage;
+package lar.spigot.plugin.managers;
 
 import java.io.IOException;
 import java.util.HashMap;

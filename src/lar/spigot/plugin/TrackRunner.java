@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage;
+package lar.spigot.plugin;
 
 import java.util.HashMap;
 import java.util.HashSet;

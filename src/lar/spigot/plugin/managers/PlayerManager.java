@@ -1,4 +1,4 @@
-package plugin.spigot.defaultpackage;
+package lar.spigot.plugin.managers;
 
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -28,6 +28,14 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import lar.spigot.plugin.ConfigProperties;
+import lar.spigot.plugin.ItemStackComparator;
+import lar.spigot.plugin.Main;
+import lar.spigot.plugin.commands.ThanksCommand;
+import lar.spigot.plugin.entities.PlayerProperties;
+import lar.spigot.plugin.entities.SortingType;
+
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerMoveEvent;
 
