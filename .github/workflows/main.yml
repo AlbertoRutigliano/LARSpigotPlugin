@@ -18,7 +18,7 @@ jobs:
     - uses: actions/upload-artifact@v3
       with:
        name: 'LARSpigotPlugin'
-       path: './provola'
+       path: './staging'
     - name: Upload Files
       id: upload
       uses: Creepios/sftp-action@v1.0.3
@@ -27,5 +27,5 @@ jobs:
         port: 22
         username: 'multicraft'
         password: ${{ secrets.FTP_PASSWORD }}
-        localPath: './provola'
+        localPath: './staging'
         remotePath: './multicraftServer/servers/svil/plugins/'
