@@ -14,3 +14,6 @@ jobs:
         server: 185.25.206.75
         username: multicraft
         password: ${{ secrets.FTP_PASSWORD }}
+        protocol: ftps
+        port: 22
+        server-dir: provola/
