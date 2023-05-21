@@ -4,7 +4,7 @@
   <artifactId>LARSpigotPlugin</artifactId>
   <version>10.0.0</version>
   <build>
-    <sourceDirectory>src</sourceDirectory>
+    <!-- <sourceDirectory>src</sourceDirectory>
     <resources>
       <resource>
         <directory>src</directory>
@@ -13,6 +13,7 @@
         </excludes>
       </resource>
     </resources>
+     -->
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>
