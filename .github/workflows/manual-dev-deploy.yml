@@ -15,15 +15,15 @@ jobs:
       run: mvn --batch-mode --update-snapshots package
     - name: Get version
       run: |
-        echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-    - run: mkdir staging && cp target/*.jar staging
-    - name: Upload Files
-      id: upload
-      uses: Creepios/sftp-action@v1.0.3
-      with:
-        host: '185.25.206.75'
-        port: 22
-        username: 'multicraft'
-        password: ${{ secrets.FTP_PASSWORD }}
-        localPath: './staging'
-        remotePath: './multicraftServer/servers/svil/plugins/'
+        echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+   # - run: mkdir staging && cp target/*.jar staging
+   # - name: Upload Files
+   #   id: upload
+   #   uses: Creepios/sftp-action@v1.0.3
+   #   with:
+   #     host: '185.25.206.75'
+   #     port: 22
+   #     username: 'multicraft'
+   #    password: ${{ secrets.FTP_PASSWORD }}
+   #     localPath: './staging'
+   #     remotePath: './multicraftServer/servers/svil/plugins/'
