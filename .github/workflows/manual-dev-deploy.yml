@@ -13,10 +13,21 @@ jobs:
         distribution: 'temurin'
     - name: Build with Maven
       run: mvn --batch-mode --update-snapshots package
+    - run: mkdir staging && cp target/*.jar staging
+    - name: Upload Files
+      id: upload
+      uses: Creepios/sftp-action@v1.0.3
+      with:
+        host: '185.25.206.75'
+        port: 22
+        username: 'multicraft'
+        password: ${{ secrets.FTP_PASSWORD }}
+        localPath: './staging'
+        remotePath: './multicraftServer/servers/svil/plugins/'
     - name: Set Release version env variable
       run: |
         echo "RELEASE_VERSION=$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)" >> $GITHUB_ENV
-    - name: Create Release
+    - name: Creating Release
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -26,14 +37,3 @@ jobs:
         release_name: Release ${{ env.RELEASE_VERSION }}
         draft: false
         prerelease: false
-   # - run: mkdir staging && cp target/*.jar staging
-   # - name: Upload Files
-   #   id: upload
-   #   uses: Creepios/sftp-action@v1.0.3
-   #   with:
-   #     host: '185.25.206.75'
-   #     port: 22
-   #     username: 'multicraft'
-   #    password: ${{ secrets.FTP_PASSWORD }}
-   #     localPath: './staging'
-   #     remotePath: './multicraftServer/servers/svil/plugins/'
