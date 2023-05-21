@@ -8,9 +8,11 @@ import java.io.Reader;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -115,7 +117,7 @@ public class FileManager {
 	public static List<CustomLocation> readAllCSVCoords(String world) {
 		List<CustomLocation> cls = new ArrayList<CustomLocation>();
 		// TODO Fix
-		cls = readAllCSVCoords().stream().filter(q -> q.getWorldName().toString().equalsIgnoreCase(world)).toList();
+		cls = readAllCSVCoords().stream().filter(q -> q.getWorldName().toString().equalsIgnoreCase(world)).collect(Collectors.toList());
 		return cls;
 	}
 
