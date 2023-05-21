@@ -37,6 +37,8 @@ public class Main extends JavaPlugin implements Listener {
 	@Override
 	public void onEnable() {
 		ConfigManager.CreateCustomConfig();
+		ConfigManager.CreateDefaultMessagesConfig();
+		
 		MyServer = getServer();
 		
 		this.vPlayerManager = new PlayerManager(this);
