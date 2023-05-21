@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>LARSpigotPlugin</groupId>
   <artifactId>LARSpigotPlugin</artifactId>
-  <version>10.0.0</version>
+  <version>10.0.1</version>
   <build>
     <!-- <sourceDirectory>src</sourceDirectory>
     <resources>
@@ -14,6 +14,12 @@
       </resource>
     </resources>
      -->
+    <resources>
+    	<resource>
+    		<directory>src/main/resources</directory> <!-- (your resources folder location) -->
+            <filtering>true</filtering> <!-- this is the important part, it's what replaces, filters, all placeholders in the resources folder (such as ${project.version} in plugin.yml) -->
+         </resource>
+    </resources>
     <plugins>
       <plugin>
         <artifactId>maven-compiler-plugin</artifactId>

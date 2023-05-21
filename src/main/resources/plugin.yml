@@ -1,7 +1,7 @@
 api: LARSpigotPluginAPI
 name: LARSpigotPlugin
 main: lar.spigot.plugin.Main
-version: "10.0.0"
+version: ${project.version}
 api-version: 1.19
 authors: [Alberto Rutigliano, Luca Acquafredda]
 website: https://github.com/AlbertoRutigliano/MinecraftPluginDev
