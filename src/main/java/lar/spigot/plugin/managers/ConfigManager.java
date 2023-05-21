@@ -2,6 +2,9 @@ package lar.spigot.plugin.managers;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+
+import org.apache.commons.io.FileUtils;
 import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -11,7 +14,8 @@ import lar.spigot.plugin.ConfigProperties;
 public class ConfigManager {
 	private static File vCustomConfigFile;
     private static FileConfiguration vCustomConfig;
- 
+    
+    private static File messagesConfigFile;
     
 	//Create config file if doesn't exist and populate it with base configuration
 	public static void CreateCustomConfig() {
@@ -45,8 +49,21 @@ public class ConfigManager {
         }
     }
 	
-	public static FileConfiguration GetCustomConfig()
-	{
+	public static FileConfiguration GetCustomConfig() {
         return vCustomConfig;
     }
+	
+	//Create messages.yml file if doesn't exist and populate it with default messages (from resources/messages.yml)
+	public static void CreateDefaultMessagesConfig() {
+		messagesConfigFile = new File(ConfigProperties.PLUGIN_FOLDER_PATH.getValue() + ConfigProperties.MESSAGES_FILE.getValue());
+		 if (!messagesConfigFile.exists()) {
+			 messagesConfigFile.getParentFile().mkdirs();
+			 try {
+				 InputStream targetStream = ConfigManager.class.getResourceAsStream("/messages.yml");
+				 FileUtils.copyInputStreamToFile(targetStream, messagesConfigFile);
+			 } catch (IOException e1) {
+				 e1.printStackTrace();
+			 }
+		 }
+	}
 }

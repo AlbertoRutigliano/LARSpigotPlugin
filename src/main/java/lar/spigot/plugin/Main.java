@@ -1,6 +1,15 @@
 package lar.spigot.plugin;
 
-import org.bukkit.plugin.PluginDescriptionFile;
+import static lar.spigot.plugin.commands.Commands.COORDS;
+import static lar.spigot.plugin.commands.Commands.JOKE;
+import static lar.spigot.plugin.commands.Commands.PLAYERPOS;
+import static lar.spigot.plugin.commands.Commands.THANKS;
+import static lar.spigot.plugin.commands.Commands.TRACK;
+
+import java.nio.file.Paths;
+
+import org.bukkit.Server;
+import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import lar.spigot.plugin.commands.CoordsCommand;
@@ -12,16 +21,6 @@ import lar.spigot.plugin.managers.ConfigManager;
 import lar.spigot.plugin.managers.MSGManager;
 import lar.spigot.plugin.managers.PlayerManager;
 import lar.spigot.plugin.managers.ServerManager;
-import net.md_5.bungee.api.ChatColor;
-
-import org.bukkit.event.Listener;
-
-import static lar.spigot.plugin.commands.Commands.*;
-
-import java.nio.file.Paths;
-
-import org.bukkit.Bukkit;
-import org.bukkit.Server;
 
 public class Main extends JavaPlugin implements Listener {
 	public static Server MyServer;
@@ -33,14 +32,14 @@ public class Main extends JavaPlugin implements Listener {
     @Override
     public void onLoad() {
     	MyServer = getServer();
-		MyServer.broadcastMessage(ChatColor.GRAY + "--> " + ChatColor.GREEN + this.getDescription().getName() + " v" + this.getDescription().getVersion() + ChatColor.GRAY + " reloaded");
     }
     
 	@Override
 	public void onEnable() {
 		ConfigManager.CreateCustomConfig();
+		ConfigManager.CreateDefaultMessagesConfig();
+		
 		MyServer = getServer();
-		MyServer.broadcastMessage(ChatColor.GRAY + "--> " + ChatColor.GREEN + this.getDescription().getName() + " v" + this.getDescription().getVersion() + ChatColor.GRAY + " enabled");
 		
 		this.vPlayerManager = new PlayerManager(this);
 		
