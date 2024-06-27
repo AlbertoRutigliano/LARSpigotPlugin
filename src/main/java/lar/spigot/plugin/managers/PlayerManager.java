@@ -192,25 +192,27 @@ public class PlayerManager implements Listener {
 	@EventHandler
     public void onInventoryclick(InventoryClickEvent event){
 		if (event.getClick().equals(ClickType.DOUBLE_CLICK)) {
-			InventoryType inventoryType = event.getView().getType();
+			Inventory clickedInventory = event.getClickedInventory();
+			InventoryType inventoryType = clickedInventory.getType();
 			
 			if (inventoryType.equals(InventoryType.CHEST) || inventoryType.equals(InventoryType.BARREL) || inventoryType.equals(InventoryType.ENDER_CHEST) ) {
 				Player player = (Player) event.getWhoClicked();
-				Inventory chest = event.getView().getTopInventory();
 			
 				ArrayList<ItemStack> chestInventory = new ArrayList<>();
 				ArrayList<ItemStack> chestInventoryCopy = new ArrayList<>();
 				
-				for (int i = 0; i < event.getView().getTopInventory().getSize() ; i++) {
-		        		chestInventory.add(event.getView().getItem(i));
-		        		chestInventoryCopy.add(event.getView().getItem(i));
+				for (int i = 0; i < clickedInventory.getSize() ; i++) {
+					if (clickedInventory.getItem(i) != null) {
+						chestInventory.add(clickedInventory.getItem(i));
+		        		chestInventoryCopy.add(clickedInventory.getItem(i));							
+					}
 		    	}
 				
 				ItemStackComparator l_SortingType = new ItemStackComparator(SortingType.SIMPLE_ASC);
 				
 				chestInventory.sort(l_SortingType);
 		    					
-				// Se già ordinato, inverti l'ordinamento
+				// Se giï¿½ ordinato, inverti l'ordinamento
 				if (chestInventoryCopy.equals(chestInventory)) {
 					l_SortingType.setSortingType(SortingType.SIMPLE_DESC);
 				} else {
@@ -236,7 +238,7 @@ public class PlayerManager implements Listener {
 		    		sortedInventory[i] = chestInventory.get(i);
 		    	}
 
-		    	chest.setContents(sortedInventory);
+		    	clickedInventory.setContents(sortedInventory);
 			    event.setCancelled(true);
 			    player.updateInventory();
 			    player.playNote(player.getLocation(), Instrument.CHIME, Note.natural(1, Tone.A));
@@ -251,7 +253,7 @@ public class PlayerManager implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
 		 Player player = event.getPlayer();
 	     String message = event.getMessage();
-	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "§8: " + ChatColor.WHITE + message);
+	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "ï¿½8: " + ChatColor.WHITE + message);
 	     
 	     for(String messageWord: message.split(" ")) {
 	    	 for(String thanksWord: ThanksCommand.THANKS_WORDS){
