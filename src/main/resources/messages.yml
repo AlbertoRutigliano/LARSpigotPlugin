@@ -190,6 +190,29 @@ NOT_SLEEPING_KICK:
     - "A dormireeeeeeeeeee"
     - "La prossima volta ti conviene dormire"
     - "Benvenuto tra quelli a cui non piace dormire"
+FIGHT_DECLARATION:
+    - "%2$s%1$s%3$s ti ha dichiarato guerra."
+    - "%2$s%1$s%3$s vuole spaccarti le ossa."
+    - "%2$s%1$s%3$s vuole massacrarti."
+    - "%2$s%1$s%3$s vuole darti una bella lezione."
+FIGHT_REQUEST_SEND:
+    - "Hai sfidato %2$s%1$s%3$s"
+FIGHT_DECLINE:
+    - "Per rifiutare scrivi %1$s/fight decline%2$s"
+FIGHT_DECLINED:
+    - "%2$s%1$s%3$s ha troppa paura di sfidarti."
+    - "%2$s%1$s%3$s è un fifone."
+    - "%2$s%1$s%3$s è impegnato a farsi una pippa."
+FIGHT_ACCEPT:
+    - "Per accettare scrivi %1$s/fight accept%2$s"
+FIGHT_ACCEPTED:
+    - "%2$s%1$s%3$s ha accettato la tua sfida."
+    - "%2$s%1$s%3$s è pronto a fare a botte."
+FIGHT_LOOSE:
+    - "%2$s%1$s%3$s ha perso."
+    - "%2$s%1$s%3$s è il perdente."
+    - "%2$s%1$s%3$s è stato sconfitto amaramente."
+    - "%2$s%1$s%3$s si è dileguato."
 QUOTE:
     - "È molto bello"
     - "Davide, sei un pezzo di merda, perchè sei uscito senza dire niente a noi? Lurd d crstian"

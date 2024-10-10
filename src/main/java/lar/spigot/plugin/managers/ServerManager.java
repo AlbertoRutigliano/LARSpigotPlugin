@@ -204,6 +204,17 @@ public class ServerManager {
 		}
 		return onlinePlayersNames;
 	}
+	
+	/**
+	 * Get Player object by name
+	 * @param playerName
+	 * @return Player Object of the requested player
+	 */
+	public static Player getPlayerByName(String playerName) {
+		Player foundPlayer = ServerManager.getOnlinePlayers().stream().filter(x -> x.getName().equalsIgnoreCase(playerName)).toList().get(0);
+		
+		return foundPlayer;
+	}
 
 	/**
 	 * Send message to all players

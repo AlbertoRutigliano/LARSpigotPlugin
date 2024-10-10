@@ -11,12 +11,14 @@ import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Note;
 import org.bukkit.Note.Tone;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.enchantment.EnchantItemEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.PlayerDeathEvent;
 import org.bukkit.event.inventory.ClickType;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
@@ -28,13 +30,13 @@ import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
-
 import lar.spigot.plugin.ConfigProperties;
 import lar.spigot.plugin.ItemStackComparator;
 import lar.spigot.plugin.Main;
 import lar.spigot.plugin.commands.ThanksCommand;
 import lar.spigot.plugin.entities.PlayerProperties;
 import lar.spigot.plugin.entities.SortingType;
+import lar.spigot.plugin.managers.MSGManager.Message;
 
 import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerMoveEvent;
@@ -156,6 +158,14 @@ public class PlayerManager implements Listener {
 			plugin.getTrackRunner().unsetTracking(l_Player.getUniqueId());
 	    }
 		vPlayerProperties.remove(l_Player);
+		for (Player player : Main.MyServer.getOnlinePlayers()) {
+			vPlayerProperties.get(player).getFightingPlayersRequests().remove(l_Player);
+			
+			if(vPlayerProperties.get(player).getFightingPlayers().contains(l_Player)) {
+				player.sendMessage(MSGManager.getMessage(Message.FIGHT_LOOSE, l_Player.getName(), ChatColor.GOLD, ChatColor.GRAY));
+			}
+			vPlayerProperties.get(player).getFightingPlayers().remove(l_Player);
+		}
 	}
 	
 	@EventHandler
@@ -169,8 +179,48 @@ public class PlayerManager implements Listener {
 			vPlayerProperties.get(l_Player).setLastMoveTimestamp(now);
 		}
 	}
+
+	@EventHandler
+	public void onPlayerDeathEvent(PlayerDeathEvent e) {
+		Player deadPlayer = e.getEntity();
+		PlayerProperties deadPlayerProp = vPlayerProperties.get(deadPlayer);
+
+		if (deadPlayerProp.isFighting()) {
+	        // Keep player inventory and experience level, delete death message
+	        e.getDrops().clear();
+	        e.setDroppedExp(0);
+	        e.setKeepInventory(true);
+	        e.setKeepLevel(true);
+	        e.setDeathMessage(null);
+	        // Send message to all fighters that player died
+	        String message = MSGManager.getMessage(Message.FIGHT_LOOSE, deadPlayer.getName(), ChatColor.GOLD, ChatColor.GRAY);
+	        deadPlayer.sendMessage(message);
+			for(Player p : deadPlayerProp.getFightingPlayers()) {
+				p.sendMessage(message);
+			}
+	        // Respawn player to simulate he is not dead
+	        Bukkit.getScheduler().scheduleSyncDelayedTask(Main.getPlugin(Main.class), new Runnable() {
+	            @Override
+	            public void run() {
+	                deadPlayer.spigot().respawn();	// Force respawn method
+	                deadPlayer.setHealth(deadPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());  // Restore player health to max
+
+	                // Clean variables
+	    			for(Player fightingPlayer : deadPlayerProp.getFightingPlayers()) {
+	    				vPlayerProperties.get(fightingPlayer).getFightingPlayers().remove(deadPlayer);
+	    				if (vPlayerProperties.get(fightingPlayer).getFightingPlayers().size() == 0) {
+	    					fightingPlayer.setHealth(fightingPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()); // Restore player health to max
+	    				}
+	    			}
+	    			deadPlayerProp.getFightingPlayers().clear();
+	    	        e.setKeepInventory(false);
+	    	        e.setKeepLevel(false);
+	            }
+	        }, 1L);  // Schedule after 1 tick
+		}
+	}
 	
-	// TODO Testare onPlayerDeath e onPlayerRespawnEvent
+	// TODO Testare onPlayerDeath e onPlayerRespawnEvent, includere negli eventi già gestiti
 	/*
 	 * Location prova;
 	@EventHandler
