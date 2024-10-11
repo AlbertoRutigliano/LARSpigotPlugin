@@ -1,11 +1,10 @@
 package lar.spigot.plugin.commands;
 
-import static lar.spigot.plugin.commands.Commands.START;
 import static lar.spigot.plugin.commands.Commands.ACCEPT;
 import static lar.spigot.plugin.commands.Commands.DECLINE;
+import static lar.spigot.plugin.commands.Commands.START;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
@@ -88,14 +87,21 @@ public class FightCommand implements TabExecutor {
     @Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
     	
-    	String[] ALLOWED_COMMANDS = {START, ACCEPT, DECLINE};
+    	Player p = (sender instanceof Player) ? (Player) sender : null;
+    	
+    	List<String> ALLOWED_COMMANDS = new ArrayList<>();
+    	ALLOWED_COMMANDS.add(START);
+    	// String[] ALLOWED_COMMANDS = {START, ACCEPT, DECLINE};
     	
 		List<String> completions = new ArrayList<>();
 		
-		Player p = (sender instanceof Player) ? (Player) sender : null;
+		if (!PlayerManager.vPlayerProperties.get(p).getFightingPlayersRequests().isEmpty()) {
+			ALLOWED_COMMANDS.add(ACCEPT);
+			ALLOWED_COMMANDS.add(DECLINE);
+		}
 		
 		if (args.length == 1) {
-			StringUtil.copyPartialMatches(args[0], Arrays.asList(ALLOWED_COMMANDS), completions);
+			StringUtil.copyPartialMatches(args[0], ALLOWED_COMMANDS, completions);
 			return completions;
 		} 
 		
