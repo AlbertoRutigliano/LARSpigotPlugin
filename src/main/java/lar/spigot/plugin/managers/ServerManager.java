@@ -211,9 +211,16 @@ public class ServerManager {
 	 * @return Player Object of the requested player
 	 */
 	public static Player getPlayerByName(String playerName) {
+		/* Need new Java JDK for this
 		Player foundPlayer = ServerManager.getOnlinePlayers().stream().filter(x -> x.getName().equalsIgnoreCase(playerName)).toList().get(0);
-		
 		return foundPlayer;
+		*/
+		for (Player p : ServerManager.getOnlinePlayers()) {
+			if (p.getDisplayName().equalsIgnoreCase(playerName)) {
+				return p;
+			}
+		}
+		return null;
 	}
 
 	/**

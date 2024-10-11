@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Note;
+import org.bukkit.Sound;
 import org.bukkit.Note.Tone;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -158,11 +159,13 @@ public class PlayerManager implements Listener {
 			plugin.getTrackRunner().unsetTracking(l_Player.getUniqueId());
 	    }
 		vPlayerProperties.remove(l_Player);
+		float soundPitch = 1.2f + (float) Math.random() * (2.0f - 1.2f);
 		for (Player player : Main.MyServer.getOnlinePlayers()) {
 			vPlayerProperties.get(player).getFightingPlayersRequests().remove(l_Player);
 			
 			if(vPlayerProperties.get(player).getFightingPlayers().contains(l_Player)) {
 				player.sendMessage(MSGManager.getMessage(Message.FIGHT_LOOSE, l_Player.getName(), ChatColor.GOLD, ChatColor.GRAY));
+				player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100.f, soundPitch);
 			}
 			vPlayerProperties.get(player).getFightingPlayers().remove(l_Player);
 		}
@@ -206,10 +209,12 @@ public class PlayerManager implements Listener {
 	                deadPlayer.setHealth(deadPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());  // Restore player health to max
 
 	                // Clean variables
+	                float soundPitch = 1.2f + (float) Math.random() * (2.0f - 1.2f);
 	    			for(Player fightingPlayer : deadPlayerProp.getFightingPlayers()) {
 	    				vPlayerProperties.get(fightingPlayer).getFightingPlayers().remove(deadPlayer);
 	    				if (vPlayerProperties.get(fightingPlayer).getFightingPlayers().size() == 0) {
 	    					fightingPlayer.setHealth(fightingPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()); // Restore player health to max
+	    					fightingPlayer.playSound(fightingPlayer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100.0f, soundPitch);
 	    				}
 	    			}
 	    			deadPlayerProp.getFightingPlayers().clear();

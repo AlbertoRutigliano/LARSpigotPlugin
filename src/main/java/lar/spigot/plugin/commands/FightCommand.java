@@ -1,15 +1,15 @@
 package lar.spigot.plugin.commands;
 
-import static lar.spigot.plugin.commands.Commands.START;
 import static lar.spigot.plugin.commands.Commands.ACCEPT;
 import static lar.spigot.plugin.commands.Commands.DECLINE;
+import static lar.spigot.plugin.commands.Commands.START;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import org.bukkit.ChatColor;
+import org.bukkit.Sound;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabExecutor;
@@ -34,12 +34,16 @@ public class FightCommand implements TabExecutor {
 					if (args[0].equalsIgnoreCase(ACCEPT)) {
 						PlayerProperties pSenderProp = PlayerManager.vPlayerProperties.get(pSender); 
 						// Add player to fighting players for requestor, add requestor player to fighting players for current player and send message for acceptance
+						float fightStartSoundPitch = 1.6f + (float) Math.random() * (2.0f - 1.6f);
 						for (Player requestPlayer : pSenderProp.getFightingPlayersRequests()) {
 							PlayerManager.vPlayerProperties.get(requestPlayer).getFightingPlayers().add(pSender);
 							pSenderProp.getFightingPlayers().add(requestPlayer);
 							String message = MSGManager.getMessage(Message.FIGHT_ACCEPTED, pSender.getName(), ChatColor.GOLD, ChatColor.GRAY);
 							requestPlayer.sendMessage(message);
 							pSender.sendMessage(message);
+							requestPlayer.playSound(requestPlayer.getLocation(), Sound.EVENT_RAID_HORN, 100.0f, fightStartSoundPitch);
+							pSender.playSound(pSender.getLocation(), Sound.EVENT_RAID_HORN, 100.0f, fightStartSoundPitch);
+
 						}
 						pSenderProp.getFightingPlayersRequests().clear();
 					}
@@ -71,6 +75,7 @@ public class FightCommand implements TabExecutor {
 										fightingPlayer.sendMessage(MSGManager.getMessage(Message.FIGHT_ACCEPT, ChatColor.GOLD, ChatColor.GRAY));
 										fightingPlayer.sendMessage(MSGManager.getMessage(Message.FIGHT_DECLINE, ChatColor.GOLD, ChatColor.GRAY));
 										pSender.sendMessage(MSGManager.getMessage(Message.FIGHT_REQUEST_SEND, fightingPlayer.getName(), ChatColor.GOLD, ChatColor.GRAY));
+										fightingPlayer.playSound(fightingPlayer.getLocation(), Sound.BLOCK_NOTE_BLOCK_BELL, 10.f, 2.0f);
 									}
 								}else {
 									pSender.sendMessage(ChatColor.GOLD + fightingPlayer.getName() + ChatColor.GRAY + " è già impegnato in una battaglia");
@@ -88,14 +93,20 @@ public class FightCommand implements TabExecutor {
     @Override
 	public List<String> onTabComplete(CommandSender sender, Command cmd, String label, String[] args) {
     	
-    	String[] ALLOWED_COMMANDS = {START, ACCEPT, DECLINE};
+    	Player p = (sender instanceof Player) ? (Player) sender : null;
+    	
+    	List<String> ALLOWED_COMMANDS = new ArrayList<>();
+    	ALLOWED_COMMANDS.add(START);
     	
 		List<String> completions = new ArrayList<>();
 		
-		Player p = (sender instanceof Player) ? (Player) sender : null;
+		if (!PlayerManager.vPlayerProperties.get(p).getFightingPlayersRequests().isEmpty()) {
+			ALLOWED_COMMANDS.add(ACCEPT);
+			ALLOWED_COMMANDS.add(DECLINE);
+		}
 		
 		if (args.length == 1) {
-			StringUtil.copyPartialMatches(args[0], Arrays.asList(ALLOWED_COMMANDS), completions);
+			StringUtil.copyPartialMatches(args[0], ALLOWED_COMMANDS, completions);
 			return completions;
 		} 
 		
