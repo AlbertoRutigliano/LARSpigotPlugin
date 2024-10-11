@@ -303,7 +303,7 @@ public class PlayerManager implements Listener {
     public void onChat(AsyncPlayerChatEvent event) {
 		 Player player = event.getPlayer();
 	     String message = event.getMessage();
-	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + "�8: " + ChatColor.WHITE + message);
+	     event.setFormat(ChatColor.GOLD + player.getDisplayName() + ChatColor.GRAY + ": " + ChatColor.WHITE + message);
 	     
 	     for(String messageWord: message.split(" ")) {
 	    	 for(String thanksWord: ThanksCommand.THANKS_WORDS){
