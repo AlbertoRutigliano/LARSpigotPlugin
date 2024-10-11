@@ -43,6 +43,17 @@ commands:
         /grz
         /ty
       permission: perm.general
+   Fight:
+      aliases: [war]
+      description: Dichiara guerra ad un giocatore
+      usage:  |
+        /war start [player] - Dichiara guerra al giocatore
+        /fight start [player] - Dichiara guerra al giocatore
+        /war accept - Accetta l'invito a lottare
+        /fight accept - Accetta l'invito a lottare
+        /war decline - Rifiuta l'invito a lottare
+        /fight decline - Rifiuta l'invito a lottare
+      permission: perm.general
 permissions:
    perm.general:
       default: true

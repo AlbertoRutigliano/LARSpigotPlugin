@@ -5,6 +5,7 @@ import static lar.spigot.plugin.commands.Commands.JOKE;
 import static lar.spigot.plugin.commands.Commands.PLAYERPOS;
 import static lar.spigot.plugin.commands.Commands.THANKS;
 import static lar.spigot.plugin.commands.Commands.TRACK;
+import static lar.spigot.plugin.commands.Commands.FIGHT;
 
 import java.nio.file.Paths;
 
@@ -13,6 +14,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import lar.spigot.plugin.commands.CoordsCommand;
+import lar.spigot.plugin.commands.FightCommand;
 import lar.spigot.plugin.commands.JokeCommand;
 import lar.spigot.plugin.commands.PlayerposCommand;
 import lar.spigot.plugin.commands.ThanksCommand;
@@ -60,6 +62,8 @@ public class Main extends JavaPlugin implements Listener {
 		this.getCommand(JOKE).setExecutor(new JokeCommand());
 
 		this.getCommand(THANKS).setExecutor(new ThanksCommand());
+		
+		this.getCommand(FIGHT).setExecutor(new FightCommand());
 
 		ServerManager.setTestServerPort(ConfigManager.GetCustomConfig().getInt(ConfigProperties.SERVER_TEST_PORT.name()));
 

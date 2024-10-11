@@ -19,7 +19,8 @@ public class ChestManager {
 		ItemStackComparator l_Comparer = new ItemStackComparator();
 		
 		// Check if stacks have same item
-		if(l_Comparer.compare(i1, i2) == 0) {
+		// Filled maps must not be compacted
+		if(l_Comparer.compare(i1, i2) == 0 && i1.getType().compareTo(Material.FILLED_MAP) != 0 && i2.getType().compareTo(Material.FILLED_MAP) != 0) {
 			int l_CurrentAmount = i1.getAmount();
 			int l_CurrentMaxSize = i1.getMaxStackSize();
 			

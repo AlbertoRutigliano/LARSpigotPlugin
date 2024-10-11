@@ -24,5 +24,10 @@ public interface Commands {
 	final static String GRAZIE = "grazie";
 	final static String GRZ = "grz";
 	final static String TY = "ty";
+	final static String FIGHT = "fight";
+	final static String WAR = "war";
+	final static String START = "start";
+	final static String ACCEPT = "accept";
+	final static String DECLINE = "decline";
 
 }
