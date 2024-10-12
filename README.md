@@ -1,4 +1,4 @@
-# MinecraftPluginDev
+# LARSpigotPlugin
 _Creato da Luca Acquafredda & Alberto Rutigliano_
 <hr>
 Appunti:
