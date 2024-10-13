@@ -34,24 +34,24 @@ public class TrackRunner extends BukkitRunnable {
             Player p = Bukkit.getPlayer(uuid);
             if(p != null && p.isOnline()) {
                 if(location.getWorld().getName().equals(p.getWorld().getName())) {
-                    Location pLoc = p.getLocation().clone();
-                    pLoc.setY(0);
-                    double distance = location.distance(pLoc);
+                	Location destinationLoc = location.clone();
+                    destinationLoc.setY(0);
 
-                    if(distance < 10) {
-                    	p.sendMessage(ChatColor.GRAY + "Sei arrivato a destinazione");
-                        done.add(uuid);
-                        return;
-                    }
+                    Location playerLoc = p.getLocation().clone();
+                    playerLoc.setY(0);
+                    
+                    double xDiff = destinationLoc.getX() - playerLoc.getX();
+                    double zDiff = destinationLoc.getZ() - playerLoc.getZ();
+                    double distance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
 
                     StringBuilder right = new StringBuilder();
                     StringBuilder left = new StringBuilder();
 
                     // calculate angle difference
-                    Vector diffVec = location.toVector().subtract(pLoc.toVector());
+                    Vector diffVec = destinationLoc.toVector().subtract(playerLoc.toVector());
                     diffVec.normalize();
                     double angle = Math.toDegrees(Math.atan2(diffVec.getX(), diffVec.getZ()));
-                    double diff = angleDifference(convertToAngle(angle), 360 - convertToAngle(pLoc.getYaw()));
+                    double diff = angleDifference(convertToAngle(angle), 360 - convertToAngle(playerLoc.getYaw()));
 
                     int point = (int) Math.min(Math.abs(diff / 9), 9);
 
@@ -71,6 +71,14 @@ public class TrackRunner extends BukkitRunnable {
                         }
                     }
 
+                    if (distance < 10) {
+                        p.sendMessage(ChatColor.GRAY + "Sei arrivato a destinazione");
+                        done.add(uuid);
+                        return;
+                    }
+                    
+                   
+                    
                     String action = trackFormat.replace("%distance%", Integer.toString((int) distance)).replace("%right%", right).replace("%left%", left.reverse());
                     sendActionBar(p,  action);
                 } else {
