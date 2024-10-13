@@ -3,18 +3,22 @@ package lar.spigot.plugin.entities;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.UUID;
 
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import lar.spigot.plugin.TrackRunner;
 
 public class PlayerProperties {
+	private UUID uuid;
 	private Timestamp vLastMoveTimestamp;
 	private boolean vAfk;
 	private boolean vIsSleeping;
 	private ArrayList<Player> vFightingPlayers;
 	private ArrayList<Player> vFightingPlayersRequests;
-	private TrackRunner trackRunner = null;
+	private TrackRunner trackRunner;
 	
 	public boolean isAfk() {
 		return vAfk;
@@ -76,15 +80,30 @@ public class PlayerProperties {
 	}
 	
 	public void stopTrucking() {
+		if (this.trackRunner != null) {
+			this.trackRunner.stopTracking();
+		}
 		this.trackRunner = null;
+		Bukkit.getPlayer(uuid).sendMessage(ChatColor.GRAY + "Navigatore spento");
+	}
+	
+	public UUID getUuid() {
+		return uuid;
 	}
 
-	public PlayerProperties() {
+	public void setUuid(UUID uuid) {
+		this.uuid = uuid;
+	}
+	
+
+	public PlayerProperties(UUID uuid) {
+		setUuid(uuid);
 		setLastMoveTimestamp(new Timestamp(new Date().getTime()));
 		setAfk(false);
 		setSleeping(false);
 		setFightingPlayers(new ArrayList<Player>());
 		setFightingPlayersRequests(new ArrayList<Player>());
+		setTrackRunner(null);
 	}
 
 }

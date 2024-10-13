@@ -22,82 +22,96 @@ public class TrackRunner extends BukkitRunnable {
 	//private final HashMap<UUID, Location> tracking = new HashMap<>();
 
 	private UUID uuid;
-	private Location location;
+	private Location targetLocation = null;
+	private UUID targetPlayerUUID = null;
 	private boolean isTracking = true;
 	private String trackFormat = ChatColor.WHITE + "%left%" + ChatColor.GOLD + " %distance% blocchi " + ChatColor.WHITE
 			+ "%right%";
 	
 	public TrackRunner(UUID uuid, Location location) {
 		this.uuid = uuid;
-		this.location = location.clone();
-		location.setY(0);
+		this.targetLocation = location.clone();
+		this.targetPlayerUUID = null; 
+		this.isTracking = true;
+	}
+	
+	public TrackRunner(UUID uuid, UUID targetPlayerUUID) {
+		this.uuid = uuid;
+		this.targetLocation = null; 
+		this.targetPlayerUUID = targetPlayerUUID; 
+		this.isTracking = true;
 	}
 
 	@Override
 	public void run() {
-		// A set with all done players to dodge a concurrent modification when a player
-		// is at the destination
-		//Set<UUID> done = new HashSet<>();
-		if (!isTracking) return;
-		
 		Player p = Bukkit.getPlayer(uuid);
+
+		if (!isTracking) {
+			PlayerManager.vPlayerProperties.get(p).stopTrucking();
+			this.cancel();
+			return;
+		}
+		
 		if (p != null && p.isOnline()) {
-			if (location.getWorld().getName().equals(p.getWorld().getName())) {
-				Location destinationLoc = location.clone();
-				destinationLoc.setY(0);
+			Location destinationLocation = followingLocation(); 
+			if (destinationLocation != null) {
+				destinationLocation.setY(0);
+				if (isSameWorld(p, destinationLocation)) {
+					Location playerLoc = p.getLocation().clone();
+					playerLoc.setY(0);
 
-				Location playerLoc = p.getLocation().clone();
-				playerLoc.setY(0);
+					double xDiff = destinationLocation.getX() - playerLoc.getX();
+					double zDiff = destinationLocation.getZ() - playerLoc.getZ();
+					double distance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
 
-				double xDiff = destinationLoc.getX() - playerLoc.getX();
-				double zDiff = destinationLoc.getZ() - playerLoc.getZ();
-				double distance = Math.sqrt(xDiff * xDiff + zDiff * zDiff);
+					if (distance < 10) {
+						p.sendMessage(ChatColor.GRAY + "Sei arrivato a destinazione");
+						isTracking = false;
+						PlayerManager.vPlayerProperties.get(p).stopTrucking();
+						this.cancel();
+						return;
+					}
+					
+					StringBuilder right = new StringBuilder();
+					StringBuilder left = new StringBuilder();
 
-				if (distance < 10) {
-					p.sendMessage(ChatColor.GRAY + "Sei arrivato a destinazione");
-					isTracking = false;
-					PlayerManager.vPlayerProperties.get(p).stopTrucking();
-					this.cancel();
-					return;
-				}
-				
-				StringBuilder right = new StringBuilder();
-				StringBuilder left = new StringBuilder();
+					// calculate angle difference
+					Vector diffVec = destinationLocation.toVector().subtract(playerLoc.toVector());
+					diffVec.normalize();
+					double angle = Math.toDegrees(Math.atan2(diffVec.getX(), diffVec.getZ()));
+					double diff = angleDifference(convertToAngle(angle), 360 - convertToAngle(playerLoc.getYaw()));
 
-				// calculate angle difference
-				Vector diffVec = destinationLoc.toVector().subtract(playerLoc.toVector());
-				diffVec.normalize();
-				double angle = Math.toDegrees(Math.atan2(diffVec.getX(), diffVec.getZ()));
-				double diff = angleDifference(convertToAngle(angle), 360 - convertToAngle(playerLoc.getYaw()));
+					int point = (int) Math.min(Math.abs(diff / 9), 9);
 
-				int point = (int) Math.min(Math.abs(diff / 9), 9);
-
-				// create the compass
-				for (int i = 1; i <= 9; i++) {
-					if (i == point) {
-						if (diff < 0) {
-							right.append(">");
-							left.append(" ");
+					// create the compass
+					for (int i = 1; i <= 9; i++) {
+						if (i == point) {
+							if (diff < 0) {
+								right.append(">");
+								left.append(" ");
+							} else {
+								right.append(" ");
+								left.append("<");
+							}
 						} else {
 							right.append(" ");
-							left.append("<");
+							left.append(" ");
 						}
-					} else {
-						right.append(" ");
-						left.append(" ");
 					}
+
+					String action = trackFormat.replace("%distance%", Integer.toString((int) distance))
+							.replace("%right%", right).replace("%left%", left.reverse());
+					sendActionBar(p, action);
+				} else {
+					sendActionBar(p, "Mondo sbagliato");
 				}
-
-				String action = trackFormat.replace("%distance%", Integer.toString((int) distance))
-						.replace("%right%", right).replace("%left%", left.reverse());
-				sendActionBar(p, action);
 			} else {
-				sendActionBar(p, "Mondo sbagliato");
+				PlayerManager.vPlayerProperties.get(p).stopTrucking();
+				this.cancel();
+				return;
 			}
+			
 		}
-
-		// Remove done players from tracking
-		//done.forEach(this::unsetTracking);
 	}
 
 	/**
@@ -134,6 +148,28 @@ public class TrackRunner extends BukkitRunnable {
 		double r = d > 180 ? 360 - d : d;
 		int sign = (a - b >= 0 && a - b <= 180) || (a - b <= -180 && a - b >= -360) ? 1 : -1;
 		return r * sign;
+	}
+	
+	private boolean isSameWorld(Player player, Location location) {
+		return location.getWorld().getName().equals(player.getWorld().getName());
+	}
+	
+	private Location followingLocation() {
+		if (this.targetPlayerUUID != null) {
+			Player targetPlayer = Bukkit.getPlayer(targetPlayerUUID);
+			if (targetPlayer != null && targetPlayer.isOnline()) {
+				return targetPlayer.getLocation();
+			}
+		} else if (this.targetLocation != null) {
+			return targetLocation;
+		}
+		return null;
+	}
+	
+	public void stopTracking() {
+		this.isTracking = false;
+		this.targetLocation = null;
+		this.targetPlayerUUID = null;
 	}
 
 }

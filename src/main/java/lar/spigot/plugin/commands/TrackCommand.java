@@ -32,11 +32,6 @@ import lar.spigot.plugin.managers.ServerManager;
  */
 public class TrackCommand implements TabExecutor {
 
-    private final Main plugin;
-
-    public TrackCommand(Main plugin) {
-        this.plugin = plugin;
-    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -47,7 +42,6 @@ public class TrackCommand implements TabExecutor {
 					if (args[0].equalsIgnoreCase(STOP)) {
 						if (PlayerManager.vPlayerProperties.get(p).isTracking()) {
 							PlayerManager.vPlayerProperties.get(p).stopTrucking();
-							p.sendMessage(ChatColor.GRAY + "Navigatore spento");
 						} else {
 							 p.sendMessage(ChatColor.GRAY + "Non stai seguendo nessuna coordinata");
 						}
@@ -57,12 +51,10 @@ public class TrackCommand implements TabExecutor {
 				case 2: // PLAYER <player>, LOCATION <location>
 					if (args[0].equalsIgnoreCase(PLAYER)) {
 						PlayerManager.vPlayerProperties.get(p).stopTrucking();
-						p.sendMessage(ChatColor.GRAY + "Funzione attualmente in alpha.");
-						
 						for(Player player : ServerManager.getOnlinePlayers()) {
 							if (player.getDisplayName().equalsIgnoreCase(args[1])) {
 								p.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + player.getDisplayName());
-								TrackRunner trackRunner = new TrackRunner(p.getUniqueId(), player.getLocation());
+								TrackRunner trackRunner = new TrackRunner(p.getUniqueId(), player.getUniqueId());
 						        trackRunner.runTaskTimer(Main.getPlugin(Main.class), 0, 5);
 								PlayerManager.vPlayerProperties.get(p).setTrackRunner(trackRunner);
 							}
@@ -74,7 +66,9 @@ public class TrackCommand implements TabExecutor {
 						for (CustomLocation cl : FileManager.readAllCSVCoords()) {
 							if (cl.getName().equalsIgnoreCase(locationName)) {
 								Location loc = new Location(Main.MyServer.getWorld(p.getWorld().getName()), cl.getX(), 0, cl.getZ());
-								//plugin.getTrackRunner().setTracking(p.getUniqueId(), loc);
+								TrackRunner trackRunner = new TrackRunner(p.getUniqueId(), loc);
+						        trackRunner.runTaskTimer(Main.getPlugin(Main.class), 0, 5);
+								PlayerManager.vPlayerProperties.get(p).setTrackRunner(trackRunner);
 			                    p.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + cl.getName());
 							}
 						}
@@ -86,7 +80,9 @@ public class TrackCommand implements TabExecutor {
 						try {
 							PlayerManager.vPlayerProperties.get(p).stopTrucking();
 		                    Location loc = new Location(Main.MyServer.getWorld("world"), Double.parseDouble(args[1]), 0, Double.parseDouble(args[2]));
-							//plugin.getTrackRunner().setTracking(p.getUniqueId(), loc);
+		                    TrackRunner trackRunner = new TrackRunner(p.getUniqueId(), loc);
+					        trackRunner.runTaskTimer(Main.getPlugin(Main.class), 0, 5);
+							PlayerManager.vPlayerProperties.get(p).setTrackRunner(trackRunner);
 							p.sendMessage(ChatColor.GRAY + "Stai seguendo (x: " + ChatColor.GOLD + args[1] + ChatColor.GRAY + ", z: " + ChatColor.GOLD +args[2] + ChatColor.GRAY +")");
 		                } catch(NumberFormatException e) {
 		                    p.sendMessage(ChatColor.GRAY + "Inserisci dei numeri interi per le coordinate");

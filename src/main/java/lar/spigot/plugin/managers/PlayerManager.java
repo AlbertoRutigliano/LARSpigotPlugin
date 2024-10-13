@@ -10,8 +10,8 @@ import org.bukkit.Bukkit;
 import org.bukkit.Instrument;
 import org.bukkit.Location;
 import org.bukkit.Note;
-import org.bukkit.Sound;
 import org.bukkit.Note.Tone;
+import org.bukkit.Sound;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -25,12 +25,15 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.event.player.PlayerBedEnterEvent;
+import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
 import org.bukkit.event.player.PlayerBedLeaveEvent;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.event.player.PlayerPortalEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
 import lar.spigot.plugin.ConfigProperties;
 import lar.spigot.plugin.ItemStackComparator;
 import lar.spigot.plugin.Main;
@@ -38,10 +41,6 @@ import lar.spigot.plugin.commands.ThanksCommand;
 import lar.spigot.plugin.entities.PlayerProperties;
 import lar.spigot.plugin.entities.SortingType;
 import lar.spigot.plugin.managers.MSGManager.Message;
-
-import org.bukkit.event.player.PlayerBedEnterEvent.BedEnterResult;
-import org.bukkit.event.player.PlayerMoveEvent;
-
 import net.md_5.bungee.api.ChatColor;
 /*
  * Event Handlers list: https://github.com/Bukkit/Bukkit/tree/master/src/main/java/org/bukkit/event
@@ -53,14 +52,11 @@ public class PlayerManager implements Listener {
 	
     public static HashMap<Player, PlayerProperties> vPlayerProperties;
     
-    private final Main plugin;
-
-	public PlayerManager(Main plugin) {
-		this.plugin = plugin;
+	public PlayerManager() {
 		
 		vPlayerProperties = new HashMap<Player, PlayerProperties>();
-		for(Player p:Main.MyServer.getOnlinePlayers()) {
-			vPlayerProperties.put(p, new PlayerProperties());
+		for(Player p : Main.MyServer.getOnlinePlayers()) {
+			vPlayerProperties.put(p, new PlayerProperties(p.getUniqueId()));
 		}
 		
 		Main.MyServer.getScheduler().scheduleSyncRepeatingTask(Main.getPlugin(Main.class),  new Runnable() {
@@ -146,7 +142,7 @@ public class PlayerManager implements Listener {
 	public void onPlayerJoin(PlayerJoinEvent e) {
 		Player l_Player = e.getPlayer();
 		e.setJoinMessage(MSGManager.getMessage(MSGManager.Message.PLAYER_JOIN, l_Player.getName(), ChatColor.GOLD, ChatColor.GRAY));
-		vPlayerProperties.put(l_Player, new PlayerProperties());
+		vPlayerProperties.put(l_Player, new PlayerProperties(l_Player.getUniqueId()));
 	}
 	
 	@EventHandler

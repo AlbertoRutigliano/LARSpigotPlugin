@@ -41,12 +41,12 @@ public class Main extends JavaPlugin implements Listener {
 
 		MyServer = getServer();
 
-		this.vPlayerManager = new PlayerManager(this);
+		this.vPlayerManager = new PlayerManager();
 
 		MyServer.getPluginManager().registerEvents(this, this);
 		MyServer.getPluginManager().registerEvents(vPlayerManager, this);
 
-		this.getCommand(TRACK).setExecutor(new TrackCommand(this));
+		this.getCommand(TRACK).setExecutor(new TrackCommand());
 
 		this.getCommand(COORDS).setExecutor(new CoordsCommand());
 		this.getCommand(COORDS).setTabCompleter(new CoordsCommand());
