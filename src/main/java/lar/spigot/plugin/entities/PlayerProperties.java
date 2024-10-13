@@ -3,18 +3,10 @@ package lar.spigot.plugin.entities;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.ListIterator;
 
-import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.entity.HumanEntity;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryType;
-import org.bukkit.inventory.EquipmentSlot;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.PlayerInventory;
+
+import lar.spigot.plugin.TrackRunner;
 
 public class PlayerProperties {
 	private Timestamp vLastMoveTimestamp;
@@ -22,6 +14,7 @@ public class PlayerProperties {
 	private boolean vIsSleeping;
 	private ArrayList<Player> vFightingPlayers;
 	private ArrayList<Player> vFightingPlayersRequests;
+	private TrackRunner trackRunner = null;
 	
 	public boolean isAfk() {
 		return vAfk;
@@ -68,6 +61,22 @@ public class PlayerProperties {
 
 	public void setFightingPlayersRequests(ArrayList<Player> FightingPlayersRequests) {
 		this.vFightingPlayersRequests = FightingPlayersRequests;
+	}
+	
+	public TrackRunner getTrackRunner() {
+		return trackRunner;
+	}
+
+	public void setTrackRunner(TrackRunner trackRunner) {
+		this.trackRunner = trackRunner;
+	}
+	
+	public boolean isTracking() {
+		return this.trackRunner != null;
+	}
+	
+	public void stopTrucking() {
+		this.trackRunner = null;
 	}
 
 	public PlayerProperties() {

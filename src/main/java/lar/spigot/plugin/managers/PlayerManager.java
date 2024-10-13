@@ -154,10 +154,10 @@ public class PlayerManager implements Listener {
 		Player l_Player = e.getPlayer();
 		ServerManager.ResetScoreboard(l_Player);
 		e.setQuitMessage(MSGManager.getMessage(MSGManager.Message.PLAYER_LEFT, l_Player.getName(), ChatColor.GOLD, ChatColor.GRAY));
+		
 		// Stop all track running
-		if(plugin.getTrackRunner().isTracking(l_Player.getUniqueId())) {
-			plugin.getTrackRunner().unsetTracking(l_Player.getUniqueId());
-	    }
+		vPlayerProperties.get(l_Player).stopTrucking();
+		
 		vPlayerProperties.remove(l_Player);
 		float soundPitch = 1.2f + (float) Math.random() * (2.0f - 1.2f);
 		for (Player player : Main.MyServer.getOnlinePlayers()) {
