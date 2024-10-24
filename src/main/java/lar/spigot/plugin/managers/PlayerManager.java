@@ -158,7 +158,6 @@ public class PlayerManager implements Listener {
 		if(plugin.getTrackRunner().isTracking(l_Player.getUniqueId())) {
 			plugin.getTrackRunner().unsetTracking(l_Player.getUniqueId());
 	    }
-		vPlayerProperties.remove(l_Player);
 		float soundPitch = 1.2f + (float) Math.random() * (2.0f - 1.2f);
 		for (Player player : Main.MyServer.getOnlinePlayers()) {
 			vPlayerProperties.get(player).getFightingPlayersRequests().remove(l_Player);
@@ -169,6 +168,7 @@ public class PlayerManager implements Listener {
 			}
 			vPlayerProperties.get(player).getFightingPlayers().remove(l_Player);
 		}
+		vPlayerProperties.remove(l_Player);
 	}
 	
 	@EventHandler
