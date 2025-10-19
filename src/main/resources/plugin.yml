@@ -4,7 +4,7 @@ main: lar.spigot.plugin.Main
 version: ${project.version}
 api-version: '1.21'
 authors: [Alberto Rutigliano, Luca Acquafredda]
-website: https://github.com/AlbertoRutigliano/MinecraftPluginDev
+website: https://github.com/AlbertoRutigliano/LARSpigotPlugin
 commands: 
    PlayerPos:
       description: Mostra le coordinate dei giocatori
