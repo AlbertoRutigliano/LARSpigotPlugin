@@ -206,14 +206,14 @@ public class PlayerManager implements Listener {
 	            @Override
 	            public void run() {
 	                deadPlayer.spigot().respawn();	// Force respawn method
-	                deadPlayer.setHealth(deadPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue());  // Restore player health to max
+	                deadPlayer.setHealth(deadPlayer.getAttribute(Attribute.MAX_HEALTH).getValue());  // Restore player health to max
 
 	                // Clean variables
 	                float soundPitch = 1.2f + (float) Math.random() * (2.0f - 1.2f);
 	    			for(Player fightingPlayer : deadPlayerProp.getFightingPlayers()) {
 	    				vPlayerProperties.get(fightingPlayer).getFightingPlayers().remove(deadPlayer);
 	    				if (vPlayerProperties.get(fightingPlayer).getFightingPlayers().size() == 0) {
-	    					fightingPlayer.setHealth(fightingPlayer.getAttribute(Attribute.GENERIC_MAX_HEALTH).getValue()); // Restore player health to max
+	    					fightingPlayer.setHealth(fightingPlayer.getAttribute(Attribute.MAX_HEALTH).getValue()); // Restore player health to max
 	    					fightingPlayer.playSound(fightingPlayer.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100.0f, soundPitch);
 	    				}
 	    			}
