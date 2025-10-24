@@ -160,8 +160,9 @@ public class PlayerManager implements Listener {
 	    }
 		float soundPitch = 1.2f + (float) Math.random() * (2.0f - 1.2f);
 		for (Player player : Main.MyServer.getOnlinePlayers()) {
-			vPlayerProperties.get(player).getFightingPlayersRequests().remove(l_Player);
-			
+			if (vPlayerProperties.get(player) != null && vPlayerProperties.get(player).getFightingPlayersRequests() != null && !vPlayerProperties.get(player).getFightingPlayersRequests().isEmpty()) {
+				vPlayerProperties.get(player).getFightingPlayersRequests().remove(l_Player);
+			}
 			if(vPlayerProperties.get(player).getFightingPlayers().contains(l_Player)) {
 				player.sendMessage(MSGManager.getMessage(Message.FIGHT_LOOSE, l_Player.getName(), ChatColor.GOLD, ChatColor.GRAY));
 				player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, 100.f, soundPitch);
