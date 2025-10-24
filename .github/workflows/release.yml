@@ -41,7 +41,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: target
           include: LARSpigotPlugin-*.jar
-          server-dir: /home/multicraft/multicraftServer/servers/server1/plugins
+          server-dir: /home/multicraft/multicraftServer/servers/server1/plugins/
           exclude: |
             **/*.tmp
             **/*.log
