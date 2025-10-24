@@ -59,9 +59,11 @@ LARSpigotPlugin è un plugin che aggiunge funzioni interessanti al tuo server Mi
 <hr>
 Appunti per sviluppatori:
 
-- [BuildTools Ultima versione](https://www.spigotmc.org/wiki/buildtools)<br>
-_Puoi anche lanciare il file "BuildTools_DW_Latest.bat per scaricare l'ultima versione di BuildTools_
+- [BuildTools Ultima versione](https://hub.spigotmc.org/jenkins/job/BuildTools/)<br>
+  1. Crea una cartella "BuildTools" nel progetto e scarica il file BuildTools.jar nella cartella BuildTools. 
+  2. Posizionati in "BuildTools" e lancia il seguente comando*: <code>"C:\Program Files\Java\jdk-21.0.3\bin\java.exe" -jar BuildTools.jar --rev 1.21.10</code> 
+  <br>* la posizione della cartella Java può variare da PC a PC. La "rev" corrisponde alla versione di Spigot API. Utilizza la versione Java JDK >=21.
+
 
 - [Spigot Ultima versione](https://getbukkit.org/download/spigot)
 
-- [Spigot API Ultima versione](https://hub.spigotmc.org/nexus/content/repositories/snapshots/org/spigotmc/spigot-api)
