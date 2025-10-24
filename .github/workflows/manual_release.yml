@@ -1,0 +1,60 @@
+name: Manual Release & Deploy
+
+on:
+  workflow_dispatch:
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1️⃣ Checkout del codice
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # 2️⃣ Setup Java & Maven
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+
+      # 3️⃣ Leggi versione da pom.xml
+      - name: Get version from pom.xml
+        id: get_version
+        run: |
+          VERSION=$(xmllint --xpath "/*[local-name()='project']/*[local-name()='version']/text()" pom.xml)
+          echo "version=$VERSION" >> $GITHUB_OUTPUT
+        shell: bash
+
+      # 4️⃣ Crea tag git
+      - name: Create git tag
+        run: |
+          git config user.name "github-actions"
+          git config user.email "github-actions@github.com"
+          git tag -a "v${{ steps.get_version.outputs.version }}" -m "Release v${{ steps.get_version.outputs.version }}"
+          git push origin "v${{ steps.get_version.outputs.version }}"
+
+      # 5️⃣ Crea la release su GitHub
+      - name: Create GitHub Release
+        uses: ncipollo/release-action@v1
+        with:
+          tag: "v${{ steps.get_version.outputs.version }}"
+          name: "v${{ steps.get_version.outputs.version }}"
+          body: "Automatic release created via workflow_dispatch"
+
+      # 6️⃣ Build Maven
+      - name: Build with Maven
+        run: mvn clean install -B
+
+      # 7️⃣ Deploy JAR via SFTP
+      - name: Deploy JAR via SFTP
+        uses: appleboy/scp-action@v0.1.6
+        with:
+          host: ${{ secrets.SFTP_HOST }}
+          username: ${{ secrets.SFTP_USER }}
+          key: ${{ secrets.SFTP_PRIVATE_KEY }}
+          port: 22
+          source: "target/LARSpigotPlugin-*.jar"
+          target: "/home/multicraft/multicraftServer/servers/server1/plugins/"
