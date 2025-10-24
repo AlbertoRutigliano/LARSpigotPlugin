@@ -36,3 +36,8 @@ hs_err_pid*
 
 # IntelliJ
 /.idea/
+LARSpigotPlugin.iml
+
+# Minecraft
+/BuildTools/
+BuildTools.log.txt
