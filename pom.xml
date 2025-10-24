@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>LARSpigotPlugin</groupId>
   <artifactId>LARSpigotPlugin</artifactId>
-  <version>15.0.1</version>
+  <version>15.1.0</version>
   <build>
     <!-- <sourceDirectory>src</sourceDirectory>
     <resources>
