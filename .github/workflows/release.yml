@@ -39,7 +39,7 @@ jobs:
           server: ${{ secrets.FTP_SERVER }}
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
-          local-dir: target
+          local-dir: target/
           include: LARSpigotPlugin-*.jar
           server-dir: /home/multicraft/multicraftServer/servers/server1/plugins/
           exclude: |
