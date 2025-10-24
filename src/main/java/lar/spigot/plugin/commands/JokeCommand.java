@@ -49,6 +49,9 @@ public class JokeCommand implements TabExecutor {
 					case ARROW:
 						ServerManager.SendSound(Sound.ENTITY_ARROW_HIT);
 						break;
+					case GHAST:
+						ServerManager.SendSound(Sound.ENTITY_GHAST_HURT);
+						break;
 				default: ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);	
 				}
 				sender.sendMessage(ChatColor.GRAY + "Scherzetto in corso...");
@@ -71,6 +74,9 @@ public class JokeCommand implements TabExecutor {
 					case ARROW:
 						ServerManager.SendSound(Sound.ENTITY_ARROW_HIT, l_SelectedPlayer);
 						break;
+					case GHAST:
+						ServerManager.SendSound(Sound.ENTITY_GHAST_HURT, l_SelectedPlayer);
+						break;
 					default: ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED, l_SelectedPlayer);	
 				}
 				sender.sendMessage(ChatColor.GRAY + "Scherzetto a " + l_SelectedPlayer.getDisplayName() + " in corso...");
@@ -86,7 +92,7 @@ public class JokeCommand implements TabExecutor {
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-		String[] ALLOWED_COMMANDS = {CREEPER, CREEPER_HURT, ENDERMAN, WITCH, ARROW};
+		String[] ALLOWED_COMMANDS = {CREEPER, CREEPER_HURT, ENDERMAN, WITCH, ARROW, GHAST};
 		
 		List<String> completions = new ArrayList<>();	
 		
