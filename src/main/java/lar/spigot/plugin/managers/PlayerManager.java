@@ -245,7 +245,7 @@ public class PlayerManager implements Listener {
     }
 	*/
 	
-	@EventHandler
+	// @EventHandler TODO Evento commentato per via del bug che raddoppia gli oggetti.
     public void onInventoryclick(InventoryClickEvent event){
 		if (event.getClick().equals(ClickType.DOUBLE_CLICK)) {
 			Inventory clickedInventory = event.getClickedInventory();
