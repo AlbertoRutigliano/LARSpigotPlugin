@@ -6,11 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Instrument;
-import org.bukkit.Location;
-import org.bukkit.Note;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.Note.Tone;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.entity.Entity;
@@ -244,67 +240,88 @@ public class PlayerManager implements Listener {
 		player.sendMessage(ChatColor.GRAY + "Stai seguendo " + ChatColor.GOLD + " punto di morte");
     }
 	*/
-	
-	// @EventHandler TODO Evento commentato per via del bug che raddoppia gli oggetti.
-    public void onInventoryclick(InventoryClickEvent event){
-		if (event.getClick().equals(ClickType.DOUBLE_CLICK)) {
-			Inventory clickedInventory = event.getClickedInventory();
-			InventoryType inventoryType = clickedInventory.getType();
-			
-			if (inventoryType.equals(InventoryType.CHEST) || inventoryType.equals(InventoryType.BARREL) || inventoryType.equals(InventoryType.ENDER_CHEST) ) {
-				Player player = (Player) event.getWhoClicked();
-			
-				ArrayList<ItemStack> chestInventory = new ArrayList<>();
-				ArrayList<ItemStack> chestInventoryCopy = new ArrayList<>();
-				
-				for (int i = 0; i < clickedInventory.getSize() ; i++) {
-					if (clickedInventory.getItem(i) != null) {
-						chestInventory.add(clickedInventory.getItem(i));
-		        		chestInventoryCopy.add(clickedInventory.getItem(i));							
-					}
-		    	}
-				
-				ItemStackComparator l_SortingType = new ItemStackComparator(SortingType.SIMPLE_ASC);
-				
-				chestInventory.sort(l_SortingType);
-		    					
-				// Se gi� ordinato, inverti l'ordinamento
-				if (chestInventoryCopy.equals(chestInventory)) {
-					l_SortingType.setSortingType(SortingType.SIMPLE_DESC);
-				} else {
-					l_SortingType.setSortingType(SortingType.SIMPLE_ASC);
-				}
-				
-				chestInventory.sort(l_SortingType);
-				
-		    	// Compact stack
-		    	for(int i = 0; i < chestInventory.size() - 1; i++) {
-		    		boolean l_CompactAgain = false;
-		    		do{
-		    			l_CompactAgain = ChestManager.CompactStack(chestInventory.get(i), chestInventory.get(i+1));
-		    			chestInventory.sort(l_SortingType);
-		    		} while(l_CompactAgain == true);
-		    	}
-		    	
-				chestInventory.sort(l_SortingType);
 
-		    	ItemStack[] sortedInventory = new ItemStack[chestInventory.size()];
-				// Prepara e mostra l'inventario aggiornato con l'ordinamento
-		    	for(int i = 0; i < sortedInventory.length ; i++) {
-		    		sortedInventory[i] = chestInventory.get(i);
-		    	}
+	@EventHandler
+	public void onInventoryClick(InventoryClickEvent event) {
+		if (event.getClick() != ClickType.DOUBLE_CLICK) return;
 
-		    	clickedInventory.setContents(sortedInventory);
-			    event.setCancelled(true);
-			    player.updateInventory();
-			    player.playNote(player.getLocation(), Instrument.CHIME, Note.natural(1, Tone.A));
+		Inventory clickedInventory = event.getClickedInventory();
+		if (clickedInventory == null) return;
 
+		InventoryType inventoryType = clickedInventory.getType();
+
+		// Valido solo per chest, barrel ed ender chest
+		if (inventoryType != InventoryType.CHEST &&
+				inventoryType != InventoryType.BARREL &&
+				inventoryType != InventoryType.ENDER_CHEST) return;
+
+		Player player = (Player) event.getWhoClicked();
+
+		ArrayList<ItemStack> chestInventory = new ArrayList<>();
+		ArrayList<ItemStack> chestInventoryCopy = new ArrayList<>();
+
+		// Copia gli item
+		for (int i = 0; i < clickedInventory.getSize(); i++) {
+			ItemStack item = clickedInventory.getItem(i);
+			if (item != null && item.getType() != Material.AIR) {
+				chestInventory.add(item.clone());
+				chestInventoryCopy.add(item.clone());
 			}
-			
 		}
-		
+
+		// Ordina la lista
+		ItemStackComparator comparator = new ItemStackComparator(SortingType.SIMPLE_ASC);
+		chestInventory.sort(comparator);
+
+		// Se già ordinato, inverti
+		if (chestInventoryCopy.equals(chestInventory)) {
+			comparator.setSortingType(SortingType.SIMPLE_DESC);
+		} else {
+			comparator.setSortingType(SortingType.SIMPLE_ASC);
+		}
+
+		chestInventory.sort(comparator);
+
+		// ✅ Nuovo algoritmo di compattamento globale
+		for (int i = 0; i < chestInventory.size(); i++) {
+			ItemStack base = chestInventory.get(i);
+			if (base == null || base.getType() == Material.AIR) continue;
+
+			for (int j = i + 1; j < chestInventory.size(); j++) {
+				ItemStack next = chestInventory.get(j);
+				if (next == null || next.getType() == Material.AIR) continue;
+
+				if (ChestManager.CompactStack(base, next)) {
+					if (next.getType() == Material.AIR) {
+						chestInventory.remove(j);
+						j--; // Riaggiusta indice
+					}
+				}
+			}
+		}
+
+		chestInventory.sort(comparator);
+
+		// Aggiorna contenuti
+		ItemStack[] sortedInventory = new ItemStack[clickedInventory.getSize()];
+		for (int i = 0; i < sortedInventory.length; i++) {
+			if (i < chestInventory.size()) {
+				sortedInventory[i] = chestInventory.get(i);
+			} else {
+				sortedInventory[i] = null;
+			}
+		}
+
+		clickedInventory.setContents(sortedInventory);
+		event.setCancelled(true);
+
+		// 🕒 Aggiorna inventario nel tick successivo per sicurezza
+		Bukkit.getScheduler().runTaskLater(plugin, player::updateInventory, 1L);
+
+		// 🔔 Effetto sonoro
+		player.playNote(player.getLocation(), Instrument.CHIME, Note.natural(1, Tone.A));
 	}
-	
+
 	@EventHandler
     public void onChat(AsyncPlayerChatEvent event) {
 		 Player player = event.getPlayer();
