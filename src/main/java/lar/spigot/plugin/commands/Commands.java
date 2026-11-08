@@ -16,6 +16,8 @@ public interface Commands {
 	final static String WITCH = "witch";
 	final static String ARROW = "arrow";
 	final static String GHAST = "ghast";
+	final static String PIGLIN = "piglin";
+	final static String SHULKER = "shulker";
 	final static String TRACK = "track";
 	final static String PLAYER = "player";
 	final static String LOCATION = "location";

@@ -3,10 +3,7 @@ package lar.spigot.plugin.commands;
 
 import static lar.spigot.plugin.commands.Commands.*;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -34,9 +31,6 @@ public class JokeCommand implements TabExecutor {
 				break;
 			case 1:					
 				switch (args[0]) {
-					case CREEPER:
-						ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);
-						break;
 					case CREEPER_HURT:
 						ServerManager.SendSound(Sound.ENTITY_CREEPER_HURT);
 						break;
@@ -52,16 +46,20 @@ public class JokeCommand implements TabExecutor {
 					case GHAST:
 						ServerManager.SendSound(Sound.ENTITY_GHAST_HURT);
 						break;
-				default: ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);	
+					case PIGLIN:
+						ServerManager.SendSound(getPiglinSound());
+						break;
+					case SHULKER:
+						ServerManager.SendSound(Sound.ENTITY_SHULKER_AMBIENT);
+						break;
+					case CREEPER:
+					default: ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED);
 				}
 				sender.sendMessage(ChatColor.GRAY + "Scherzetto in corso...");
 				break;
 			case 2:	
 				Player l_SelectedPlayer = Main.MyServer.getPlayer(args[1]);
 				switch (args[0]) {
-					case CREEPER:
-						ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED, l_SelectedPlayer);
-						break;
 					case CREEPER_HURT:
 						ServerManager.SendSound(Sound.ENTITY_CREEPER_HURT, l_SelectedPlayer);
 						break;
@@ -77,6 +75,13 @@ public class JokeCommand implements TabExecutor {
 					case GHAST:
 						ServerManager.SendSound(Sound.ENTITY_GHAST_HURT, l_SelectedPlayer);
 						break;
+					case PIGLIN:
+						ServerManager.SendSound(getPiglinSound(), l_SelectedPlayer);
+						break;
+					case SHULKER:
+						ServerManager.SendSound(Sound.ENTITY_SHULKER_AMBIENT, l_SelectedPlayer);
+						break;
+					case CREEPER:
 					default: ServerManager.SendSound(Sound.ENTITY_CREEPER_PRIMED, l_SelectedPlayer);	
 				}
 				sender.sendMessage(ChatColor.GRAY + "Scherzetto a " + l_SelectedPlayer.getDisplayName() + " in corso...");
@@ -88,11 +93,16 @@ public class JokeCommand implements TabExecutor {
 
 		return true;
 	}
-	
+
+	private Sound getPiglinSound() {
+		List<Sound> PIGLIN_SOUNDS = Arrays.asList(Sound.ENTITY_PIGLIN_ADMIRING_ITEM, Sound.ENTITY_PIGLIN_ANGRY, Sound.ENTITY_PIGLIN_CELEBRATE, Sound.ENTITY_PIGLIN_JEALOUS, Sound.ENTITY_PIGLIN_RETREAT);
+		return PIGLIN_SOUNDS.get(new Random().nextInt(PIGLIN_SOUNDS.size()));
+	}
+
 	@Override
 	public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-		String[] ALLOWED_COMMANDS = {CREEPER, CREEPER_HURT, ENDERMAN, WITCH, ARROW, GHAST};
+		String[] ALLOWED_COMMANDS = {CREEPER, CREEPER_HURT, ENDERMAN, WITCH, ARROW, GHAST, PIGLIN, SHULKER};
 		
 		List<String> completions = new ArrayList<>();	
 		
